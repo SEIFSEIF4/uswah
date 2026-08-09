@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { isLocale } from "@/lib/supabase";
+import { isLocale } from "@/lib/i18n";
 import { login, signup } from "./actions";
 
 const copy = {
@@ -28,10 +28,10 @@ export default async function Login({
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ error?: string; check?: string; next?: string }>;
+  searchParams: Promise<{ error?: string; check?: string; redirect?: string }>;
 }) {
   const { locale } = await params;
-  const { error, check, next } = await searchParams;
+  const { error, check, redirect } = await searchParams;
   if (!isLocale(locale)) notFound();
 
   const t = copy[locale];
@@ -52,7 +52,7 @@ export default async function Login({
 
       <form className="mt-8 flex flex-col gap-4">
         <input type="hidden" name="locale" value={locale} />
-        <input type="hidden" name="next" value={next ?? ""} />
+        <input type="hidden" name="redirect" value={redirect ?? ""} />
 
         <label className="flex flex-col gap-1 text-sm">
           {t.email}

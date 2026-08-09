@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Inter, Noto_Naskh_Arabic } from "next/font/google";
-import { LOCALES, isLocale } from "@/lib/supabase";
+import { LOCALES, isLocale } from "@/lib/i18n";
 import "../globals.css";
 
 const latin = Inter({ subsets: ["latin"], variable: "--font-latin" });

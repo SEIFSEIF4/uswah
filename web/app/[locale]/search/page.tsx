@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { db, isLocale } from "@/lib/supabase";
+import { db } from "@/lib/supabase/public";
+import { isLocale } from "@/lib/i18n";
 
 const copy = {
   en: { label: "Search", placeholder: "What happened?", none: "Nothing found." },

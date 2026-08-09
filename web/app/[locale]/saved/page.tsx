@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import { createClient } from "@/lib/auth";
-import { isLocale } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/server";
+import { isLocale } from "@/lib/i18n";
 import { signOut } from "../login/actions";
+import { DEFAULT_LOGIN_ROUTE, DEFAULT_REDIRECT_ROUTE } from "@/routes";
 
 const copy = {
   en: { title: "Saved", empty: "Nothing saved yet.", signOut: "Sign out" },
@@ -13,9 +14,12 @@ export default async function Saved({ params }: { params: Promise<{ locale: stri
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
 
+  // Defense in depth: the proxy already bounces unauthed visitors off /saved.
   const supabase = await createClient();
   const { data: claims } = await supabase.auth.getClaims();
-  if (!claims?.claims?.sub) redirect(`/${locale}/login?next=/${locale}/saved`);
+  if (!claims?.claims?.sub) {
+    redirect(`/${locale}${DEFAULT_LOGIN_ROUTE}?redirect=/${locale}${DEFAULT_REDIRECT_ROUTE}`);
+  }
 
   // RLS returns only this user's saves; the joins are restricted to published rows.
   const { data } = await supabase

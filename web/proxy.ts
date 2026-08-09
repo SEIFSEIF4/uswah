@@ -1,28 +1,55 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { updateSession } from "@/lib/auth";
+import { updateSession } from "@/lib/supabase/proxy";
+import { isLocale, localeFromHeader, splitLocale } from "@/lib/i18n";
+import {
+  DEFAULT_LOGIN_ROUTE,
+  DEFAULT_REDIRECT_ROUTE,
+  isAuthRoute,
+  isProtectedRoute,
+  isRecoveryRoute,
+} from "@/routes";
 
-const LOCALES = ["en", "ar"];
-
-// Two jobs, in this order: refresh the auth token (Server Components cannot write
-// cookies, so it has to happen here), then send locale-less paths to a locale.
 export async function proxy(request: NextRequest) {
-  const response = await updateSession(request);
+  const { response, claims } = await updateSession(request);
 
-  const { pathname } = request.nextUrl;
-  if (LOCALES.some((l) => pathname === `/${l}` || pathname.startsWith(`/${l}/`))) {
-    return response;
+  const pathname = request.nextUrl.pathname;
+  const authed = claims !== null;
+
+  // Locale-less path → send it to a locale. Every page lives under /<locale>,
+  // which is what lets the locale layout own <html lang dir>.
+  if (!isLocale(pathname.split("/")[1] ?? "")) {
+    const locale = localeFromHeader(request.headers.get("accept-language"));
+    const url = request.nextUrl.clone();
+    url.pathname = `/${locale}${pathname === "/" ? "" : pathname}`;
+
+    // Carry the refreshed session cookies, or the refresh is lost on the hop.
+    const redirect = NextResponse.redirect(url);
+    response.cookies.getAll().forEach((c) => redirect.cookies.set(c));
+    return redirect;
   }
 
-  const prefers = request.headers.get("accept-language") ?? "";
-  const locale = /(^|,)\s*ar\b/i.test(prefers) ? "ar" : "en";
+  // Route rules are written locale-less, so /en/saved and /ar/saved share one entry.
+  const { locale, path } = splitLocale(pathname);
 
-  const url = request.nextUrl.clone();
-  url.pathname = `/${locale}${pathname === "/" ? "" : pathname}`;
+  // Unauthed visitor on a protected route → push to sign-in. Recovery routes are
+  // still protected, so this catches unauthed users trying to reach them too.
+  if (isProtectedRoute(path) && !authed) {
+    const url = request.nextUrl.clone();
+    url.pathname = `/${locale}${DEFAULT_LOGIN_ROUTE}`;
+    url.searchParams.set("redirect", pathname);
+    return NextResponse.redirect(url);
+  }
 
-  // Carry the refreshed session cookies onto the redirect, or the refresh is lost.
-  const redirect = NextResponse.redirect(url);
-  response.cookies.getAll().forEach((c) => redirect.cookies.set(c));
-  return redirect;
+  // Already-authed user hitting an auth route → bounce onward. Recovery routes are
+  // exempt: an authed-but-unfinished user needs to actually reach them.
+  if (isAuthRoute(path) && !isRecoveryRoute(path) && authed) {
+    const url = request.nextUrl.clone();
+    url.pathname = `/${locale}${DEFAULT_REDIRECT_ROUTE}`;
+    url.search = "";
+    return NextResponse.redirect(url);
+  }
+
+  return response;
 }
 
 export const config = {

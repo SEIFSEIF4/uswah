@@ -10,7 +10,7 @@ import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { parse } from "yaml";
 import { createClient } from "@supabase/supabase-js";
-import type { Database } from "../lib/database.types";
+import type { Database } from "../lib/supabase/database.types";
 import { validate, type Locale, type SituationDoc } from "./content-schema";
 
 const DIR = join(import.meta.dirname, "..", "..", "content", "situations");

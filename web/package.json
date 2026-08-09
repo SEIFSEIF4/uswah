@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "content:push": "tsx --env-file=.env.local scripts/push-content.ts",
-    "content:test": "tsx scripts/content-schema.test.ts"
+    "content:test": "tsx scripts/content-schema.test.ts",
+    "routes:test": "tsx scripts/routes.test.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.4",

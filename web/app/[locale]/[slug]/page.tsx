@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { db, isLocale, LOCALES, RESERVED_SLUGS, type Locale } from "@/lib/supabase";
+import { db } from "@/lib/supabase/public";
+import { isLocale, LOCALES, RESERVED_SLUGS, type Locale } from "@/lib/i18n";
 import { toggleSave } from "../login/actions";
 
 export const revalidate = 3600;

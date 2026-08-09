@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
-import { db, LOCALES } from "@/lib/supabase";
+import { db } from "@/lib/supabase/public";
+import { LOCALES } from "@/lib/i18n";
 
 export const revalidate = 3600;
 

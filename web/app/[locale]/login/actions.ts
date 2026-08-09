@@ -2,28 +2,32 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/auth";
-import { isLocale } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/server";
+import { isLocale, DEFAULT_LOCALE } from "@/lib/i18n";
+import { DEFAULT_LOGIN_ROUTE, DEFAULT_REDIRECT_ROUTE, safeInternalRedirect } from "@/routes";
 
 function read(formData: FormData) {
-  const locale = String(formData.get("locale") ?? "en");
+  const locale = String(formData.get("locale") ?? DEFAULT_LOCALE);
   return {
-    locale: isLocale(locale) ? locale : "en",
+    locale: isLocale(locale) ? locale : DEFAULT_LOCALE,
     email: String(formData.get("email") ?? ""),
     password: String(formData.get("password") ?? ""),
-    next: String(formData.get("next") ?? ""),
+    redirectTo: formData.get("redirect") as string | null,
   };
 }
 
 export async function login(formData: FormData) {
-  const { locale, email, password, next } = read(formData);
+  const { locale, email, password, redirectTo } = read(formData);
   const supabase = await createClient();
 
   const { error } = await supabase.auth.signInWithPassword({ email, password });
-  if (error) redirect(`/${locale}/login?error=${encodeURIComponent(error.message)}`);
+  if (error) {
+    redirect(`/${locale}${DEFAULT_LOGIN_ROUTE}?error=${encodeURIComponent(error.message)}`);
+  }
 
   revalidatePath("/", "layout");
-  redirect(next || `/${locale}/saved`);
+  // safeInternalRedirect blocks ?redirect=//evil.com getting through the login form.
+  redirect(safeInternalRedirect(redirectTo, `/${locale}${DEFAULT_REDIRECT_ROUTE}`));
 }
 
 export async function signup(formData: FormData) {
@@ -31,9 +35,11 @@ export async function signup(formData: FormData) {
   const supabase = await createClient();
 
   const { error } = await supabase.auth.signUp({ email, password });
-  if (error) redirect(`/${locale}/login?error=${encodeURIComponent(error.message)}`);
+  if (error) {
+    redirect(`/${locale}${DEFAULT_LOGIN_ROUTE}?error=${encodeURIComponent(error.message)}`);
+  }
 
-  redirect(`/${locale}/login?check=1`);
+  redirect(`/${locale}${DEFAULT_LOGIN_ROUTE}?check=1`);
 }
 
 export async function signOut(formData: FormData) {
@@ -47,14 +53,16 @@ export async function signOut(formData: FormData) {
 
 /** Save or unsave a situation. Called from the situation page. */
 export async function toggleSave(formData: FormData) {
-  const locale = String(formData.get("locale") ?? "en");
+  const { locale } = read(formData);
   const slug = String(formData.get("slug") ?? "");
   const supabase = await createClient();
 
   const { data } = await supabase.auth.getClaims();
   const userId = data?.claims?.sub;
   if (!userId) {
-    redirect(`/${locale}/login?next=${encodeURIComponent(`/${locale}/${slug}`)}`);
+    redirect(
+      `/${locale}${DEFAULT_LOGIN_ROUTE}?redirect=${encodeURIComponent(`/${locale}/${slug}`)}`,
+    );
   }
 
   const { data: situation } = await supabase
@@ -79,5 +87,5 @@ export async function toggleSave(formData: FormData) {
       .insert({ user_id: userId, situation_id: situation.id });
   }
 
-  revalidatePath(`/${locale}/saved`);
+  revalidatePath(`/${locale}${DEFAULT_REDIRECT_ROUTE}`);
 }

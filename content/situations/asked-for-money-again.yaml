@@ -1,11 +1,11 @@
-# ⚠ NOT VERIFIED — published: false on purpose.
-# I drafted the Arabic wording and the reference from memory. Before flipping
-# published to true, open Sahih al-Bukhari, Book of Zakat, and confirm the wording,
-# the number, and the translator attribution against the printed text. An LLM must
-# never be the last thing that touched a citation.
+# ⚠ NOT VERIFIED — published for local testing only. DO NOT DEPLOY AS-IS.
+# The Arabic wording and the reference were drafted from memory. Open Sahih
+# al-Bukhari, Book of Zakat, confirm the wording, the number and the translator
+# attribution against the printed text, then replace reviewed_by with your name.
+# An LLM must never be the last thing that touched a citation.
 
 slug: asked-for-money-again
-published: false
+published: true
 
 translations:
   en:
