@@ -1,0 +1,18 @@
+.env
+.env.local
+.env*.local
+node_modules/
+.next/
+.vercel/
+.DS_Store
+
+# Flutter
+app/build/
+app/.dart_tool/
+app/.flutter-plugins*
+app/ios/Pods/
+app/**/GeneratedPluginRegistrant.*
+
+# Supabase CLI local stack
+supabase/.branches/
+supabase/.temp/
