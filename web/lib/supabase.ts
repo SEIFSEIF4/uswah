@@ -15,4 +15,4 @@ export const isLocale = (v: string): v is Locale =>
   (LOCALES as readonly string[]).includes(v);
 
 // Slugs that would shadow a route. Enforced by the content pipeline, checked here too.
-export const RESERVED_SLUGS = new Set(["search", "about"]);
+export const RESERVED_SLUGS = new Set(["search", "about", "login", "saved"]);

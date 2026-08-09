@@ -8,7 +8,7 @@ export const LOCALES = ["en", "ar"] as const;
 export type Locale = (typeof LOCALES)[number];
 
 export const COLLECTIONS = ["bukhari", "muslim"] as const;
-export const RESERVED_SLUGS = ["search", "about"];
+export const RESERVED_SLUGS = ["search", "about", "login", "saved"];
 
 export type SituationDoc = {
   slug: string;

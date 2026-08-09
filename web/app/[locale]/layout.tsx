@@ -20,8 +20,8 @@ export function generateStaticParams() {
 }
 
 const copy = {
-  en: { home: "Uswah", search: "Search" },
-  ar: { home: "أسوة", search: "بحث" },
+  en: { home: "Uswah", search: "Search", saved: "Saved" },
+  ar: { home: "أسوة", search: "بحث", saved: "المحفوظات" },
 } as const;
 
 export default async function LocaleLayout({
@@ -45,9 +45,15 @@ export default async function LocaleLayout({
             <Link href={`/${locale}`} className="text-lg font-semibold">
               {t.home}
             </Link>
+            {/* No signed-in state here on purpose: reading cookies in the layout would
+                make every page dynamic and cost the static generation. Saved redirects
+                to login when signed out. */}
             <nav className="flex items-baseline gap-5 text-sm">
               <Link href={`/${locale}/search`} className="text-muted hover:text-foreground">
                 {t.search}
+              </Link>
+              <Link href={`/${locale}/saved`} className="text-muted hover:text-foreground">
+                {t.saved}
               </Link>
               <Link href={`/${other}`} className="text-muted hover:text-foreground">
                 {copy[other].home}

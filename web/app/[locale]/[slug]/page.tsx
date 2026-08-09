@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { db, isLocale, LOCALES, RESERVED_SLUGS, type Locale } from "@/lib/supabase";
+import { toggleSave } from "../login/actions";
 
 export const revalidate = 3600;
 
 const copy = {
-  en: { takeaway: "What to do", source: "Source", translated: "Translated by" },
-  ar: { takeaway: "اعمل إيه", source: "المصدر", translated: "ترجمة" },
+  en: { takeaway: "What to do", source: "Source", translated: "Translated by", save: "Save this" },
+  ar: { takeaway: "اعمل إيه", source: "المصدر", translated: "ترجمة", save: "احفظ ده" },
 } as const;
 
 const collectionName = {
@@ -116,6 +117,17 @@ export default async function Situation({
           </section>
         );
       })}
+
+      {/* ponytail: no saved/unsaved state shown — reading it needs cookies, which would
+          make this page dynamic and lose static generation. Toggles server-side; add
+          an optimistic island if the ambiguity ever bothers anyone. */}
+      <form action={toggleSave} className="mt-12 border-t border-rule pt-6">
+        <input type="hidden" name="locale" value={locale} />
+        <input type="hidden" name="slug" value={slug} />
+        <button className="border border-rule px-4 py-2 text-sm hover:border-foreground">
+          {t.save}
+        </button>
+      </form>
     </article>
   );
 }
