@@ -1,0 +1,51 @@
+# ⚠ NOT VERIFIED — published: false on purpose.
+# I drafted the Arabic wording and the reference from memory. Before flipping
+# published to true, open Sahih al-Bukhari, Book of Zakat, and confirm the wording,
+# the number, and the translator attribution against the printed text. An LLM must
+# never be the last thing that touched a citation.
+
+slug: asked-for-money-again
+published: false
+
+translations:
+  en:
+    title: Someone keeps asking me for money
+    summary: What to do when the asking never stops, and what the Prophet ﷺ told a man who came to him for help.
+  ar:
+    title: حد بيطلب مني فلوس كل شوية
+    summary: تعمل إيه لما الطلب ميقفش، وإيه اللي قاله النبي ﷺ لواحد جه يطلب منه.
+
+entries:
+  - source:
+      kind: hadith
+      collection: bukhari
+      ref: "1471"
+      text_original: >-
+        لأَنْ يَأْخُذَ أَحَدُكُمْ حَبْلَهُ فَيَأْتِيَ بِحُزْمَةِ الْحَطَبِ عَلَى ظَهْرِهِ
+        فَيَبِيعَهَا فَيَكُفَّ اللَّهُ بِهَا وَجْهَهُ، خَيْرٌ لَهُ مِنْ أَنْ يَسْأَلَ
+        النَّاسَ، أَعْطَوْهُ أَوْ مَنَعُوهُ
+      translations:
+        en:
+          translator: Muhsin Khan
+          text: >-
+            For one of you to take his rope and bring a bundle of firewood on his back
+            and sell it, so that Allah preserves his dignity by it, is better for him
+            than begging from people, whether they give him or refuse him.
+    translations:
+      en:
+        body: >-
+          The answer here is not "stop giving." It is that repeated asking costs the
+          person asking something, and the kindest response is often the one that ends
+          the need rather than the one that meets it again this month.
+        takeaway: >-
+          Give what you can this time, then ask them one question: what would make this
+          the last time? Help with that instead.
+      ar:
+        body: >-
+          الإجابة مش "بطّل تدي". الفكرة إن الطلب المتكرر بيكلف اللي بيطلب حاجة في نفسه،
+          وأحسن رد غالبًا هو اللي بينهي الحاجة نفسها، مش اللي بيسدها الشهر ده كمان.
+        takeaway: >-
+          ادي اللي تقدر عليه المرة دي، وبعدين اسأل سؤال واحد: إيه اللي يخلي دي آخر مرة؟
+          وساعد في ده.
+    reviewed_by: UNVERIFIED
+    reviewed_at: 2026-08-11

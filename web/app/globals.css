@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --muted: #5b6472;
+  --rule: #e4e2de;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0f1319;
+    --foreground: #e9e7e2;
+    --muted: #98a1ae;
+    --rule: #262f3c;
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-rule: var(--rule);
+  --font-sans: var(--font-latin);
+  --font-arabic: var(--font-arabic);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+/* Arabic needs more room than Latin at the same visual weight: larger size and a
+   looser line, or diacritics collide with the line above. Applied by direction so
+   it follows the locale without a class on every element. */
+[dir="rtl"] {
+  font-family: var(--font-arabic), system-ui, sans-serif;
+  font-size: 1.08em;
+  line-height: 1.9;
+}
+
+/* Quran and hadith in the original script, at reading size. */
+.source-text {
+  font-family: var(--font-arabic), serif;
+  font-size: 1.3rem;
+  line-height: 2.2;
+  direction: rtl;
+  text-align: right;
+}
