@@ -462,7 +462,7 @@ h1, h2, h3, .display {
   border-radius: 3px;
 }
 
-/* ── quote comparisons ────────────────────────────────────────────────────── */
+/* ── sayings ──────────────────────────────────────────────────────────────── */
 
 .lede {
   font-size: 1.08rem;
@@ -472,8 +472,8 @@ h1, h2, h3, .display {
   line-height: 1.65;
 }
 
-/* The grading key is displayed, never hidden behind a tooltip: a comparison whose
-   grade you cannot see is the thing this section exists to avoid becoming. */
+/* The grading key is displayed rather than hidden behind a tooltip: a comparison whose
+   grade you cannot see is what this section exists to avoid becoming. */
 .grade-key {
   display: flex;
   flex-wrap: wrap;
@@ -497,7 +497,6 @@ h1, h2, h3, .display {
 .grade {
   display: inline-flex;
   align-items: center;
-  gap: .3ch;
   font-size: .72rem;
   letter-spacing: .04em;
   padding: .15rem .55rem;
@@ -506,10 +505,9 @@ h1, h2, h3, .display {
   white-space: nowrap;
 }
 [dir="rtl"] .grade { font-size: .82rem; letter-spacing: 0; }
-.grade-quran      { color: #2f6b4f; }
-.grade-sahih      { color: #2f6b4f; }
-.grade-hasan      { color: #2c5a86; }
-.grade-disputed   { color: #8a5a12; }
+.grade-quran, .grade-sahih { color: #2f6b4f; }
+.grade-hasan { color: #2c5a86; }
+.grade-disputed { color: #8a5a12; }
 .grade-historical { color: var(--muted); }
 :root[data-theme="dark"] .grade-quran,
 :root[data-theme="dark"] .grade-sahih { color: #7fc09b; }
@@ -522,54 +520,131 @@ h1, h2, h3, .display {
   :root:not([data-theme="light"]) .grade-disputed { color: #d9a95f; }
 }
 
-.quotes { display: flex; flex-direction: column; gap: 2rem; }
-
-.quote {
-  border: 1px solid var(--rule);
-  border-radius: 10px;
-  overflow: hidden;
-  background: var(--surface);
-}
-.quote blockquote {
-  margin: 0;
-  padding: 1.5rem 1.75rem;
-  border-bottom: 1px solid var(--rule);
+/* Directory. Deliberately plain: it is a way through, not the thing itself. */
+.quote-index { list-style: none; margin: 0; padding: 0; }
+.quote-index li { border-top: 1px solid var(--rule); }
+.quote-index li:last-child { border-bottom: 1px solid var(--rule); }
+.quote-index a { display: block; padding: 1.5rem 0; }
+.quote-index q {
+  display: block;
+  quotes: none;
   font-family: var(--font-display), Georgia, serif;
-  font-size: clamp(1.2rem, 2.6vw, 1.6rem);
+  font-size: 1.3rem;
   line-height: 1.3;
   text-wrap: balance;
 }
-[dir="rtl"] .quote blockquote {
-  /* The circulating saying keeps its own direction even on the Arabic page. */
-  direction: ltr;
-  text-align: left;
+[dir="rtl"] .quote-index q { direction: ltr; text-align: left; }
+.quote-index p { margin: .5rem 0 0; color: var(--muted); font-size: .95rem; max-width: 60ch; }
+.quote-index-meta { display: flex; align-items: center; gap: .6rem; margin-top: .8rem; }
+.quote-index a:hover q { text-decoration: underline; text-underline-offset: 4px; }
+.pending { font-size: .78rem; color: var(--faint); }
+
+/* ── one saying ───────────────────────────────────────────────────────────── */
+
+.saying-page { max-width: 40rem; margin-inline: auto; }
+
+.saying-back {
+  display: inline-block;
+  margin-bottom: 2rem;
+  font-size: .8rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+[dir="rtl"] .saying-back { letter-spacing: 0; text-transform: none; font-size: .9rem; }
+.saying-back:hover { color: var(--foreground); }
+
+/* Smaller than the source it is measured against. That inversion is the argument. */
+.saying-line {
+  margin: 0;
   font-family: var(--font-display), Georgia, serif;
+  font-size: 1.45rem;
+  line-height: 1.35;
+  color: var(--muted);
+  text-wrap: balance;
 }
-.quote-body {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
-  gap: 1.5rem 2rem;
-  padding: 1.5rem 1.75rem 1.75rem;
-}
-.quote-body h2 {
+.saying-grade { display: flex; align-items: center; gap: .7rem; margin: 1rem 0 2rem; }
+.saying-ref { font-size: .85rem; color: var(--faint); }
+
+.saying-block { margin: 2rem 0; }
+.saying-block h2 {
   font-family: var(--font-latin), system-ui, sans-serif;
   font-size: .7rem;
   letter-spacing: .14em;
   text-transform: uppercase;
   color: var(--faint);
-  margin: 0 0 .5rem;
+  margin: 0 0 .6rem;
   font-weight: 600;
 }
-[dir="rtl"] .quote-body h2 {
+[dir="rtl"] .saying-block h2 {
   font-family: var(--font-arabic), sans-serif;
   letter-spacing: 0;
   text-transform: none;
-  font-size: .82rem;
+  font-size: .84rem;
 }
-.quote-body p { margin: 0 0 .7rem; line-height: 1.6; }
-.quote .source-text.small { font-size: 1.08rem; line-height: 1.95; margin: .8rem 0; }
-.quote .source-ref { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; margin: 0; }
-.quote-link { font-size: .9rem; text-decoration: underline; text-underline-offset: 3px; }
+.saying-block p { margin: 0; font-size: 1.06rem; line-height: 1.7; }
+
+/* The focal moment. */
+.verdict {
+  margin: 2.5rem 0;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--rule);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.4rem;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+[dir="rtl"] .verdict { font-family: var(--font-display-ar), var(--font-arabic), serif; line-height: 1.8; }
+.verdict span {
+  display: block;
+  font-family: var(--font-latin), system-ui, sans-serif;
+  font-size: .7rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: .5rem;
+}
+[dir="rtl"] .verdict span {
+  font-family: var(--font-arabic), sans-serif;
+  letter-spacing: 0;
+  text-transform: none;
+  font-size: .84rem;
+}
+
+/* Not an error state: a status. Quiet, and it explains itself. */
+.pending-note {
+  margin: 2rem 0;
+  padding: 1.1rem 1.3rem;
+  border: 1px dashed var(--rule);
+  border-radius: 8px;
+  background: transparent;
+}
+.pending-note strong { display: block; font-size: .9rem; margin-bottom: .35rem; }
+.pending-note p { margin: 0; font-size: .9rem; color: var(--muted); line-height: 1.6; }
+
+.saying-cta {
+  display: block;
+  margin: 2.5rem 0 0;
+  padding: 1.2rem 1.4rem;
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+}
+.saying-cta span {
+  display: block;
+  font-size: .72rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: .3rem;
+}
+[dir="rtl"] .saying-cta span { letter-spacing: 0; text-transform: none; font-size: .84rem; }
+.saying-cta strong {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+[dir="rtl"] .saying-cta strong { font-family: var(--font-display-ar), var(--font-arabic), serif; }
+.saying-cta:hover { border-color: var(--foreground); }
 
 /* ── header search ────────────────────────────────────────────────────────── */
 

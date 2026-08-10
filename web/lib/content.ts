@@ -72,3 +72,27 @@ export function allQuotes() {
 
 export { PATHS } from "./mock/quotes";
 export type { Path } from "./mock/quotes";
+
+/** Strongest evidence first, so a directory opens on its best case. */
+const GRADE_ORDER: Record<string, number> = {
+  quran: 0,
+  sahih: 1,
+  hasan: 2,
+  historical: 3,
+  disputed: 4,
+};
+
+export function quotesSorted() {
+  return [...QUOTES].sort((a, b) => GRADE_ORDER[a.grade] - GRADE_ORDER[b.grade]);
+}
+
+export function quoteBySlug(slug: string) {
+  return QUOTES.find((q) => q.slug === slug);
+}
+
+/** Other sayings, never the one being read. */
+export function relatedQuotes(slug: string, limit = 3) {
+  return quotesSorted()
+    .filter((q) => q.slug !== slug)
+    .slice(0, limit);
+}
