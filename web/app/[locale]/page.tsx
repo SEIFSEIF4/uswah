@@ -2,12 +2,12 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { isLocale } from "@/lib/i18n";
 import {
-  allQuotes,
   allSituations,
   bandSituation,
   GRADES,
   heroSituation,
   PATHS,
+  quotesSorted,
   topicName,
   TOPICS,
 } from "@/lib/content";
@@ -91,22 +91,36 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       {/* 5. Sayings, in type alone. No artwork, because the section is about words. */}
       <section className="band-section tone-paper">
         <SectionTitle>{t.sayings}</SectionTitle>
-        <div className="sayings-preview">
-          {allQuotes()
-            .slice(0, 3)
-            .map((q) => (
-              <Link key={q.slug} href={`/${locale}/quotes`} className="saying">
-                <q>{q.saying}</q>
+        {(() => {
+          // Best-graded first: the section leads on its strongest evidence rather than
+          // presenting three comparisons as if they carried equal weight.
+          const [lead, ...others] = quotesSorted().slice(0, 3);
+          return (
+            <div className="sayings-lead-layout">
+              <Link href={`/${locale}/quotes/${lead.slug}`} className="saying saying-lead">
+                <q>{lead.saying}</q>
+                <p className="saying-verdict">{lead[locale].closeness}</p>
                 <span className="saying-meta">
-                  <span className={`grade grade-${q.grade}`}>{GRADES[q.grade][locale]}</span>
-                  {q.source.label[locale]}
+                  <span className={`grade grade-${lead.grade}`}>{GRADES[lead.grade][locale]}</span>
+                  {lead.source.label[locale]}
                 </span>
               </Link>
-            ))}
-        </div>
-        <p className="sayings-more">
-          <Link href={`/${locale}/quotes`}>{t.allSayings}</Link>
-        </p>
+              <ul className="saying-rest">
+                {others.map((q) => (
+                  <li key={q.slug}>
+                    <Link href={`/${locale}/quotes/${q.slug}`}>
+                      <q>{q.saying}</q>
+                      <span className={`grade grade-${q.grade}`}>{GRADES[q.grade][locale]}</span>
+                    </Link>
+                  </li>
+                ))}
+                <li className="saying-rest-all">
+                  <Link href={`/${locale}/quotes`}>{t.allSayings}</Link>
+                </li>
+              </ul>
+            </div>
+          );
+        })()}
       </section>
 
       {/* 6. Paths, on ink. A commitment, so it looks unlike the browsing above it. */}
