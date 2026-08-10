@@ -1,19 +1,30 @@
 @import "tailwindcss";
 
+/* Light is the base. Dark is redefined in two places on purpose:
+   - the media query covers visitors who never touched the toggle
+   - [data-theme] covers an explicit choice, and must win over the OS
+   Never declare a colour only inside one of those blocks. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fbfaf8;
+  --foreground: #16202e;
   --muted: #5b6472;
   --rule: #e4e2de;
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --background: #0f1319;
     --foreground: #e9e7e2;
     --muted: #98a1ae;
     --rule: #262f3c;
   }
+}
+
+:root[data-theme="dark"] {
+  --background: #0f1319;
+  --foreground: #e9e7e2;
+  --muted: #98a1ae;
+  --rule: #262f3c;
 }
 
 @theme inline {
@@ -35,11 +46,12 @@ body {
    it follows the locale without a class on every element. */
 [dir="rtl"] {
   font-family: var(--font-arabic), system-ui, sans-serif;
-  font-size: 1.08em;
+  font-size: 1.06em;
   line-height: 1.9;
 }
 
-/* Quran and hadith in the original script, at reading size. */
+/* Quran and hadith in the original script, at reading size. Naskh is what this
+   script is cut for, so it stays reserved for the sources themselves. */
 .source-text {
   font-family: var(--font-scripture), serif;
   font-size: 1.3rem;

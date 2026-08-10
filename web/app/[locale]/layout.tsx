@@ -1,15 +1,39 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Inter, Cairo, Noto_Naskh_Arabic } from "next/font/google";
+import { Inter, Noto_Naskh_Arabic } from "next/font/google";
+import localFont from "next/font/local";
 import { LOCALES, isLocale } from "@/lib/i18n";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { LocaleSwitch } from "@/components/locale-switch";
 import "../globals.css";
 
-// Two Arabic faces on purpose: Cairo carries the interface, and Naskh is reserved for
-// Quran and hadith text, which is what that script is actually cut for. Cairo also
-// matches the share cards, since Satori cannot shape Naskh's substitution tables.
 const latin = Inter({ subsets: ["latin"], variable: "--font-latin" });
-const arabic = Cairo({ subsets: ["arabic"], variable: "--font-arabic" });
+
+// Thmanyah Serif Text carries all Arabic interface and body copy.
+const arabic = localFont({
+  variable: "--font-arabic",
+  display: "swap",
+  src: [
+    {
+      path: "../../public/fonts/thmanyah/thmanyahseriftext/woff2/thmanyahseriftext-Regular.woff2",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/thmanyah/thmanyahseriftext/woff2/thmanyahseriftext-Medium.woff2",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/thmanyah/thmanyahseriftext/woff2/thmanyahseriftext-Bold.woff2",
+      weight: "700",
+      style: "normal",
+    },
+  ],
+});
+
+// Naskh stays reserved for Quran and hadith, which is what it is cut for.
 const scripture = Noto_Naskh_Arabic({ subsets: ["arabic"], variable: "--font-scripture" });
 
 export const metadata: Metadata = {
@@ -28,6 +52,14 @@ const copy = {
   ar: { home: "أسوة", search: "بحث", saved: "المحفوظات" },
 } as const;
 
+// Runs before first paint so a saved dark choice never flashes white.
+const themeScript = `
+try {
+  var t = localStorage.getItem('theme');
+  if (t === 'dark' || t === 'light') document.documentElement.dataset.theme = t;
+} catch (e) {}
+`;
+
 export default async function LocaleLayout({
   children,
   params,
@@ -39,29 +71,32 @@ export default async function LocaleLayout({
   if (!isLocale(locale)) notFound();
 
   const t = copy[locale];
-  const other = locale === "en" ? "ar" : "en";
 
   return (
-    <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"}>
-      <body className={`${latin.variable} ${arabic.variable} ${scripture.variable} font-sans antialiased`}>
+    <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
+      <body
+        className={`${latin.variable} ${arabic.variable} ${scripture.variable} font-sans antialiased`}
+      >
         <div className="mx-auto flex min-h-screen max-w-2xl flex-col px-6">
-          <header className="flex items-baseline justify-between gap-4 border-b border-rule py-6">
+          <header className="flex items-center justify-between gap-4 border-b border-rule py-6">
             <Link href={`/${locale}`} className="text-lg font-semibold">
               {t.home}
             </Link>
             {/* No signed-in state here on purpose: reading cookies in the layout would
                 make every page dynamic and cost the static generation. Saved redirects
                 to login when signed out. */}
-            <nav className="flex items-baseline gap-5 text-sm">
+            <nav className="flex items-center gap-5 text-sm">
               <Link href={`/${locale}/search`} className="text-muted hover:text-foreground">
                 {t.search}
               </Link>
               <Link href={`/${locale}/saved`} className="text-muted hover:text-foreground">
                 {t.saved}
               </Link>
-              <Link href={`/${other}`} className="text-muted hover:text-foreground">
-                {copy[other].home}
-              </Link>
+              <LocaleSwitch locale={locale} />
+              <ThemeToggle locale={locale} />
             </nav>
           </header>
           <main className="flex-1 py-10">{children}</main>
