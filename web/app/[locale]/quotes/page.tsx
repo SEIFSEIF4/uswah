@@ -48,7 +48,7 @@ export default async function Quotes({ params }: { params: Promise<{ locale: str
         {quotesSorted().map((q) => (
           <li key={q.slug}>
             <Link href={`/${locale}/quotes/${q.slug}`}>
-              <q>{q.saying}</q>
+              <span className="saying-q">{q.saying}</span>
               <p>{q[locale].closeness}</p>
               <span className="quote-index-meta">
                 <span className={`grade grade-${q.grade}`}>{GRADES[q.grade][locale]}</span>

@@ -98,7 +98,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
           return (
             <div className="sayings-lead-layout">
               <Link href={`/${locale}/quotes/${lead.slug}`} className="saying saying-lead">
-                <q>{lead.saying}</q>
+                <span className="saying-q">{lead.saying}</span>
                 <p className="saying-verdict">{lead[locale].closeness}</p>
                 <span className="saying-meta">
                   <span className={`grade grade-${lead.grade}`}>{GRADES[lead.grade][locale]}</span>
@@ -109,7 +109,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
                 {others.map((q) => (
                   <li key={q.slug}>
                     <Link href={`/${locale}/quotes/${q.slug}`}>
-                      <q>{q.saying}</q>
+                      <span className="saying-q">{q.saying}</span>
                       <span className={`grade grade-${q.grade}`}>{GRADES[q.grade][locale]}</span>
                     </Link>
                   </li>

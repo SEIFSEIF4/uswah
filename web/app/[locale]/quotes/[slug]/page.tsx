@@ -136,7 +136,7 @@ export default async function Saying({
         {more.map((r) => (
           <li key={r.slug}>
             <Link href={`/${locale}/quotes/${r.slug}`}>
-              <q>{r.saying}</q>
+              <span className="saying-q">{r.saying}</span>
               <span className="quote-index-meta">
                 <span className={`grade grade-${r.grade}`}>{GRADES[r.grade][locale]}</span>
               </span>
