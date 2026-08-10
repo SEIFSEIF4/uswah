@@ -10,10 +10,21 @@ export type Locale = (typeof LOCALES)[number];
 export const COLLECTIONS = ["bukhari", "muslim"] as const;
 export const RESERVED_SLUGS = ["search", "about", "login", "saved"];
 
+export const IMAGE_LICENCES = ["public-domain", "cc0", "cc-by-4.0", "cc-by-sa-4.0", "cc-by-2.0"];
+
 export type SituationDoc = {
   slug: string;
   published: boolean;
-  translations: Partial<Record<Locale, { title: string; summary: string }>>;
+  image?: {
+    url: string;
+    credit: string;
+    source_url: string;
+    license: string;
+    /** Who confirmed the image depicts nothing it must not. Not optional. */
+    cleared_by: string;
+    cleared_at: string;
+  };
+  translations: Partial<Record<Locale, { title: string; summary: string; image_alt?: string }>>;
   entries: {
     source: {
       kind: "quran" | "hadith";
@@ -54,6 +65,25 @@ export function validate(doc: unknown, file: string): string[] {
     const t = d.translations[loc];
     if (!isFilled(t?.title)) at(`${loc}: missing title`);
     if (!isFilled(t?.summary)) at(`${loc}: missing summary`);
+  }
+
+  if (d.image) {
+    const i = d.image;
+    if (!isFilled(i.url)) at("image: missing url");
+    if (!isFilled(i.credit)) at("image: missing credit — what it is, where and when");
+    if (!isFilled(i.source_url)) at("image: missing source_url, so nobody can check it");
+    if (!IMAGE_LICENCES.includes(i.license))
+      at(`image: licence "${i.license ?? "none"}" not in ${IMAGE_LICENCES.join(", ")}`);
+    // The clearance gate. Mirrors reviewed_by on entries, for the same reason: the
+    // rule that must never be broken is the one that cannot be skipped.
+    if (!isFilled(i.cleared_by))
+      at("image: missing cleared_by — name who confirmed it depicts neither the Prophet ﷺ, another prophet, nor a companion");
+    if (!isFilled(i.cleared_at)) at("image: missing cleared_at");
+    else if (Number.isNaN(Date.parse(i.cleared_at))) at(`image: cleared_at "${i.cleared_at}" is not a date`);
+
+    for (const loc of declared) {
+      if (!isFilled(d.translations[loc]?.image_alt)) at(`${loc}: image needs image_alt`);
+    }
   }
 
   if (!Array.isArray(d.entries) || d.entries.length === 0) at("no entries");

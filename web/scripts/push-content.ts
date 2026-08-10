@@ -40,7 +40,16 @@ async function push(docs: { file: string; doc: SituationDoc }[]) {
     const { data: situation, error: sErr } = await db
       .from("situations")
       .upsert(
-        { slug: doc.slug, published_at: doc.published ? new Date().toISOString() : null },
+        {
+          slug: doc.slug,
+          published_at: doc.published ? new Date().toISOString() : null,
+          image_url: doc.image?.url ?? null,
+          image_credit: doc.image?.credit ?? null,
+          image_source_url: doc.image?.source_url ?? null,
+          image_license: doc.image?.license ?? null,
+          image_cleared_by: doc.image?.cleared_by ?? null,
+          image_cleared_at: doc.image ? new Date(doc.image.cleared_at).toISOString() : null,
+        },
         { onConflict: "slug" },
       )
       .select("id")
@@ -54,6 +63,7 @@ async function push(docs: { file: string; doc: SituationDoc }[]) {
           locale,
           title: doc.translations[locale]!.title,
           summary: doc.translations[locale]!.summary,
+          image_alt: doc.translations[locale]!.image_alt ?? null,
         })),
         { onConflict: "situation_id,locale" },
       ),
