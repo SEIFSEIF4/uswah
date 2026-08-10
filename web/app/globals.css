@@ -1307,27 +1307,30 @@ h1, h2, h3, .display {
 .intent-list { list-style: none; margin: 0; padding: 0; }
 .intent-list li {
   display: grid;
-  grid-template-columns: minmax(7rem, 12rem) 1.5rem 1fr;
-  gap: 1.25rem;
-  align-items: baseline;
-  padding: 1.4rem 0;
+  grid-template-columns: minmax(6rem, 10rem) 1.25rem 1fr;
+  gap: 1.5rem;
+  align-items: start;
+  padding: 1.6rem 0;
   border-top: 1px solid var(--rule);
 }
 .intent-list li:last-child { border-bottom: 1px solid var(--rule); }
 
+/* Aligned to the reading edge, so the turn mark falls between two straight edges. */
 .intent-act {
+  display: block;
+  text-align: end;
   font-family: var(--font-display), Georgia, serif;
   font-size: 1.12rem;
   color: var(--muted);
 }
 [dir="rtl"] .intent-act { font-family: var(--font-display-ar), var(--font-arabic), serif; }
 
-.intent-turn { color: var(--faint); align-self: center; line-height: 0; }
+.intent-turn { color: var(--faint); align-self: start; margin-top: .35rem; line-height: 0; }
 
 .intent-line {
   margin: 0;
   font-family: var(--font-display), Georgia, serif;
-  font-size: 1.28rem;
+  font-size: 1.34rem;
   line-height: 1.4;
   text-wrap: pretty;
 }
@@ -1351,5 +1354,5 @@ h1, h2, h3, .display {
 @media (max-width: 40rem) {
   .intent-list li { grid-template-columns: 1fr; gap: .5rem; }
   .intent-turn { display: none; }
-  .intent-act { font-size: 1rem; }
+  .intent-act { font-size: 1rem; text-align: start; }
 }
