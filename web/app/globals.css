@@ -769,72 +769,41 @@ h1, h2, h3, .display {
 
 /* ── paths ────────────────────────────────────────────────────────────────── */
 
-.paths {
+/* Read in order, so the layout says so: numbered rows rather than cards, with the
+   commitment stated on the right where it can be compared down the column. */
+.path-rows { list-style: none; margin: 1.25rem 0 0; padding: 0; }
+.path-rows li {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
-  gap: 1.5rem;
-  margin-top: 1.25rem;
+  grid-template-columns: 3rem 1fr auto;
+  gap: 1.5rem 2rem;
+  align-items: start;
+  padding: 1.75rem 0;
+  border-top: 1px solid rgb(255 255 255 / .16);
 }
-.path { border-radius: 12px; overflow: hidden; color: #ece8e1; }
-.path-ink { background: #232c3a; }
-.path-olive { background: #4e5324; }
+.path-rows li:last-child { border-bottom: 1px solid rgb(255 255 255 / .16); }
 
-.path-art { position: relative; isolation: isolate; min-height: 14rem; display: flex; }
-/* At rest the card is type on its ground. The artwork is the hover state, so it fades in
-   underneath rather than replacing anything: nothing reflows and the text keeps its
-   contrast throughout. */
-.path-art img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0;
-  transition: opacity .45s ease;
-}
-.path-art::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgb(8 10 14 / .92) 25%, rgb(8 10 14 / .45) 100%);
-  opacity: 0;
-  transition: opacity .45s ease;
-}
-.path:hover .path-art img,
-.path:focus-within .path-art img { opacity: .85; }
-.path:hover .path-art::after,
-.path:focus-within .path-art::after { opacity: 1; }
-
-.path-intro { position: relative; z-index: 1; align-self: end; padding: 1.4rem 1.5rem; }
-.path-intro h3 { margin: 0 0 .4rem; font-size: 1.4rem; }
-.path-intro p { margin: 0; font-size: .92rem; color: #cfcabf; line-height: 1.55; }
-.path-more {
-  display: inline-flex;
-  align-items: center;
-  gap: .4rem;
-  margin-top: 1rem;
-  padding: .4rem 1rem;
-  border-radius: 999px;
-  background: #f4f1ea;
-  color: #14181f;
-  font-size: .85rem;
+.path-n {
   font-family: var(--font-latin), system-ui, sans-serif;
+  font-variant-numeric: tabular-nums;
+  font-size: .9rem;
+  color: #e9b9ab;
 }
-[dir="rtl"] .path-more { font-family: var(--font-arabic), sans-serif; }
 
-.path-facts { margin: 0; padding: .4rem 1.5rem 1.5rem; }
-.path-facts > div { padding: .7rem 0; }
-.path-facts > div + div { border-top: 1px solid rgb(255 255 255 / .16); }
-.path-facts dt { font-size: .78rem; opacity: .68; }
-.path-facts dd { margin: .2rem 0 0; font-weight: 500; }
-
-@media (prefers-reduced-motion: reduce) {
-  .path-art img, .path-art::after { transition: none; }
+.path-row-main h3 { margin: 0 0 .4rem; font-size: 1.45rem; }
+.path-row-main p {
+  margin: 0;
+  color: #b3b8c0;
+  max-width: 46ch;
+  line-height: 1.6;
 }
-/* No hover to reveal with, so the artwork simply stays. */
-@media (hover: none) {
-  .path-art img { opacity: .85; }
-  .path-art::after { opacity: 1; }
+
+.path-row-facts { display: flex; gap: 2rem; margin: 0; }
+.path-row-facts dt { font-size: .72rem; color: #8e96a1; }
+.path-row-facts dd { margin: .2rem 0 0; font-size: .95rem; white-space: nowrap; }
+
+@media (max-width: 46rem) {
+  .path-rows li { grid-template-columns: 2.5rem 1fr; }
+  .path-row-facts { grid-column: 2; }
 }
 
 /* ── contents and share ───────────────────────────────────────────────────── */

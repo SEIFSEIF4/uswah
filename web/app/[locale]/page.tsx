@@ -12,7 +12,6 @@ import {
   TOPICS,
 } from "@/lib/content";
 import { Card, Meta, RoundCard, SectionTitle } from "@/components/cards";
-import { PathCard } from "@/components/path-card";
 import { Shelf } from "@/components/shelf";
 
 const copy = {
@@ -113,11 +112,25 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       {/* 6. Paths, on ink. A commitment, so it looks unlike the browsing above it. */}
       <section className="band-section tone-ink">
         <SectionTitle>{t.paths}</SectionTitle>
-        <div className="paths">
-          {PATHS.map((p) => (
-            <PathCard key={p.slug} path={p} locale={locale} />
+        <ol className="path-rows">
+          {PATHS.map((p, i) => (
+            <li key={p.slug}>
+              <span className="path-n">{String(i + 1).padStart(2, "0")}</span>
+              <div className="path-row-main">
+                <h3>{p[locale].title}</h3>
+                <p>{p[locale].blurb}</p>
+              </div>
+              <dl className="path-row-facts">
+                {p[locale].facts.map(([k, v]) => (
+                  <div key={k}>
+                    <dt>{k}</dt>
+                    <dd>{v}</dd>
+                  </div>
+                ))}
+              </dl>
+            </li>
           ))}
-        </div>
+        </ol>
       </section>
 
       {/* 7. The long tail, as a shelf you push through rather than a grid you scan. */}

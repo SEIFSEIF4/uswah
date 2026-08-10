@@ -23,9 +23,21 @@ const arabic = localFont({
   variable: "--font-arabic",
   display: "swap",
   src: [
-    { path: "../../public/fonts/thmanyah/thmanyahseriftext/woff2/thmanyahseriftext-Regular.woff2", weight: "400", style: "normal" },
-    { path: "../../public/fonts/thmanyah/thmanyahseriftext/woff2/thmanyahseriftext-Medium.woff2", weight: "500", style: "normal" },
-    { path: "../../public/fonts/thmanyah/thmanyahseriftext/woff2/thmanyahseriftext-Bold.woff2", weight: "700", style: "normal" },
+    {
+      path: "../../public/fonts/thmanyah/thmanyahseriftext/woff2/thmanyahseriftext-Regular.woff2",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/thmanyah/thmanyahseriftext/woff2/thmanyahseriftext-Medium.woff2",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/thmanyah/thmanyahseriftext/woff2/thmanyahseriftext-Bold.woff2",
+      weight: "700",
+      style: "normal",
+    },
   ],
 });
 
@@ -34,19 +46,37 @@ const displayAr = localFont({
   variable: "--font-display-ar",
   display: "swap",
   src: [
-    { path: "../../public/fonts/thmanyah/thmanyahserifdisplay/woff2/thmanyahserifdisplay-Regular.woff2", weight: "400", style: "normal" },
-    { path: "../../public/fonts/thmanyah/thmanyahserifdisplay/woff2/thmanyahserifdisplay-Medium.woff2", weight: "500", style: "normal" },
-    { path: "../../public/fonts/thmanyah/thmanyahserifdisplay/woff2/thmanyahserifdisplay-Bold.woff2", weight: "700", style: "normal" },
+    {
+      path: "../../public/fonts/thmanyah/thmanyahserifdisplay/woff2/thmanyahserifdisplay-Regular.woff2",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/thmanyah/thmanyahserifdisplay/woff2/thmanyahserifdisplay-Medium.woff2",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/thmanyah/thmanyahserifdisplay/woff2/thmanyahserifdisplay-Bold.woff2",
+      weight: "700",
+      style: "normal",
+    },
   ],
 });
 
 // Naskh stays reserved for Quran and hadith, which is what it is cut for.
-const scripture = Noto_Naskh_Arabic({ subsets: ["arabic"], variable: "--font-scripture" });
+const scripture = Noto_Naskh_Arabic({
+  subsets: ["arabic"],
+  variable: "--font-scripture",
+});
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+  ),
   title: "Uswah",
-  description: "Practical guidance for real situations, from the original source.",
+  description:
+    "Practical guidance for real situations, from the original source.",
 };
 
 export function generateStaticParams() {
@@ -91,7 +121,11 @@ export default async function LocaleLayout({
   const t = copy[locale];
 
   return (
-    <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"} suppressHydrationWarning>
+    <html
+      lang={locale}
+      dir={locale === "ar" ? "rtl" : "ltr"}
+      suppressHydrationWarning
+    >
       <head>
         <Script id="theme" strategy="beforeInteractive">
           {themeScript}
@@ -109,10 +143,16 @@ export default async function LocaleLayout({
             {/* No signed-in state here on purpose: reading cookies in the layout would
                 make every page dynamic and cost the static generation. */}
             <nav className="flex items-center gap-5 text-sm">
-              <Link href={`/${locale}/quotes`} className="text-muted hover:text-foreground">
+              <Link
+                href={`/${locale}/quotes`}
+                className="text-muted hover:text-foreground"
+              >
                 {t.quotes}
               </Link>
-              <Link href={`/${locale}/saved`} className="text-muted hover:text-foreground">
+              <Link
+                href={`/${locale}/saved`}
+                className="text-muted hover:text-foreground"
+              >
                 {t.saved}
               </Link>
               <SiteSearch
@@ -132,10 +172,10 @@ export default async function LocaleLayout({
             {t.home} · {t.sample}
           </footer>
         </div>
-      {/* impeccable-live-start */}
-<script src="http://localhost:8400/live.js?token=9cfc80e3-6be5-450f-987b-b1a75f7a6aed"></script>
-{/* impeccable-live-end */}
-</body>
+        {/* impeccable-live-start */}
+        <script src="http://localhost:8400/live.js?token=9cfc80e3-6be5-450f-987b-b1a75f7a6aed"></script>
+        {/* impeccable-live-end */}
+      </body>
     </html>
   );
 }
