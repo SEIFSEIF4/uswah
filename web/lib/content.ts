@@ -70,8 +70,8 @@ export function allQuotes() {
   return QUOTES;
 }
 
-export { PATHS } from "./mock/quotes";
-export type { Path } from "./mock/quotes";
+export { PATHS } from "./mock/paths";
+export type { Path } from "./mock/paths";
 
 /** Strongest evidence first, so a directory opens on its best case. */
 const GRADE_ORDER: Record<string, number> = {
@@ -100,14 +100,7 @@ export function relatedQuotes(slug: string, limit = 3) {
 // ── intentions (Nawiya) ─────────────────────────────────────────────────────
 export { ACT_GROUPS } from "./mock/intentions";
 export type { Intention, ActGroup } from "./mock/intentions";
-import { INTENTIONS, ACT_GROUPS as GROUPS, type ActGroup as AG } from "./mock/intentions";
-
-export const actGroupName = (slug: AG, locale: Locale) =>
-  GROUPS.find((g) => g.slug === slug)![locale];
-
-export function allIntentions() {
-  return INTENTIONS;
-}
+import { INTENTIONS, ACT_GROUPS as GROUPS } from "./mock/intentions";
 
 /** Grouped for display, in taxonomy order, skipping groups with nothing in them. */
 export function intentionsByGroup() {
