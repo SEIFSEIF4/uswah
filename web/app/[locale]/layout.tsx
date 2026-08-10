@@ -169,10 +169,7 @@ export default async function LocaleLayout({
           </footer>
         </div>
         </ThemeProvider>
-        {/* impeccable-live-start */}
-        <script src="http://localhost:8400/live.js?token=9cfc80e3-6be5-450f-987b-b1a75f7a6aed"></script>
-        {/* impeccable-live-end */}
-      </body>
+              </body>
     </html>
   );
 }
