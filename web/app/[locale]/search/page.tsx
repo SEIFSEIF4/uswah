@@ -1,7 +1,7 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { db } from "@/lib/supabase/public";
 import { isLocale } from "@/lib/i18n";
+import { searchSituations } from "@/lib/content";
+import { Row } from "@/components/cards";
 
 const copy = {
   en: { label: "Search", placeholder: "What happened?", none: "Nothing found." },
@@ -20,44 +20,29 @@ export default async function Search({
   if (!isLocale(locale)) notFound();
 
   const t = copy[locale];
-  // The RPC is the only search implementation, shared with the Flutter client. Arabic
-  // only matches because query and index both pass through ar_norm() inside it.
-  const { data } = q
-    ? await db.rpc("search_situations", { q, loc: locale })
-    : { data: [] };
+  // Local match while the data is local. The Arabic-normalising RPC comes back with the
+  // database — see searchSituations in lib/content.ts.
+  const results = q ? searchSituations(q, locale) : [];
 
   return (
     <>
-      <form className="flex gap-2">
+      <form className="search-form">
         <label htmlFor="q" className="sr-only">
           {t.label}
         </label>
-        <input
-          id="q"
-          name="q"
-          defaultValue={q ?? ""}
-          placeholder={t.placeholder}
-          className="min-w-0 flex-1 border-b border-rule bg-transparent py-2 text-lg outline-none focus:border-foreground"
-        />
-        <button type="submit" className="text-sm font-medium underline underline-offset-4">
-          {t.label}
-        </button>
+        <input id="q" name="q" defaultValue={q ?? ""} placeholder={t.placeholder} />
+        <button type="submit">{t.label}</button>
       </form>
 
       {q &&
-        (data && data.length > 0 ? (
-          <ul className="mt-8 flex flex-col">
-            {data.map((r) => (
-              <li key={r.slug} className="border-b border-rule py-5 first:border-t">
-                <Link href={`/${locale}/${r.slug}`} className="group block">
-                  <h2 className="text-xl font-medium group-hover:underline">{r.title}</h2>
-                  <p className="mt-1 text-muted">{r.summary}</p>
-                </Link>
-              </li>
+        (results.length > 0 ? (
+          <div className="rows">
+            {results.map((s) => (
+              <Row key={s.slug} s={s} locale={locale} />
             ))}
-          </ul>
+          </div>
         ) : (
-          <p className="mt-8 text-muted">{t.none}</p>
+          <p className="muted">{t.none}</p>
         ))}
     </>
   );

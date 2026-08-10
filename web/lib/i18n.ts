@@ -21,4 +21,4 @@ export const localeFromHeader = (header: string | null): Locale =>
   /(^|,)\s*ar\b/i.test(header ?? "") ? "ar" : "en";
 
 /** Slugs that would shadow a route. Enforced by the content pipeline too. */
-export const RESERVED_SLUGS = new Set(["search", "about", "login", "saved"]);
+export const RESERVED_SLUGS = new Set(["search", "about", "login", "saved", "topics", "quotes"]);
