@@ -86,6 +86,7 @@ export function generateStaticParams() {
 const copy = {
   en: {
     home: "Uswah",
+    intentions: "Intentions",
     quotes: "Sayings",
     search: "Search",
     saved: "Saved",
@@ -93,6 +94,7 @@ const copy = {
   },
   ar: {
     home: "أسوة",
+    intentions: "النيّات",
     quotes: "مقولات",
     search: "بحث",
     saved: "المحفوظات",
@@ -143,6 +145,12 @@ export default async function LocaleLayout({
             {/* No signed-in state here on purpose: reading cookies in the layout would
                 make every page dynamic and cost the static generation. */}
             <nav className="flex items-center gap-5 text-sm">
+              <Link
+                href={`/${locale}/intentions`}
+                className="text-muted hover:text-foreground"
+              >
+                {t.intentions}
+              </Link>
               <Link
                 href={`/${locale}/quotes`}
                 className="text-muted hover:text-foreground"

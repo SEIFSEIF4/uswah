@@ -96,3 +96,23 @@ export function relatedQuotes(slug: string, limit = 3) {
     .filter((q) => q.slug !== slug)
     .slice(0, limit);
 }
+
+// ── intentions (Nawiya) ─────────────────────────────────────────────────────
+export { ACT_GROUPS } from "./mock/intentions";
+export type { Intention, ActGroup } from "./mock/intentions";
+import { INTENTIONS, ACT_GROUPS as GROUPS, type ActGroup as AG } from "./mock/intentions";
+
+export const actGroupName = (slug: AG, locale: Locale) =>
+  GROUPS.find((g) => g.slug === slug)![locale];
+
+export function allIntentions() {
+  return INTENTIONS;
+}
+
+/** Grouped for display, in taxonomy order, skipping groups with nothing in them. */
+export function intentionsByGroup() {
+  return GROUPS.map((g) => ({
+    group: g,
+    items: INTENTIONS.filter((i) => i.group === g.slug),
+  })).filter((g) => g.items.length > 0);
+}

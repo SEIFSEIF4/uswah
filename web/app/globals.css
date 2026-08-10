@@ -1282,3 +1282,74 @@ h1, h2, h3, .display {
 :root[data-theme="dark"] .tone-paper { background: #12161d; }
 
 
+
+/* ── intentions (Nawiya) ──────────────────────────────────────────────────── */
+
+/* Act, then the turn, then the intention. The two columns with a mark between them are
+   the whole idea, so the layout states it rather than a paragraph explaining it. */
+.intent-group { margin-top: 3rem; }
+.intent-group h2 {
+  font-size: .78rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 1rem;
+  font-family: var(--font-latin), system-ui, sans-serif;
+  font-weight: 600;
+}
+[dir="rtl"] .intent-group h2 {
+  font-family: var(--font-arabic), sans-serif;
+  letter-spacing: 0;
+  text-transform: none;
+  font-size: .95rem;
+}
+
+.intent-list { list-style: none; margin: 0; padding: 0; }
+.intent-list li {
+  display: grid;
+  grid-template-columns: minmax(7rem, 12rem) 1.5rem 1fr;
+  gap: 1.25rem;
+  align-items: baseline;
+  padding: 1.4rem 0;
+  border-top: 1px solid var(--rule);
+}
+.intent-list li:last-child { border-bottom: 1px solid var(--rule); }
+
+.intent-act {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.12rem;
+  color: var(--muted);
+}
+[dir="rtl"] .intent-act { font-family: var(--font-display-ar), var(--font-arabic), serif; }
+
+.intent-turn { color: var(--faint); align-self: center; line-height: 0; }
+
+.intent-line {
+  margin: 0;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.28rem;
+  line-height: 1.4;
+  text-wrap: pretty;
+}
+[dir="rtl"] .intent-line { font-family: var(--font-display-ar), var(--font-arabic), serif; line-height: 1.7; }
+
+.intent-note {
+  margin: .55rem 0 0;
+  color: var(--muted);
+  font-size: .95rem;
+  line-height: 1.6;
+  max-width: 52ch;
+}
+.intent-source {
+  display: block;
+  margin-top: .7rem;
+  font-size: .78rem;
+  color: var(--faint);
+}
+.intent-source em { font-style: normal; }
+
+@media (max-width: 40rem) {
+  .intent-list li { grid-template-columns: 1fr; gap: .5rem; }
+  .intent-turn { display: none; }
+  .intent-act { font-size: 1rem; }
+}
