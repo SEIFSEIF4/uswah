@@ -7,7 +7,7 @@ import { DEFAULT_LOGIN_ROUTE, DEFAULT_REDIRECT_ROUTE } from "@/routes";
 
 const copy = {
   en: { title: "Saved", empty: "Nothing saved yet.", signOut: "Sign out" },
-  ar: { title: "المحفوظات", empty: "مفيش حاجة محفوظة لسه.", signOut: "خروج" },
+  ar: { title: "المحفوظات", empty: "لم تحفظ شيئًا بعد.", signOut: "خروج" },
 } as const;
 
 export default async function Saved({ params }: { params: Promise<{ locale: string }> }) {

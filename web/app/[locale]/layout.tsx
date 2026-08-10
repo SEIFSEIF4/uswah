@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Inter, Noto_Naskh_Arabic } from "next/font/google";
 import localFont from "next/font/local";
+import Script from "next/script";
 import { LOCALES, isLocale } from "@/lib/i18n";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { LocaleSwitch } from "@/components/locale-switch";
@@ -75,7 +76,11 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"} suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        {/* beforeInteractive so it is in the HTML and runs during parse, ahead of
+            first paint. A raw <script> element here would warn under React 19. */}
+        <Script id="theme" strategy="beforeInteractive">
+          {themeScript}
+        </Script>
       </head>
       <body
         className={`${latin.variable} ${arabic.variable} ${scripture.variable} font-sans antialiased`}

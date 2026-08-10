@@ -8,7 +8,7 @@ export const revalidate = 3600;
 
 const copy = {
   en: { takeaway: "What to do", source: "Source", translated: "Translated by", save: "Save this" },
-  ar: { takeaway: "اعمل إيه", source: "المصدر", translated: "ترجمة", save: "احفظ ده" },
+  ar: { takeaway: "ماذا تفعل", source: "المصدر", translated: "ترجمة", save: "احفظ" },
 } as const;
 
 const collectionName = {

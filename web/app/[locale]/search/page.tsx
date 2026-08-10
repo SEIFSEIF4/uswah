@@ -5,7 +5,7 @@ import { isLocale } from "@/lib/i18n";
 
 const copy = {
   en: { label: "Search", placeholder: "What happened?", none: "Nothing found." },
-  ar: { label: "بحث", placeholder: "حصل إيه؟", none: "مفيش نتايج." },
+  ar: { label: "بحث", placeholder: "ما الذي حدث؟", none: "لا توجد نتائج." },
 } as const;
 
 export default async function Search({

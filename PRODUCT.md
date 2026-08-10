@@ -85,10 +85,14 @@ frequently once and then not again for weeks.
 
 - Name: Uswah (أسوة). `uswah.app` is the intended domain; `uswah.com` is registered elsewhere
   and pending a purchase inquiry.
-- Voice: plain everyday language. It talks like a knowledgeable friend — "someone keeps asking
-  you for money", not "on the impermissibility of persistent begging". Quoted sources keep
-  their formal register; everything around them is ordinary speech. This holds in both
-  languages, so the Arabic surface is colloquially readable rather than classical.
+- Voice: plain and direct, but never colloquial. English talks like a knowledgeable friend —
+  "someone keeps asking you for money", not "on the impermissibility of persistent begging".
+  **Arabic is written in fusha (Modern Standard Arabic), never in Egyptian or any other
+  dialect.** Fusha here means clear and contemporary, not classical or ornate: short
+  sentences, everyday vocabulary, no rhymed prose and no archaic constructions. A dialect
+  would read as unserious next to a hadith and would exclude every Arabic reader outside
+  that dialect's region, which is most of the audience. Quoted sources always keep their
+  own register.
 - The product never positions Islamic sources as an answer to Western wisdom. The comparison
   is a social hook; the product's own stance is that this is the original source, standing on
   its own.
@@ -114,7 +118,7 @@ frequently once and then not again for weeks.
 4. **Arabic is a first-class surface, not a translation.** Its own situations, its own
    typography, its own layout.
 5. **Say less, and say it plainly.** One to three minutes, one concrete takeaway, everyday
-   words around a formally quoted source.
+   words around a formally quoted source — plain English, plain fusha, never a dialect.
 
 ## Accessibility & Inclusion
 
