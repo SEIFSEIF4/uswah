@@ -96,6 +96,42 @@ frequently once and then not again for weeks.
 - The product never positions Islamic sources as an answer to Western wisdom. The comparison
   is a social hook; the product's own stance is that this is the original source, standing on
   its own.
+- Typeface: Thmanyah Serif Text for Arabic interface and body, Noto Naskh reserved for Quran
+  and hadith, Inter for Latin. The Arabic face is Thmanyah's own, which is also one of the two
+  design references below.
+
+## Design References
+
+Two sites the interface should learn from. Neither is to be copied as an identity — no
+wordmarks, logos or signature colours — and both are read for structure and register.
+
+**Qalam** (qalam.global) — a history and philosophy publication on the Turkic world.
+What to take: a hero band with title, standfirst and read time over a full-bleed image; rows
+of three cards each led by a category eyebrow; full-width feature strips breaking the rhythm;
+circular thumbnails for secondary rails; a quiet ground with one accent used sparingly. What
+not to take: its density. Qalam is built for nine-to-twenty-five minute reads and Uswah's are
+one to three, so rows need fewer items and more air.
+
+**Thmanyah** (thmanyah.com) — Saudi media, Arabic-first, and the source of the project's
+Arabic typeface. What to take: RTL treated as the native direction rather than a mirrored
+afterthought; rounded-corner cards on a warm off-white ground; a byline line that reads
+author, then publication, then date, in small type under each item; horizontally scrolling
+shelves for browsing; restrained chrome so the artwork carries the page. It is the closest
+reference for what a contemporary Arabic-language product should feel like to an Arabic
+reader.
+
+## Imagery
+
+Situation artwork comes from public-domain historical archives — manuscript painting,
+colourised photography, portraits, maps — sourced from Wikimedia Commons and museum
+open-access collections. Not stock, not AI-generated: thirteen test generations across a free
+and a paid model produced confidently wrong artefacts, including a Chinese lattice window
+returned for a zellij prompt.
+
+Human figures are permitted. Depictions of the Prophet ﷺ, of other prophets, and of the
+companions are not. That rule is enforced in the database: an image cannot be stored without
+a credit, a source URL, a licence, and a named person recording that they cleared it.
+The same image serves the situation page and its share card.
 
 ## Evidence on Hand
 

@@ -9,7 +9,9 @@
     "lint": "eslint",
     "content:push": "tsx --env-file=.env.local scripts/push-content.ts",
     "content:test": "tsx scripts/content-schema.test.ts",
-    "routes:test": "tsx scripts/routes.test.ts"
+    "routes:test": "tsx scripts/routes.test.ts",
+    "image:find": "tsx scripts/find-image.ts",
+    "image:test": "tsx scripts/image-screen.test.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.4",

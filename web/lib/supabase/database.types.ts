@@ -139,6 +139,7 @@ export type Database = {
       }
       situation_translations: {
         Row: {
+          image_alt: string | null
           locale: string
           search_vector: unknown
           situation_id: string
@@ -146,6 +147,7 @@ export type Database = {
           title: string
         }
         Insert: {
+          image_alt?: string | null
           locale: string
           search_vector?: unknown
           situation_id: string
@@ -153,6 +155,7 @@ export type Database = {
           title: string
         }
         Update: {
+          image_alt?: string | null
           locale?: string
           search_vector?: unknown
           situation_id?: string
@@ -180,18 +183,36 @@ export type Database = {
         Row: {
           created_at: string
           id: string
+          image_cleared_at: string | null
+          image_cleared_by: string | null
+          image_credit: string | null
+          image_license: string | null
+          image_source_url: string | null
+          image_url: string | null
           published_at: string | null
           slug: string
         }
         Insert: {
           created_at?: string
           id?: string
+          image_cleared_at?: string | null
+          image_cleared_by?: string | null
+          image_credit?: string | null
+          image_license?: string | null
+          image_source_url?: string | null
+          image_url?: string | null
           published_at?: string | null
           slug: string
         }
         Update: {
           created_at?: string
           id?: string
+          image_cleared_at?: string | null
+          image_cleared_by?: string | null
+          image_credit?: string | null
+          image_license?: string | null
+          image_source_url?: string | null
+          image_url?: string | null
           published_at?: string | null
           slug?: string
         }
