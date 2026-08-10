@@ -41,7 +41,7 @@ body {
 
 /* Quran and hadith in the original script, at reading size. */
 .source-text {
-  font-family: var(--font-arabic), serif;
+  font-family: var(--font-scripture), serif;
   font-size: 1.3rem;
   line-height: 2.2;
   direction: rtl;

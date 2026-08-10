@@ -1,12 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Inter, Noto_Naskh_Arabic } from "next/font/google";
+import { Inter, Cairo, Noto_Naskh_Arabic } from "next/font/google";
 import { LOCALES, isLocale } from "@/lib/i18n";
 import "../globals.css";
 
+// Two Arabic faces on purpose: Cairo carries the interface, and Naskh is reserved for
+// Quran and hadith text, which is what that script is actually cut for. Cairo also
+// matches the share cards, since Satori cannot shape Naskh's substitution tables.
 const latin = Inter({ subsets: ["latin"], variable: "--font-latin" });
-const arabic = Noto_Naskh_Arabic({ subsets: ["arabic"], variable: "--font-arabic" });
+const arabic = Cairo({ subsets: ["arabic"], variable: "--font-arabic" });
+const scripture = Noto_Naskh_Arabic({ subsets: ["arabic"], variable: "--font-scripture" });
 
 export const metadata: Metadata = {
   // Makes canonical and hreflang absolute, which is what crawlers need.
@@ -39,7 +43,7 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"}>
-      <body className={`${latin.variable} ${arabic.variable} font-sans antialiased`}>
+      <body className={`${latin.variable} ${arabic.variable} ${scripture.variable} font-sans antialiased`}>
         <div className="mx-auto flex min-h-screen max-w-2xl flex-col px-6">
           <header className="flex items-baseline justify-between gap-4 border-b border-rule py-6">
             <Link href={`/${locale}`} className="text-lg font-semibold">
