@@ -5,6 +5,7 @@ import { isLocale, LOCALES, RESERVED_SLUGS, type Locale } from "@/lib/i18n";
 import { allSituations, relatedSituations, situationBySlug } from "@/lib/content";
 import { Card, Meta, SectionTitle } from "@/components/cards";
 import { toggleSave } from "../login/actions";
+import { Contents, Share } from "@/components/article-parts";
 
 const copy = {
   en: { takeaway: "What to do", translated: "Translated by", save: "Save this", related: "Next" },
@@ -62,13 +63,22 @@ export default async function Situation({
         </figcaption>
       </figure>
 
+      <Contents
+        locale={locale}
+        items={[
+          { id: "source", label: locale === "ar" ? "المصدر" : "The source" },
+          { id: "why", label: locale === "ar" ? "الشرح" : "What it means" },
+          { id: "do", label: locale === "ar" ? "ماذا تفعل" : "What to do" },
+        ]}
+      />
+
       <header className="situation-head">
         <Meta s={s} locale={locale} />
         <h1>{text.title}</h1>
         <p className="standfirst">{text.summary}</p>
       </header>
 
-      <section className={`source${s.source.placeholder ? " is-placeholder" : ""}`}>
+      <section id="source" className={`source${s.source.placeholder ? " is-placeholder" : ""}`}>
         <p className="source-text">{s.source.original}</p>
         {/* No translation on the Arabic page: the original is the text, and an English
             block inside an RTL container flips its own quotation marks. */}
@@ -83,14 +93,16 @@ export default async function Situation({
         <p className="source-ref">{s.source.label[locale]}</p>
       </section>
 
-      <div className="prose">
+      <div className="prose" id="why">
         <p>{text.body}</p>
       </div>
 
-      <p className="takeaway">
+      <p className="takeaway" id="do">
         <span>{t.takeaway}</span>
         {text.takeaway}
       </p>
+
+      <Share title={text.title} locale={locale} />
 
       <form action={toggleSave} className="save">
         <input type="hidden" name="locale" value={locale} />

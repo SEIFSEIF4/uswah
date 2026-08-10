@@ -5,14 +5,16 @@ import {
   allSituations,
   bandSituation,
   heroSituation,
+  PATHS,
   topicName,
   TOPICS,
 } from "@/lib/content";
 import { Card, Meta, RoundCard, SectionTitle } from "@/components/cards";
+import { Shelf } from "@/components/shelf";
 
 const copy = {
-  en: { latest: "Latest", topics: "Where you are", more: "More situations", all: "All in" },
-  ar: { latest: "الأحدث", topics: "أين أنت الآن", more: "مواقف أخرى", all: "كل ما في" },
+  en: { latest: "Latest", topics: "Where you are", more: "More situations", paths: "Read in order" },
+  ar: { latest: "الأحدث", topics: "أين أنت الآن", more: "مواقف أخرى", paths: "اقرأ بالترتيب" },
 } as const;
 
 export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
@@ -62,16 +64,41 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
         </Link>
       )}
 
-      <SectionTitle>{t.more}</SectionTitle>
-      <div className="three-up round-row">
-        {rest.slice(3, 6).map((s) => (
-          <RoundCard key={s.slug} s={s} locale={locale} />
+      {/* Paths: a sequence you commit to, with the commitment stated up front. */}
+      <SectionTitle>{t.paths}</SectionTitle>
+      <div className="paths">
+        {PATHS.map((p) => (
+          <article key={p.slug} className={`path path-${p.tone}`}>
+            <div className="path-art">
+              <img src={p.image} alt="" />
+              <div className="path-intro">
+                <h3>{p[locale].title}</h3>
+                <p>{p[locale].blurb}</p>
+              </div>
+            </div>
+            <dl className="path-facts">
+              {p[locale].facts.map(([k, v]) => (
+                <div key={k}>
+                  <dt>{k}</dt>
+                  <dd>{v}</dd>
+                </div>
+              ))}
+            </dl>
+          </article>
         ))}
       </div>
 
-      <div className="three-up">
-        {rest.slice(6).map((s) => (
-          <Card key={s.slug} s={s} locale={locale} />
+      <Shelf title={t.more} locale={locale}>
+        {rest.slice(3, 9).map((s) => (
+          <div key={s.slug} className="shelf-item">
+            <Card s={s} locale={locale} />
+          </div>
+        ))}
+      </Shelf>
+
+      <div className="three-up round-row">
+        {rest.slice(9).map((s) => (
+          <RoundCard key={s.slug} s={s} locale={locale} />
         ))}
       </div>
     </>

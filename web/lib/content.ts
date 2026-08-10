@@ -69,3 +69,6 @@ import { QUOTES } from "./mock/quotes";
 export function allQuotes() {
   return QUOTES;
 }
+
+export { PATHS } from "./mock/quotes";
+export type { Path } from "./mock/quotes";

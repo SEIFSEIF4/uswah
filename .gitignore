@@ -16,3 +16,11 @@ app/**/GeneratedPluginRegistrant.*
 # Supabase CLI local stack
 supabase/.branches/
 supabase/.temp/
+
+# impeccable live runtime
+.impeccable/live/sessions/
+.impeccable/live/previews/
+.impeccable/live/artifacts/
+.impeccable/live/server.json
+.impeccable/live/roots.json
+.impeccable/live/inject-journal.json

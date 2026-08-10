@@ -8,6 +8,8 @@ import { LOCALES, isLocale } from "@/lib/i18n";
 import { USING_SAMPLE_DATA } from "@/lib/content";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { LocaleSwitch } from "@/components/locale-switch";
+import { SiteSearch } from "@/components/site-search";
+import { allSituations } from "@/lib/content";
 import "../globals.css";
 
 const latin = Inter({ subsets: ["latin"], variable: "--font-latin" });
@@ -110,12 +112,17 @@ export default async function LocaleLayout({
               <Link href={`/${locale}/quotes`} className="text-muted hover:text-foreground">
                 {t.quotes}
               </Link>
-              <Link href={`/${locale}/search`} className="text-muted hover:text-foreground">
-                {t.search}
-              </Link>
               <Link href={`/${locale}/saved`} className="text-muted hover:text-foreground">
                 {t.saved}
               </Link>
+              <SiteSearch
+                locale={locale}
+                index={allSituations().map((s) => ({
+                  slug: s.slug,
+                  title: s[locale].title,
+                  summary: s[locale].summary,
+                }))}
+              />
               <LocaleSwitch locale={locale} />
               <ThemeToggle locale={locale} />
             </nav>
@@ -125,7 +132,10 @@ export default async function LocaleLayout({
             {t.home} · {t.sample}
           </footer>
         </div>
-      </body>
+      {/* impeccable-live-start */}
+<script src="http://localhost:8400/live.js?token=9cfc80e3-6be5-450f-987b-b1a75f7a6aed"></script>
+{/* impeccable-live-end */}
+</body>
     </html>
   );
 }

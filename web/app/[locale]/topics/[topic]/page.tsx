@@ -1,7 +1,8 @@
 import { notFound } from "next/navigation";
 import { isLocale, LOCALES } from "@/lib/i18n";
 import { situationsByTopic, topicName, TOPICS, type TopicSlug } from "@/lib/content";
-import { Row } from "@/components/cards";
+import { LoadMore } from "@/components/load-more";
+import { TopicBar } from "@/components/topic-bar";
 
 const copy = {
   en: { empty: "Nothing here yet." },
@@ -25,15 +26,12 @@ export default async function Topic({
 
   return (
     <>
+      <TopicBar locale={locale} />
       <h1 className="page-title">{topicName(topic as TopicSlug, locale)}</h1>
       {items.length === 0 ? (
         <p className="muted">{copy[locale].empty}</p>
       ) : (
-        <div className="rows">
-          {items.map((s) => (
-            <Row key={s.slug} s={s} locale={locale} />
-          ))}
-        </div>
+        <LoadMore all={items} locale={locale} />
       )}
     </>
   );
