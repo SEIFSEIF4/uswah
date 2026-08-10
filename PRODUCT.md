@@ -76,6 +76,11 @@ frequently once and then not again for weeks.
   RPC is the single search implementation both clients call.
 - All content is public and fully usable signed out. Authentication gates saving, liking and
   progress only, and is prompted at the moment of saving rather than at entry.
+- Topic and category pages load more on scroll rather than paginating. The home page does
+  not: it is a curated front, finite by design, and an endless one would bury the editorial
+  choices it exists to make. Every infinite list still needs a real end state and a URL that
+  can be linked to, so the pattern is load-more-on-scroll with a working fallback, not a
+  feed that swallows the footer.
 - Situation lists are per-locale, not translations of each other: the situations that matter
   in Cairo and in Toronto differ.
 - **Undecided:** the scholarly reviewer (nobody named yet); whether a website, the app, or
@@ -100,6 +105,31 @@ frequently once and then not again for weeks.
   and hadith, Inter for Latin. The Arabic face is Thmanyah's own, which is also one of the two
   design references below.
 
+## Adjacent Project: Nawiya
+
+An earlier project of Seif's, recorded here because Uswah may absorb part of it. Full notes,
+the category taxonomy and screenshots live in `docs/reference/nawiya/`.
+
+Nawiya is an internationalised platform built around niyyah, intention. Its premise: any
+ordinary act becomes worship once the intention behind it is corrected. The unit of content
+is therefore an everyday act paired with the intention that changes what it counts as, and
+its category list puts prayer and fasting in the same row as the gym and travel.
+
+Where the two projects differ: Uswah starts from a problem and answers it from the sources;
+Nawiya starts from an ordinary act and reframes it. The same reader could want both.
+
+Three questions have to be answered before any of it enters Uswah, and the first governs
+the rest:
+
+1. Nawiya's interface is contributory, with an "add an intention" button and an author
+   avatar on every card. Uswah's reliability model assumes reviewed, sourced content behind
+   a clearance gate. User submission and that gate do not reconcile on their own.
+2. Nawiya has fourteen categories to Uswah's six, and they classify different things.
+3. If an intention needs a source, this is Uswah with a second entry point. If it does not,
+   it is a separate product sharing a login.
+
+Undecided, deliberately.
+
 ## Design References
 
 Two sites the interface should learn from. Neither is to be copied as an identity — no
@@ -111,6 +141,10 @@ of three cards each led by a category eyebrow; full-width feature strips breakin
 circular thumbnails for secondary rails; a quiet ground with one accent used sparingly. What
 not to take: its density. Qalam is built for nine-to-twenty-five minute reads and Uswah's are
 one to three, so rows need fewer items and more air.
+
+Specific Qalam pages to work from: `qalam.global/en/section/Features/all` for the section
+index our topic pages follow, and `tests.qalam.global/en` for their quiz format. Screenshots
+of both are in `docs/reference/qalam/`.
 
 **Thmanyah** (thmanyah.com) — Saudi media, Arabic-first, and the source of the project's
 Arabic typeface. What to take: RTL treated as the native direction rather than a mirrored

@@ -56,11 +56,11 @@ export const TOPICS: { slug: TopicSlug; en: string; ar: string }[] = [
 
 /** Stands in for a verified source. Visible as sample data in both languages. */
 const PLACEHOLDER = {
-  label: { en: "Sample data — no source attached", ar: "بيانات تجريبية — بلا مصدر" },
+  label: { en: "Sample data, no source attached", ar: "بيانات تجريبية بلا مصدر" },
   original: "﴿ نص المصدر يوضع هنا بعد التحقق منه ﴾",
   translation: {
     text: "The verified source text goes here. This entry has none, on purpose.",
-    translator: "—",
+    translator: "none",
   },
   placeholder: true,
 };

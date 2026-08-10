@@ -372,12 +372,20 @@ h1, h2, h3, .display {
 
 .prose p { font-size: 1.06rem; line-height: 1.75; margin: 0 0 1.1rem; }
 
+/* The takeaway is the sentence people screenshot, so it is set as a pulled statement
+   rather than a callout: a hairline above it, the label small, the text a size up. */
 .takeaway {
-  margin: 2rem 0 0;
-  padding-inline-start: 1.1rem;
-  border-inline-start: 3px solid var(--accent);
-  font-size: 1.06rem;
-  line-height: 1.65;
+  margin: 2.5rem 0 0;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--rule);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.3rem;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+[dir="rtl"] .takeaway {
+  font-family: var(--font-display-ar), var(--font-arabic), serif;
+  line-height: 1.75;
 }
 .takeaway span {
   display: block;
@@ -385,8 +393,8 @@ h1, h2, h3, .display {
   font-size: .7rem;
   letter-spacing: .14em;
   text-transform: uppercase;
-  color: var(--faint);
-  margin-bottom: .3rem;
+  color: var(--accent);
+  margin-bottom: .5rem;
 }
 [dir="rtl"] .takeaway span {
   font-family: var(--font-arabic), sans-serif;

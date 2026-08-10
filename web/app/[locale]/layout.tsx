@@ -57,14 +57,14 @@ const copy = {
     quotes: "Sayings",
     search: "Search",
     saved: "Saved",
-    sample: "Sample data — layout preview only. No source here is verified.",
+    sample: "Sample data. Layout preview only, and no source here is verified.",
   },
   ar: {
     home: "أسوة",
     quotes: "مقولات",
     search: "بحث",
     saved: "المحفوظات",
-    sample: "بيانات تجريبية — لمعاينة التصميم فقط. لا مصدر هنا مُتحقَّق منه.",
+    sample: "بيانات تجريبية لمعاينة التصميم فقط. لا مصدر هنا مُتحقَّق منه.",
   },
 } as const;
 

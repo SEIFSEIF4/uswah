@@ -25,7 +25,7 @@ export async function generateMetadata({
   const s = situationBySlug(slug);
   if (!s) return {};
   return {
-    title: `${s[locale].title} — Uswah`,
+    title: `${s[locale].title} · Uswah`,
     description: s[locale].summary,
     alternates: {
       canonical: `/${locale}/${slug}`,
