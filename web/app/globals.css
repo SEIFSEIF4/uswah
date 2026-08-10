@@ -939,7 +939,18 @@ h1, h2, h3, .display {
 /* The saying circulates in English; mirroring it would misdescribe where it comes from. */
 [dir="rtl"] .saying-q { direction: ltr; text-align: left; }
 
-.saying-lead { border-top-width: 2px; }
+/* A mark, not a division: a full-width rule in the foreground colour was the heaviest
+   stroke on the page, spent on decoration, and it did not match the 1px hairlines the
+   rows use for real separation. A short accent tick reads as an annotation instead. */
+.saying-lead { border-top: none; padding-top: 0; }
+.saying-lead::before {
+  content: "";
+  display: block;
+  width: 2.5rem;
+  height: 2px;
+  background: var(--accent);
+  margin-bottom: 1.1rem;
+}
 .saying-lead .saying-q { font-size: 1.85rem; line-height: 1.25; }
 
 .saying-verdict {
