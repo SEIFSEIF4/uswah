@@ -3,10 +3,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Inter, Newsreader, Noto_Naskh_Arabic } from "next/font/google";
 import localFont from "next/font/local";
-import Script from "next/script";
 import { LOCALES, isLocale } from "@/lib/i18n";
 import { USING_SAMPLE_DATA } from "@/lib/content";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { ThemeProvider } from "@/components/theme-provider";
 import { LocaleSwitch } from "@/components/locale-switch";
 import { SiteSearch } from "@/components/site-search";
 import { allSituations } from "@/lib/content";
@@ -102,14 +102,6 @@ const copy = {
   },
 } as const;
 
-// Runs before first paint so a saved dark choice never flashes white.
-const themeScript = `
-try {
-  var t = localStorage.getItem('theme');
-  if (t === 'dark' || t === 'light') document.documentElement.dataset.theme = t;
-} catch (e) {}
-`;
-
 export default async function LocaleLayout({
   children,
   params,
@@ -128,14 +120,10 @@ export default async function LocaleLayout({
       dir={locale === "ar" ? "rtl" : "ltr"}
       suppressHydrationWarning
     >
-      <head>
-        <Script id="theme" strategy="beforeInteractive">
-          {themeScript}
-        </Script>
-      </head>
       <body
         className={`${latin.variable} ${display.variable} ${arabic.variable} ${displayAr.variable} ${scripture.variable} font-sans antialiased`}
       >
+        <ThemeProvider>
         {USING_SAMPLE_DATA && <div className="sample-banner">{t.sample}</div>}
         <div className="mx-auto flex min-h-screen max-w-5xl flex-col px-6">
           <header className="flex items-center justify-between gap-4 border-b border-rule py-5">
@@ -180,6 +168,7 @@ export default async function LocaleLayout({
             {t.home} · {t.sample}
           </footer>
         </div>
+        </ThemeProvider>
         {/* impeccable-live-start */}
         <script src="http://localhost:8400/live.js?token=9cfc80e3-6be5-450f-987b-b1a75f7a6aed"></script>
         {/* impeccable-live-end */}

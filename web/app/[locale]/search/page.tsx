@@ -2,6 +2,8 @@ import { notFound } from "next/navigation";
 import { isLocale } from "@/lib/i18n";
 import { searchSituations } from "@/lib/content";
 import { Row } from "@/components/cards";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 const copy = {
   en: { label: "Search", placeholder: "What happened?", none: "Nothing found." },
@@ -30,8 +32,10 @@ export default async function Search({
         <label htmlFor="q" className="sr-only">
           {t.label}
         </label>
-        <input id="q" name="q" defaultValue={q ?? ""} placeholder={t.placeholder} />
-        <button type="submit">{t.label}</button>
+        <Input id="q" name="q" defaultValue={q ?? ""} placeholder={t.placeholder} />
+        <Button type="submit" variant="ghost">
+          {t.label}
+        </Button>
       </form>
 
       {q &&

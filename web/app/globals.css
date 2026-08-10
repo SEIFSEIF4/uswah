@@ -1,9 +1,12 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-/* Light is the base. Dark is redefined in two places on purpose:
-   - the media query covers visitors who never touched the toggle
-   - [data-theme] covers an explicit choice, and must win over the OS
-   Never declare a colour only inside one of those blocks. */
+@custom-variant dark (&:is(.dark *));
+
+/* One source of truth for colour. Our own tokens come first; shadcn's are mapped onto
+   them below so its components inherit this identity instead of shipping zinc.
+   next-themes puts `.dark` on <html>, so that is the only dark selector. */
 :root {
   --background: #faf8f4;
   --surface: #ffffff;
@@ -11,22 +14,27 @@
   --muted: #59606c;
   --faint: #8a919c;
   --rule: #e3ded4;
-  --accent: #7d2b1d; /* used once per screen, never as a fill */
+  --accent: #7d2b1d;
+
+  /* shadcn tokens, expressed in ours */
+  --card: var(--surface);
+  --card-foreground: var(--foreground);
+  --popover: var(--surface);
+  --popover-foreground: var(--foreground);
+  --primary: var(--foreground);
+  --primary-foreground: var(--background);
+  --secondary: #f1ece2;
+  --secondary-foreground: var(--foreground);
+  --muted-foreground: var(--muted);
+  --accent-foreground: var(--background);
+  --destructive: #8c3a2b;
+  --border: var(--rule);
+  --input: var(--rule);
+  --ring: var(--accent);
+  --radius: 0.5rem;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --background: #0e1116;
-    --surface: #161a21;
-    --foreground: #ece8e1;
-    --muted: #9aa2ad;
-    --faint: #6d757f;
-    --rule: #262c35;
-    --accent: #e08d7a;
-  }
-}
-
-:root[data-theme="dark"] {
+.dark {
   --background: #0e1116;
   --surface: #161a21;
   --foreground: #ece8e1;
@@ -34,6 +42,21 @@
   --faint: #6d757f;
   --rule: #262c35;
   --accent: #e08d7a;
+
+  --card: var(--surface);
+  --card-foreground: var(--foreground);
+  --popover: var(--surface);
+  --popover-foreground: var(--foreground);
+  --primary: var(--foreground);
+  --primary-foreground: var(--background);
+  --secondary: #1d232c;
+  --secondary-foreground: var(--foreground);
+  --muted-foreground: var(--muted);
+  --accent-foreground: var(--background);
+  --destructive: #e08d7a;
+  --border: var(--rule);
+  --input: var(--rule);
+  --ring: var(--accent);
 }
 
 @theme inline {
@@ -47,11 +70,44 @@
   --font-sans: var(--font-latin);
   --font-serif: var(--font-display);
   --font-arabic: var(--font-arabic);
+  --font-heading: var(--font-display);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
   /* clip, not hidden: full-bleed section grounds can reach the viewport edge without
      creating a horizontal scroll container or breaking position: sticky. */
   overflow-x: clip;
@@ -509,16 +565,10 @@ h1, h2, h3, .display {
 .grade-hasan { color: #2c5a86; }
 .grade-disputed { color: #8a5a12; }
 .grade-historical { color: var(--muted); }
-:root[data-theme="dark"] .grade-quran,
-:root[data-theme="dark"] .grade-sahih { color: #7fc09b; }
-:root[data-theme="dark"] .grade-hasan { color: #86b2e0; }
-:root[data-theme="dark"] .grade-disputed { color: #d9a95f; }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .grade-quran,
-  :root:not([data-theme="light"]) .grade-sahih { color: #7fc09b; }
-  :root:not([data-theme="light"]) .grade-hasan { color: #86b2e0; }
-  :root:not([data-theme="light"]) .grade-disputed { color: #d9a95f; }
-}
+.dark .grade-quran,
+.dark .grade-sahih { color: #7fc09b; }
+.dark .grade-hasan { color: #86b2e0; }
+.dark .grade-disputed { color: #d9a95f; }
 
 /* Directory. Deliberately plain: it is a way through, not the thing itself. */
 .quote-index { list-style: none; margin: 0; padding: 0; }
@@ -907,12 +957,8 @@ h1, h2, h3, .display {
 .tone-ink .shelf-nav button { border-color: rgb(255 255 255 / .22); color: #b3b8c0; }
 .tone-ink .shelf-nav button:hover { border-color: #ece8e1; color: #ece8e1; }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .tone-warm { background: #141922; }
-  :root:not([data-theme="light"]) .tone-paper { background: #12161d; }
-}
-:root[data-theme="dark"] .tone-warm { background: #141922; }
-:root[data-theme="dark"] .tone-paper { background: #12161d; }
+.dark .tone-warm { background: #141922; }
+.dark .tone-paper { background: #12161d; }
 
 /* ── sayings preview ──────────────────────────────────────────────────────── */
 
@@ -1274,14 +1320,8 @@ h1, h2, h3, .display {
 .tone-ink .shelf-nav button { border-color: rgb(255 255 255 / .22); color: #b3b8c0; }
 .tone-ink .shelf-nav button:hover { border-color: #ece8e1; color: #ece8e1; }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .tone-warm { background: #141922; }
-  :root:not([data-theme="light"]) .tone-paper { background: #12161d; }
-}
-:root[data-theme="dark"] .tone-warm { background: #141922; }
-:root[data-theme="dark"] .tone-paper { background: #12161d; }
-
-
+.dark .tone-warm { background: #141922; }
+.dark .tone-paper { background: #12161d; }
 
 /* ── intentions (Nawiya) ──────────────────────────────────────────────────── */
 
@@ -1355,4 +1395,17 @@ h1, h2, h3, .display {
   .intent-list li { grid-template-columns: 1fr; gap: .5rem; }
   .intent-turn { display: none; }
   .intent-act { font-size: 1rem; text-align: start; }
+}
+
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
 }

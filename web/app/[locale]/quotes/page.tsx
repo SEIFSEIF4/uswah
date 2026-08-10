@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { isLocale, LOCALES } from "@/lib/i18n";
 import { GRADES, quotesSorted, type Grade } from "@/lib/content";
+import { Badge } from "@/components/ui/badge";
 
 const copy = {
   en: {
@@ -37,9 +38,9 @@ export default async function Quotes({ params }: { params: Promise<{ locale: str
       <div className="grade-key">
         <span className="grade-key-label">{t.key}</span>
         {(Object.keys(GRADES) as Grade[]).map((g) => (
-          <span key={g} className={`grade grade-${g}`}>
+          <Badge key={g} variant="outline" className={`grade grade-${g}`}>
             {GRADES[g][locale]}
-          </span>
+          </Badge>
         ))}
       </div>
 
@@ -51,7 +52,9 @@ export default async function Quotes({ params }: { params: Promise<{ locale: str
               <span className="saying-q">{q.saying}</span>
               <p>{q[locale].closeness}</p>
               <span className="quote-index-meta">
-                <span className={`grade grade-${q.grade}`}>{GRADES[q.grade][locale]}</span>
+                <Badge variant="outline" className={`grade grade-${q.grade}`}>
+                  {GRADES[q.grade][locale]}
+                </Badge>
                 {!GRADES[q.grade].storable && <span className="pending">{t.pending}</span>}
               </span>
             </Link>
