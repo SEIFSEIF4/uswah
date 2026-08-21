@@ -7,6 +7,7 @@ import { Byline, Card, Meta, SectionTitle } from "@/components/cards";
 import { toggleSave } from "../login/actions";
 import { Contents, Share } from "@/components/article-parts";
 import { SaveButton } from "@/components/save-button";
+import { DorarSource } from "@/components/dorar-source";
 
 const copy = {
   en: {
@@ -14,21 +15,18 @@ const copy = {
     translated: "Translated by",
     save: "Save this",
     related: "Next",
-    dorar: "Text and grading: the Hadith Encyclopedia, Dorar.net",
   },
   ar: {
     takeaway: "ماذا تفعل",
     translated: "ترجمة",
     save: "احفظ",
     related: "التالي",
-    dorar: "النص والحكم: الموسوعة الحديثية، الدرر السنية",
   },
   tr: {
     takeaway: "Ne yapmalı",
     translated: "Çeviren",
     save: "Bunu kaydet",
     related: "Sonraki",
-    dorar: "Metin ve derece: Hadis Ansiklopedisi, Dorar.net",
   },
 } as const;
 
@@ -116,33 +114,7 @@ export default async function Situation({
           </p>
         )}
         <p className="source-ref">{s.source.label[locale]}</p>
-        {s.source.dorar && (
-          <>
-            <p className="source-dorar" dir="rtl">
-              {s.source.dorar.rawi !== "-" && <span>الراوي: {s.source.dorar.rawi}</span>}
-              <span>
-                {s.source.dorar.mohdith}: {s.source.dorar.grade}
-              </span>
-              {s.source.dorar.takhrij && <span>التخريج: {s.source.dorar.takhrij}</span>}
-              <a href={`https://dorar.net/h/${s.source.dorar.id}`} target="_blank" rel="noreferrer">
-                {t.dorar}
-              </a>
-            </p>
-            {/* Their التصنيف الموضوعي, each chip landing on the matching dorar category page. */}
-            <p className="source-cats" dir="rtl">
-              {s.source.dorar.categories.map((c) => (
-                <a
-                  key={c.id}
-                  href={`https://dorar.net/hadith-category/cat/${c.id}`}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  {c.name}
-                </a>
-              ))}
-            </p>
-          </>
-        )}
+        {s.source.dorar && <DorarSource dorar={s.source.dorar} locale={locale} />}
       </section>
 
       <div className="prose" id="why">

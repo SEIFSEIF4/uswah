@@ -17,6 +17,7 @@
  */
 
 import type { Locale } from "../i18n";
+import type { DorarRef } from "../dorar";
 
 export type LocaleText = {
   title: string;
@@ -44,17 +45,7 @@ export type Situation = {
     /* Keyed by locale, the way source_translations is in the database: a translation
        belongs to a language, and Arabic has none because the original is the text. */
     translation?: Partial<Record<Locale, { text: string; translator: string }>>;
-    /** The dorar.net row this citation is copied from, verbatim. `id` is their permalink
-     *  (dorar.net/h/{id}); `takhrij` their cross-references; `categories` their
-     *  التصنيف الموضوعي, each linking to dorar.net/hadith-category/cat/{id}. */
-    dorar?: {
-      rawi: string;
-      mohdith: string;
-      grade: string;
-      id: string;
-      takhrij?: string;
-      categories: { id: string; name: string }[];
-    };
+    dorar?: DorarRef;
   };
   en: LocaleText;
   ar: LocaleText;

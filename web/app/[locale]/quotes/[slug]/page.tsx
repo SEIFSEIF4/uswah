@@ -11,13 +11,13 @@ import {
 } from "@/lib/content";
 import { Share } from "@/components/article-parts";
 import { ShareCard } from "@/components/share-card";
+import { DorarSource } from "@/components/dorar-source";
 
 const copy = {
   en: {
     parallel: "The parallel",
     closeness: "How close it is",
     read: "Read the situation",
-    dorar: "Text and grading: the Hadith Encyclopedia, Dorar.net",
     pending: "Awaiting a reviewer",
     pendingWhy:
       "Below the current publishing threshold. Until a scholarly reviewer joins the project, only the Quran and the two Sahih collections are published, so this comparison is shown but not relied on.",
@@ -28,7 +28,6 @@ const copy = {
     parallel: "الزاوية",
     closeness: "مدى القرب",
     read: "اقرأ الموقف",
-    dorar: "النص والحكم: الموسوعة الحديثية، الدرر السنية",
     pending: "بانتظار المراجعة",
     pendingWhy:
       "دون عتبة النشر الحالية. وإلى أن ينضم مراجع شرعي إلى المشروع، لا يُنشر إلا القرآن والصحيحان، فهذه المقارنة معروضة لا معتمدة.",
@@ -39,7 +38,6 @@ const copy = {
     parallel: "Karşılığı",
     closeness: "Ne kadar yakın",
     read: "Durumu oku",
-    dorar: "Metin ve derece: Hadis Ansiklopedisi, Dorar.net",
     pending: "Gözden geçirilmeyi bekliyor",
     pendingWhy:
       "Şu anki yayın eşiğinin altında. Projeye ilim ehli bir denetçi katılana kadar yalnızca Kur'an ve iki Sahih yayımlanıyor; bu karşılaştırma gösteriliyor ama dayanak alınmıyor.",
@@ -115,37 +113,7 @@ export default async function Saying({
       {q.source.original && (
         <section className="source">
           <p className="source-text">{q.source.original}</p>
-          {q.source.dorar && (
-            <>
-              <p className="source-dorar" dir="rtl">
-                {q.source.dorar.rawi !== "-" && <span>الراوي: {q.source.dorar.rawi}</span>}
-                <span>
-                  {q.source.dorar.mohdith}: {q.source.dorar.grade}
-                </span>
-                {q.source.dorar.takhrij && <span>التخريج: {q.source.dorar.takhrij}</span>}
-                <a
-                  href={`https://dorar.net/h/${q.source.dorar.id}`}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  {t.dorar}
-                </a>
-              </p>
-              {/* Their التصنيف الموضوعي, each chip landing on the matching dorar category page. */}
-              <p className="source-cats" dir="rtl">
-                {q.source.dorar.categories.map((c) => (
-                  <a
-                    key={c.id}
-                    href={`https://dorar.net/hadith-category/cat/${c.id}`}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    {c.name}
-                  </a>
-                ))}
-              </p>
-            </>
-          )}
+          {q.source.dorar && <DorarSource dorar={q.source.dorar} locale={locale} />}
         </section>
       )}
 

@@ -19,6 +19,8 @@
  * When a group holds enough entries that scanning it is work, give that group children.
  */
 
+import type { DorarRef } from "../dorar";
+
 export type ActGroup =
   | "worship"
   | "body"
@@ -58,17 +60,7 @@ export type Intention = {
   source: {
     label: { en: string; ar: string; tr: string };
     original?: string;
-    /** The dorar.net row this citation is copied from, verbatim. `id` is their permalink
-     *  (dorar.net/h/{id}); `takhrij` their cross-references; `categories` their
-     *  التصنيف الموضوعي, each linking to dorar.net/hadith-category/cat/{id}. */
-    dorar?: {
-      rawi: string;
-      mohdith: string;
-      grade: string;
-      id: string;
-      takhrij?: string;
-      categories: { id: string; name: string }[];
-    };
+    dorar?: DorarRef;
   };
   en: { intention: string; note: string };
   ar: { intention: string; note: string };
