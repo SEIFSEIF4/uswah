@@ -12,11 +12,11 @@ import type { Locale } from "@/lib/i18n";
  */
 export function TopicBar({ locale }: { locale: Locale }) {
   const pathname = usePathname();
-  const all = locale === "ar" ? "الكل" : "All";
+  const all = { en: "All", ar: "الكل", tr: "Tümü" }[locale];
   const onAll = !pathname.includes("/topics/");
 
   return (
-    <nav className="topic-bar" aria-label={locale === "ar" ? "المواضيع" : "Topics"}>
+    <nav className="topic-bar" aria-label={{ en: "Topics", ar: "المواضيع", tr: "Konular" }[locale]}>
       <Link href={`/${locale}`} aria-current={onAll ? "page" : undefined}>
         {all}
       </Link>

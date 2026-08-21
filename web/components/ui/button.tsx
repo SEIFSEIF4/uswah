@@ -1,5 +1,8 @@
 import { Button as ButtonPrimitive } from "@base-ui/react/button"
 import { cva, type VariantProps } from "class-variance-authority"
+import { ArrowRight } from "lucide-react"
+
+import { isValidElement } from "react"
 
 import { cn } from "@/lib/utils"
 
@@ -18,6 +21,11 @@ const buttonVariants = cva(
         destructive:
           "bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40",
         link: "text-primary underline-offset-4 hover:underline",
+        // A forward link that grows an arrow on hover. It strips the button box rather
+        // than restyling it, so it sits inline in prose, and it neutralises the size
+        // variant's padding so it reads as type at whatever size it is given.
+        arrow:
+          "h-auto min-h-0 gap-0 rounded-none border-0 bg-transparent p-0 text-base text-brand shadow-none hover:bg-transparent hover:text-[color-mix(in_oklch,var(--brand),var(--foreground)_30%)] focus-visible:border-transparent active:translate-y-0",
       },
       size: {
         default:
@@ -44,15 +52,48 @@ function Button({
   className,
   variant = "default",
   size = "default",
+  nativeButton,
+  render,
   ...props
 }: ButtonPrimitive.Props & VariantProps<typeof buttonVariants>) {
   return (
     <ButtonPrimitive
       data-slot="button"
       className={cn(buttonVariants({ variant, size, className }))}
+      render={render}
+      // Derived rather than remembered at every call site: Base UI assumes a native
+      // <button> unless told otherwise, so rendering a Link (the arrow variant's whole
+      // job) warns and loses button semantics it never had.
+      nativeButton={
+        nativeButton ?? (!render || (isValidElement(render) && render.type === "button"))
+      }
       {...props}
     />
   )
 }
 
-export { Button, buttonVariants }
+/**
+ * The arrow for `variant="arrow"`. Collapsed to nothing until the button is hovered or
+ * focused, then it opens and slides forward.
+ *
+ * One glyph, mirrored by direction rather than swapped for a left-pointing icon: the
+ * arrow means "onward", and onward is leftward in Arabic. Flipping the icon also flips
+ * its travel, so the slide follows the reading direction without a second rule.
+ */
+function ButtonArrow({ className }: { className?: string }) {
+  return (
+    <span
+      aria-hidden="true"
+      className={cn(
+        "ms-0 inline-grid max-w-0 overflow-hidden opacity-0 transition-[max-width,margin,opacity] duration-300 ease-out",
+        "group-hover/button:ms-2 group-hover/button:max-w-5 group-hover/button:opacity-100",
+        "group-focus-visible/button:ms-2 group-focus-visible/button:max-w-5 group-focus-visible/button:opacity-100",
+        className,
+      )}
+    >
+      <ArrowRight className="size-4 -translate-x-2 transition-transform duration-300 ease-out group-hover/button:translate-x-0 group-focus-visible/button:translate-x-0 rtl:-scale-x-100" />
+    </span>
+  )
+}
+
+export { Button, ButtonArrow, buttonVariants }

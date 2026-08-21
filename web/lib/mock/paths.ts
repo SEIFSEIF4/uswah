@@ -9,6 +9,7 @@ export type Path = {
   image: string;
   en: { title: string; blurb: string; facts: [string, string][] };
   ar: { title: string; blurb: string; facts: [string, string][] };
+  tr: { title: string; blurb: string; facts: [string, string][] };
 };
 
 export const PATHS: Path[] = [
@@ -27,6 +28,11 @@ export const PATHS: Path[] = [
       blurb: "سبعة مواقف في الغضب تُقرأ بترتيبها، من اللحظة التي يشتد فيها إلى الأسبوع الذي يليه.",
       facts: [["المدة", "سبعة مواقف"], ["الوتيرة", "موقف كل يوم"], ["القراءة", "نحو خمس عشرة دقيقة"]],
     },
+    tr: {
+      title: "Öfkeni tutmak",
+      blurb: "Öfke üzerine yedi durum, sırayla okunur: geldiği dakikadan bir hafta sonrasına.",
+      facts: [["Uzunluk", "7 durum"], ["Tempo", "Günde bir"], ["Okuma", "Yaklaşık 15 dakika"]],
+    },
   },
   {
     slug: "money",
@@ -42,6 +48,11 @@ export const PATHS: Path[] = [
       title: "مسار المال بين الناس",
       blurb: "الإقراض والدَّين والسؤال والاعتذار. خمسة مواقف تتكرر أكثر من غيرها.",
       facts: [["المدة", "خمسة مواقف"], ["الوتيرة", "عند الحاجة"], ["القراءة", "نحو اثنتي عشرة دقيقة"]],
+    },
+    tr: {
+      title: "İnsanlar arasında para",
+      blurb: "Borç vermek, borçlu olmak, istenmek ve hayır demek. Sürekli geri gelen beş durum.",
+      facts: [["Uzunluk", "5 durum"], ["Tempo", "İhtiyaç oldukça"], ["Okuma", "Yaklaşık 12 dakika"]],
     },
   },
 ];

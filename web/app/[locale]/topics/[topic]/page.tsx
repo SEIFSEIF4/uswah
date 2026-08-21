@@ -7,6 +7,7 @@ import { TopicBar } from "@/components/topic-bar";
 const copy = {
   en: { empty: "Nothing here yet." },
   ar: { empty: "لا شيء هنا بعد." },
+  tr: { empty: "Burada henüz bir şey yok." },
 } as const;
 
 export function generateStaticParams() {
@@ -27,7 +28,11 @@ export default async function Topic({
   return (
     <>
       <TopicBar locale={locale} />
-      <h1 className="page-title">{topicName(topic as TopicSlug, locale)}</h1>
+      <h1 className="page-title">
+        {topicName(topic as TopicSlug, locale)}
+        {/* The count is the first thing a filter should answer: how much is behind it. */}
+        <span className="count">{items.length}</span>
+      </h1>
       {items.length === 0 ? (
         <p className="muted">{copy[locale].empty}</p>
       ) : (

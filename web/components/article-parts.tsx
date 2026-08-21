@@ -6,6 +6,7 @@ import type { Locale } from "@/lib/i18n";
 const copy = {
   en: { contents: "Contents", top: "Back to top", share: "Share", copied: "Link copied" },
   ar: { contents: "المحتويات", top: "إلى الأعلى", share: "شارك", copied: "نُسخ الرابط" },
+  tr: { contents: "İçindekiler", top: "Başa dön", share: "Paylaş", copied: "Bağlantı kopyalandı" },
 } as const;
 
 /**

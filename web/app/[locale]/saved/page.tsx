@@ -8,6 +8,7 @@ import { DEFAULT_LOGIN_ROUTE, DEFAULT_REDIRECT_ROUTE } from "@/routes";
 const copy = {
   en: { title: "Saved", empty: "Nothing saved yet.", signOut: "Sign out" },
   ar: { title: "المحفوظات", empty: "لم تحفظ شيئًا بعد.", signOut: "خروج" },
+  tr: { title: "Kaydedilenler", empty: "Henüz bir şey kaydetmedin.", signOut: "Çıkış yap" },
 } as const;
 
 export default async function Saved({ params }: { params: Promise<{ locale: string }> }) {
@@ -39,13 +40,13 @@ export default async function Saved({ params }: { params: Promise<{ locale: stri
         <h1 className="text-2xl font-semibold">{t.title}</h1>
         <form action={signOut}>
           <input type="hidden" name="locale" value={locale} />
-          <button className="text-sm text-muted underline underline-offset-4 hover:text-foreground">
+          <button className="text-sm text-muted-foreground underline underline-offset-4 hover:text-foreground">
             {t.signOut}
           </button>
         </form>
       </div>
       {saved.length === 0 ? (
-        <p className="text-muted">{t.empty}</p>
+        <p className="text-muted-foreground">{t.empty}</p>
       ) : (
         <ul className="flex flex-col">
           {saved.map(({ situations: s }) => (
@@ -54,7 +55,7 @@ export default async function Saved({ params }: { params: Promise<{ locale: stri
                 <h2 className="text-xl font-medium group-hover:underline">
                   {s.situation_translations[0].title}
                 </h2>
-                <p className="mt-1 text-muted">{s.situation_translations[0].summary}</p>
+                <p className="mt-1 text-muted-foreground">{s.situation_translations[0].summary}</p>
               </Link>
             </li>
           ))}

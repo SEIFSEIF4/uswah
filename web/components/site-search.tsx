@@ -1,21 +1,23 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useDismiss } from "@/lib/use-dismiss";
 import type { Locale } from "@/lib/i18n";
 
-type Hit = { slug: string; title: string; summary: string };
+import { KIND_LABELS, type SearchHit } from "@/lib/content";
 
 const copy = {
   en: { open: "Search", placeholder: "What happened?", none: "Nothing found", all: "See all results" },
   ar: { open: "بحث", placeholder: "ما الذي حدث؟", none: "لا توجد نتائج", all: "كل النتائج" },
+  tr: { open: "Ara", placeholder: "Ne oldu?", none: "Sonuç bulunamadı", all: "Bütün sonuçlar" },
 } as const;
 
 /**
  * Search that opens a panel under the field, the Thmanyah pattern, including its empty
  * state. Results are passed in from the server so this component holds no data.
  */
-export function SiteSearch({ locale, index }: { locale: Locale; index: Hit[] }) {
+export function SiteSearch({ locale, index }: { locale: Locale; index: SearchHit[] }) {
   const [open, setOpen] = useState(false);
   const [q, setQ] = useState("");
   const box = useRef<HTMLDivElement>(null);
@@ -26,23 +28,11 @@ export function SiteSearch({ locale, index }: { locale: Locale; index: Hit[] }) 
     if (open) field.current?.focus();
   }, [open]);
 
-  useEffect(() => {
-    if (!open) return;
-    const away = (e: MouseEvent) => {
-      if (box.current && !box.current.contains(e.target as Node)) setOpen(false);
-    };
-    const escape = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
-    document.addEventListener("mousedown", away);
-    document.addEventListener("keydown", escape);
-    return () => {
-      document.removeEventListener("mousedown", away);
-      document.removeEventListener("keydown", escape);
-    };
-  }, [open]);
+  useDismiss(open, box, useCallback(() => setOpen(false), []));
 
   const term = q.trim().toLowerCase();
   const hits = term
-    ? index.filter((h) => `${h.title} ${h.summary}`.toLowerCase().includes(term)).slice(0, 6)
+    ? index.filter((h) => h.match.includes(term)).slice(0, 6)
     : [];
 
   return (
@@ -77,8 +67,11 @@ export function SiteSearch({ locale, index }: { locale: Locale; index: Hit[] }) 
             (hits.length > 0 ? (
               <ul className="site-search-hits">
                 {hits.map((h) => (
-                  <li key={h.slug}>
-                    <Link href={`/${locale}/${h.slug}`} onClick={() => setOpen(false)}>
+                  <li key={`${h.kind}-${h.slug}`}>
+                    {/* The kind is named: a saying and a situation look alike in a list,
+                        and the reader is choosing where to land, not just what to read. */}
+                    <Link href={h.href} onClick={() => setOpen(false)}>
+                      <span className="search-kind">{KIND_LABELS[h.kind][locale]}</span>
                       <strong>{h.title}</strong>
                       <span>{h.summary}</span>
                     </Link>

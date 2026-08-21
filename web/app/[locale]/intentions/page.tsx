@@ -6,17 +6,21 @@ import { intentionsByGroup } from "@/lib/content";
 const copy = {
   en: {
     title: "The same day, differently",
-    lede: "An ordinary act becomes worship when the intention behind it is corrected. Nothing here asks you to do more. It asks what the thing you are already doing is for.",
+    lede: "An ordinary act becomes worship when the intention behind it is corrected. Not by doing more, but by knowing what it is for.",
     act: "The act",
     intention: "The intention",
-    pending: "Awaiting a reviewer",
   },
   ar: {
     title: "اليوم نفسه، بنيّة أخرى",
-    lede: "العمل المعتاد يصير عبادة بتصحيح النية من ورائه. لا شيء هنا يطلب منك أن تزيد، وإنما يسأل: ما الذي تفعله من أجله أصلًا؟",
+    lede: "العمل المعتاد يصير عبادة بتصحيح النية من ورائه. لا بأن تزيد، بل بأن تعرف لماذا تفعل.",
     act: "العمل",
     intention: "النية",
-    pending: "بانتظار المراجعة",
+  },
+  tr: {
+    title: "Aynı gün, başka türlü",
+    lede: "Sıradan bir fiil, arkasındaki niyet düzeltildiğinde ibadete dönüşür. Daha fazlası değil, ne için yaptığın sorulur.",
+    act: "Fiil",
+    intention: "Niyet",
   },
 } as const;
 
@@ -63,7 +67,7 @@ export default async function Intentions({
           <h2>{group[locale]}</h2>
           <ul className="intent-list">
             {items.map((i) => (
-              <li key={i.slug}>
+              <li key={i.slug} id={i.slug}>
                 <span className="intent-act">{i.act[locale]}</span>
                 <span className="intent-turn" aria-hidden="true">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
@@ -80,8 +84,19 @@ export default async function Intentions({
                   <p className="intent-line">{i[locale].intention}</p>
                   <p className="intent-note">{i[locale].note}</p>
                   <span className="intent-source">
-                    {i.source.label[locale]}
-                    {i.source.placeholder && <em> · {t.pending}</em>}
+                    {/* The label links to dorar's permalink for the hadith: the citation
+                        and its verification are one click, not two claims. */}
+                    {i.source.dorar ? (
+                      <a
+                        href={`https://dorar.net/h/${i.source.dorar.id}`}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {i.source.label[locale]} · Dorar.net
+                      </a>
+                    ) : (
+                      i.source.label[locale]
+                    )}
                   </span>
                 </div>
               </li>

@@ -53,5 +53,10 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next|favicon.ico|robots.txt|sitemap.xml|.*\\..*).*)"],
+  // The metadata routes are extensionless, so the dot rule below does not cover them:
+  // without naming them here they get locale-redirected and a crawler follows a 307
+  // to a page that does not exist.
+  matcher: [
+    "/((?!_next|favicon.ico|robots.txt|sitemap.xml|apple-icon|opengraph-image|avatar|.*\\..*).*)",
+  ],
 };

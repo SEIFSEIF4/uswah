@@ -1,5 +1,7 @@
 "use client";
 
+import type { Locale } from "@/lib/i18n";
+
 import { useRef } from "react";
 
 /**
@@ -7,6 +9,12 @@ import { useRef } from "react";
  *
  * Native scroll with snap does the work; the arrows are an affordance on top of it, not
  * the mechanism. They hide on touch, where the gesture is already obvious.
+ *
+ * scroll-fade-x dissolves the leading and trailing edges so the row reads as continuing
+ * past the column rather than being cut off. It is scroll-driven CSS, no listeners, and
+ * it follows the reading direction on its own — the crisp edge is wherever the row
+ * starts, which flips in Arabic. no-scrollbar goes with it: the mask is on the scroll
+ * container, so a visible scrollbar would fade along with the content.
  */
 export function Shelf({
   title,
@@ -15,7 +23,7 @@ export function Shelf({
 }: {
   title: string;
   children: React.ReactNode;
-  locale: "en" | "ar";
+  locale: Locale;
 }) {
   const track = useRef<HTMLDivElement>(null);
   const rtl = locale === "ar";
@@ -40,7 +48,7 @@ export function Shelf({
           </button>
         </div>
       </div>
-      <div className="shelf-track" ref={track}>
+      <div className="shelf-track scroll-fade-x no-scrollbar" ref={track}>
         {children}
       </div>
     </section>

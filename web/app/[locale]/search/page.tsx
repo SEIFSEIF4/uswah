@@ -1,13 +1,13 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { isLocale } from "@/lib/i18n";
-import { searchSituations } from "@/lib/content";
-import { Row } from "@/components/cards";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { KIND_LABELS, searchAll } from "@/lib/content";
+import { SearchShell } from "@/components/search-shell";
 
 const copy = {
-  en: { label: "Search", placeholder: "What happened?", none: "Nothing found." },
-  ar: { label: "بحث", placeholder: "ما الذي حدث؟", none: "لا توجد نتائج." },
+  en: { label: "Search", placeholder: "What happened?", none: "Nothing found.", searching: "Searching" },
+  ar: { label: "بحث", placeholder: "ما الذي حدث؟", none: "لا توجد نتائج.", searching: "جارٍ البحث" },
+  tr: { label: "Ara", placeholder: "Ne oldu?", none: "Sonuç bulunamadı.", searching: "Aranıyor" },
 } as const;
 
 export default async function Search({
@@ -23,31 +23,32 @@ export default async function Search({
 
   const t = copy[locale];
   // Local match while the data is local. The Arabic-normalising RPC comes back with the
-  // database — see searchSituations in lib/content.ts.
-  const results = q ? searchSituations(q, locale) : [];
+  // database — see searchAll in lib/content.ts.
+  const results = q ? searchAll(q, locale) : [];
 
   return (
-    <>
-      <form className="search-form">
-        <label htmlFor="q" className="sr-only">
-          {t.label}
-        </label>
-        <Input id="q" name="q" defaultValue={q ?? ""} placeholder={t.placeholder} />
-        <Button type="submit" variant="ghost">
-          {t.label}
-        </Button>
-      </form>
-
-      {q &&
-        (results.length > 0 ? (
-          <div className="rows">
-            {results.map((s) => (
-              <Row key={s.slug} s={s} locale={locale} />
-            ))}
-          </div>
-        ) : (
-          <p className="muted">{t.none}</p>
-        ))}
-    </>
+    <SearchShell
+      locale={locale}
+      q={q ?? ""}
+      placeholder={t.placeholder}
+      label={t.label}
+      searching={t.searching}
+    >
+      {results.length > 0 ? (
+        <ul className="search-results">
+          {results.map((hit) => (
+            <li key={`${hit.kind}-${hit.slug}`}>
+              <Link href={hit.href}>
+                <span className="search-kind">{KIND_LABELS[hit.kind][locale]}</span>
+                <strong>{hit.title}</strong>
+                <span className="search-summary">{hit.summary}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="muted">{t.none}</p>
+      )}
+    </SearchShell>
   );
 }

@@ -3,13 +3,33 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { isLocale, LOCALES, RESERVED_SLUGS, type Locale } from "@/lib/i18n";
 import { allSituations, relatedSituations, situationBySlug } from "@/lib/content";
-import { Card, Meta, SectionTitle } from "@/components/cards";
+import { Byline, Card, Meta, SectionTitle } from "@/components/cards";
 import { toggleSave } from "../login/actions";
 import { Contents, Share } from "@/components/article-parts";
+import { SaveButton } from "@/components/save-button";
 
 const copy = {
-  en: { takeaway: "What to do", translated: "Translated by", save: "Save this", related: "Next" },
-  ar: { takeaway: "ماذا تفعل", translated: "ترجمة", save: "احفظ", related: "التالي" },
+  en: {
+    takeaway: "What to do",
+    translated: "Translated by",
+    save: "Save this",
+    related: "Next",
+    dorar: "Text and grading: the Hadith Encyclopedia, Dorar.net",
+  },
+  ar: {
+    takeaway: "ماذا تفعل",
+    translated: "ترجمة",
+    save: "احفظ",
+    related: "التالي",
+    dorar: "النص والحكم: الموسوعة الحديثية، الدرر السنية",
+  },
+  tr: {
+    takeaway: "Ne yapmalı",
+    translated: "Çeviren",
+    save: "Bunu kaydet",
+    related: "Sonraki",
+    dorar: "Metin ve derece: Hadis Ansiklopedisi, Dorar.net",
+  },
 } as const;
 
 export function generateStaticParams() {
@@ -59,7 +79,11 @@ export default async function Situation({
           <a href={s.image.sourceUrl} rel="noreferrer noopener" target="_blank">
             {s.image.credit}
           </a>
-          <span className="licence">{s.image.license}</span>
+          {/* lang="en": text-transform is language-sensitive, and a Turkish uppercase of
+              "public-domain" dots the i — PUBLİC-DOMAIN. The token is not Turkish. */}
+          <span className="licence" lang="en">
+            {s.image.license}
+          </span>
         </figcaption>
       </figure>
 
@@ -76,21 +100,49 @@ export default async function Situation({
         <Meta s={s} locale={locale} />
         <h1>{text.title}</h1>
         <p className="standfirst">{text.summary}</p>
+        <Byline s={s} locale={locale} />
       </header>
 
-      <section id="source" className={`source${s.source.placeholder ? " is-placeholder" : ""}`}>
+      <section id="source" className="source">
         <p className="source-text">{s.source.original}</p>
         {/* No translation on the Arabic page: the original is the text, and an English
             block inside an RTL container flips its own quotation marks. */}
-        {locale !== "ar" && s.source.translation && (
+        {locale !== "ar" && s.source.translation?.[locale] && (
           <p className="source-translation">
-            “{s.source.translation.text}”
+            “{s.source.translation[locale]!.text}”
             <span>
-              {t.translated} {s.source.translation.translator}
+              {t.translated} {s.source.translation[locale]!.translator}
             </span>
           </p>
         )}
         <p className="source-ref">{s.source.label[locale]}</p>
+        {s.source.dorar && (
+          <>
+            <p className="source-dorar" dir="rtl">
+              {s.source.dorar.rawi !== "-" && <span>الراوي: {s.source.dorar.rawi}</span>}
+              <span>
+                {s.source.dorar.mohdith}: {s.source.dorar.grade}
+              </span>
+              {s.source.dorar.takhrij && <span>التخريج: {s.source.dorar.takhrij}</span>}
+              <a href={`https://dorar.net/h/${s.source.dorar.id}`} target="_blank" rel="noreferrer">
+                {t.dorar}
+              </a>
+            </p>
+            {/* Their التصنيف الموضوعي, each chip landing on the matching dorar category page. */}
+            <p className="source-cats" dir="rtl">
+              {s.source.dorar.categories.map((c) => (
+                <a
+                  key={c.id}
+                  href={`https://dorar.net/hadith-category/cat/${c.id}`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {c.name}
+                </a>
+              ))}
+            </p>
+          </>
+        )}
       </section>
 
       <div className="prose" id="why">
@@ -102,13 +154,18 @@ export default async function Situation({
         {text.takeaway}
       </p>
 
-      <Share title={text.title} locale={locale} />
+      {/* Share and save on one line, save at the far end. They are the two things you
+          can do with a situation once you have read it, so they belong on the same rule
+          rather than stacked as if one followed the other. */}
+      <div className="share-row">
+        <Share title={text.title} locale={locale} />
 
-      <form action={toggleSave} className="save">
-        <input type="hidden" name="locale" value={locale} />
-        <input type="hidden" name="slug" value={slug} />
-        <button>{t.save}</button>
-      </form>
+        <form action={toggleSave} className="save">
+          <input type="hidden" name="locale" value={locale} />
+          <input type="hidden" name="slug" value={slug} />
+          <SaveButton label={t.save} />
+        </form>
+      </div>
 
       {related.length > 0 && (
         <>

@@ -80,9 +80,23 @@ export default async function Image({
         >
           <span>{grade}</span>
           <span style={{ color: "#8a919c" }}>·</span>
-          <span style={{ color: "#59606c" }}>
-            {rtl ? "من المصدر الأصلي" : "From the original source"}
-          </span>
+          {/* Satori shapes Arabic but does not reorder it: a multi-word run comes out
+              with the words left to right, so the phrase reads backwards. Laying the
+              words out as a row-reverse flex puts them back in reading order. */}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: rtl ? "row-reverse" : "row",
+              columnGap: 8,
+              color: "#59606c",
+            }}
+          >
+            {(rtl ? "من المصدر الأصلي" : "From the original source")
+              .split(" ")
+              .map((word, i) => (
+                <span key={i}>{word}</span>
+              ))}
+          </div>
         </div>
       </div>
     ),

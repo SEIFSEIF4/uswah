@@ -7,56 +7,77 @@
 /* One source of truth for colour. Our own tokens come first; shadcn's are mapped onto
    them below so its components inherit this identity instead of shipping zinc.
    next-themes puts `.dark` on <html>, so that is the only dark selector. */
+/* Colour follows shadcn's token structure, so a theme from their generator can be
+   pasted in and everything downstream follows. The canonical set below carries shadcn's
+   meanings exactly — note that --muted and --accent are BACKGROUNDS there, with
+   --muted-foreground and --accent-foreground as the text on them. We got that pair
+   backwards before, which is why a focused dropdown item painted itself oxblood.
+
+   Our own editorial tokens sit on top as a small, named extension:
+   --brand is the oxblood that was miscast as --accent, --faint is a third text tone
+   below muted, and --surface and --rule are aliases kept so existing rules read well. */
 :root {
   --background: #faf8f4;
-  --surface: #ffffff;
   --foreground: #14181f;
-  --muted: #59606c;
-  --faint: #8a919c;
-  --rule: #e3ded4;
-  --accent: #7d2b1d;
-
-  /* shadcn tokens, expressed in ours */
-  --card: var(--surface);
-  --card-foreground: var(--foreground);
-  --popover: var(--surface);
-  --popover-foreground: var(--foreground);
-  --primary: var(--foreground);
-  --primary-foreground: var(--background);
+  --card: #ffffff;
+  --card-foreground: #14181f;
+  --popover: #ffffff;
+  --popover-foreground: #14181f;
+  --primary: #14181f;
+  --primary-foreground: #faf8f4;
   --secondary: #f1ece2;
-  --secondary-foreground: var(--foreground);
-  --muted-foreground: var(--muted);
-  --accent-foreground: var(--background);
+  --secondary-foreground: #14181f;
+  --muted: #f1ece2;
+  --muted-foreground: #59606c;
+  --accent: #f1ece2;
+  --accent-foreground: #14181f;
   --destructive: #8c3a2b;
-  --border: var(--rule);
-  --input: var(--rule);
-  --ring: var(--accent);
+  --border: #e3ded4;
+  --input: #e3ded4;
+  --ring: #7d2b1d;
   --radius: 0.5rem;
+
+  /* Uswah extensions */
+  --brand: #7d2b1d;
+  --faint: #8a919c;
+  --surface: var(--card);
+  --rule: var(--border);
 }
 
+/* Dark is tuned for reading, not inverted: the ground is never pure black and the text
+   never pure white, because 21:1 on an OLED makes serif stems bloom. Body lands near
+   13:1, the quietest caption grey at 5.4:1, and the brand at 6.4:1 on the ground. */
 .dark {
-  --background: #0e1116;
-  --surface: #161a21;
-  --foreground: #ece8e1;
-  --muted: #9aa2ad;
-  --faint: #6d757f;
-  --rule: #262c35;
-  --accent: #e08d7a;
-
-  --card: var(--surface);
-  --card-foreground: var(--foreground);
-  --popover: var(--surface);
-  --popover-foreground: var(--foreground);
-  --primary: var(--foreground);
-  --primary-foreground: var(--background);
+  --background: #15171c;
+  --foreground: #e3dfd8;
+  --card: #1d2027;
+  --card-foreground: #e3dfd8;
+  --popover: #1d2027;
+  --popover-foreground: #e3dfd8;
+  --primary: #e3dfd8;
+  --primary-foreground: #15171c;
   --secondary: #1d232c;
-  --secondary-foreground: var(--foreground);
-  --muted-foreground: var(--muted);
-  --accent-foreground: var(--background);
+  --secondary-foreground: #e3dfd8;
+  --muted: #1d232c;
+  --muted-foreground: #a8afba;
+  --accent: #232830;
+  --accent-foreground: #e3dfd8;
   --destructive: #e08d7a;
-  --border: var(--rule);
-  --input: var(--rule);
-  --ring: var(--accent);
+  --border: #2b303a;
+  --input: #2b303a;
+  --ring: #ec7a5c;
+
+  /* Uswah extensions */
+  /* Held back from #ec7a5c: chroma 144 -> 89, contrast 6.4 -> 6.9:1. Brand is a text
+     colour in fifteen places here, nearly all of them small labels — a section head, a
+     topic, a byline. At full chroma on a near-black ground those labels outshouted the
+     sentences they label, which is not what the same token does in light, where #7d2b1d
+     is a dark red that recedes. --ring stays at full strength: a focus indicator is the
+     one thing here that should shout. */
+  --brand: #d5907c;
+  --faint: #868e9a;
+  --surface: var(--card);
+  --rule: var(--border);
 }
 
 @theme inline {
@@ -67,6 +88,7 @@
   --color-faint: var(--faint);
   --color-rule: var(--rule);
   --color-accent: var(--accent);
+  --color-brand: var(--brand);
   --font-sans: var(--font-latin);
   --font-serif: var(--font-display);
   --font-arabic: var(--font-arabic);
@@ -111,15 +133,29 @@ body {
   /* clip, not hidden: full-bleed section grounds can reach the viewport edge without
      creating a horizontal scroll container or breaking position: sticky. */
   overflow-x: clip;
+  /* A reading site sets its running text in a serif. Inter stays, but only where it is
+     doing labelling work — .meta, licences, grade keys all name it explicitly. */
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.0625rem;
+  line-height: 1.7;
 }
 
 /* Arabic needs more room than Latin at the same visual weight: larger size and a looser
    line, or diacritics collide with the line above. Applied by direction so it follows the
    locale without a class on every element. */
-[dir="rtl"] {
+/* body carries Tailwind's font-sans, which outranks an inherited rule on <html> —
+   so name body here or Arabic copy silently falls back to Inter. */
+[dir="rtl"],
+[dir="rtl"] body {
   font-family: var(--font-arabic), system-ui, sans-serif;
   font-size: 1.06em;
   line-height: 1.9;
+}
+
+:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+  border-radius: 2px;
 }
 
 .sr-only {
@@ -135,7 +171,7 @@ body {
 
 h1, h2, h3, .display {
   font-family: var(--font-display), Georgia, serif;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: -0.012em;
   text-wrap: balance;
 }
@@ -147,7 +183,7 @@ h1, h2, h3, .display {
   letter-spacing: 0;
 }
 
-.muted { color: var(--muted); }
+.muted { color: var(--muted-foreground); }
 
 /* Category · read time. The one repeated structural device, so it is quiet. */
 .meta {
@@ -166,19 +202,303 @@ h1, h2, h3, .display {
   text-transform: none;
   font-size: .8rem;
 }
-.meta .topic { color: var(--accent); }
+.meta .topic { color: var(--brand); }
+.meta svg { width: 1.05em; height: 1.05em; opacity: .75; }
+/* The tilde is not a word: keep it tight to the number it qualifies. */
+.meta .clock { display: inline-flex; align-items: center; gap: .45ch; }
 
-.section-title {
-  font-size: 1.05rem;
-  letter-spacing: .02em;
-  margin: 3.5rem 0 1.25rem;
-  padding-bottom: .6rem;
-  border-bottom: 1px solid var(--rule);
+/* ── masthead ─────────────────────────────────────────────────────────────── */
+
+.masthead { padding: 2rem 0 0; }
+
+/* The wordmark scrolls away and the bar stays: on a long article the navigation has to
+   remain reachable, and the identity does not. */
+.masthead-bar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+}
+/* The ground is a pseudo-element so it can reach the viewport edge while the content
+   stays on the column: the bar sits inside the measure, but a full-bleed band scrolling
+   under it would otherwise show through on both sides. body has overflow-x: clip, which
+   is what makes the 50vw escape safe. */
+.masthead-bar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin-inline: calc(50% - 50vw);
+  background: var(--background);
+  border-bottom: 1px solid transparent;
+  z-index: -1;
+}
+/* The rule only appears once the bar has something scrolled underneath it. */
+@supports (animation-timeline: scroll()) {
+  .masthead-bar::before {
+    animation: masthead-settle linear both;
+    animation-timeline: scroll();
+    animation-range: 0 4rem;
+  }
+  @keyframes masthead-settle {
+    to { border-bottom-color: var(--rule); }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .masthead-bar::before { animation: none; border-bottom-color: var(--rule); }
 }
 
+.wordmark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .4em;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(2.4rem, 7vw, 4rem);
+  line-height: 1;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+/* Arabic has no case and its own display cut; uppercasing it would do nothing but
+   letter-spacing it would break the joins. */
+/* Arabic needs room above the cap line — the hamza on أ sits there, and line-height: 1
+   crops it off. */
+/* The drawn wordmark is a letterform, so it is sized by height like one. */
+.wordmark-ar { height: 1.15em; width: auto; }
+.footer-mark .wordmark-ar { height: 1em; }
+
+[dir="rtl"] .wordmark {
+  font-family: var(--font-display-ar), var(--font-arabic), serif;
+  text-transform: none;
+  letter-spacing: 0;
+  line-height: 1.35;
+}
+
+.masthead-bar {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem 0;
+}
+.masthead-nav {
+  display: flex;
+  gap: 1.75rem;
+  justify-content: center;
+  font-size: .8rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+[dir="rtl"] .masthead-nav { letter-spacing: 0; text-transform: none; font-size: .95rem; }
+.masthead-nav a { color: var(--muted-foreground); }
+.masthead-nav a:hover { color: var(--foreground); }
+/* Current is marked by weight and a rule, not colour alone — the same convention the
+   topic bar uses, so it survives being read without colour. */
+.masthead-nav a[aria-current="page"] {
+  color: var(--foreground);
+  font-weight: 600;
+  border-bottom: 2px solid var(--foreground);
+  padding-bottom: .35rem;
+}
+.masthead-tools {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  color: var(--muted-foreground);
+}
+.theme-toggle:hover { color: var(--foreground); background: var(--secondary); }
+
+/* The wipe is scoped to a theme toggle: the attribute and the duration exist only while
+   one is in flight, so route transitions elsewhere are untouched. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+html[data-theme-wipe="active"]::view-transition-group(root) {
+  animation-duration: var(--theme-wipe-duration);
+}
+html[data-theme-wipe="active"]::view-transition-new(root) {
+  clip-path: var(--theme-wipe-from);
+}
+
+/* All three read as one set: same face, size and case. Arabic is labelled AR rather
+   than عربي so it does not sit in the row at a different weight and height. */
+.locale-switch {
+  display: flex;
+  align-items: baseline;
+  gap: .6rem;
+  font-family: var(--font-latin), system-ui, sans-serif;
+  font-size: .75rem;
+  letter-spacing: .08em;
+}
+.locale-switch a { color: var(--muted-foreground); }
+.locale-switch a:hover { color: var(--foreground); }
+.locale-switch a[aria-current] {
+  color: var(--foreground);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* ── topics menu ──────────────────────────────────────────────────────────── */
+
+.topics-menu { position: relative; justify-self: start; }
+.topics-menu-open {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  border: 1px solid color-mix(in srgb, var(--brand) 35%, transparent);
+  border-radius: 999px;
+  padding: .4rem .9rem;
+  font-size: .75rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--brand);
+  white-space: nowrap;
+}
+[dir="rtl"] .topics-menu-open { letter-spacing: 0; text-transform: none; font-size: .9rem; }
+.topics-menu-open:hover { border-color: var(--brand); }
+.topics-menu-open[aria-expanded="true"] svg { transform: rotate(180deg); }
+
+.topics-menu-panel {
+  position: absolute;
+  inset-inline-start: 0;
+  top: calc(100% + .5rem);
+  z-index: 20;
+  min-width: 15rem;
+  /* Contents list, not a word grid: one column with the count on the far edge gives the
+     eye a straight rule to run down. Two columns of centred words had neither. */
+  display: flex;
+  flex-direction: column;
+  /* Six topics fit twice over before this needs thinking about again. Past roughly two
+     dozen the answer is not a taller menu, it is search. */
+  max-height: min(60vh, 26rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: .4rem;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  box-shadow: 0 12px 32px rgb(0 0 0 / .1);
+}
+.topics-menu-panel a {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 2.5rem;
+  padding: .5rem .7rem;
+  border-radius: 6px;
+  /* Reading type, not the metadata caps this used to wear: these are six destinations,
+     and caps at .82rem made every one of them look like a label on something else. */
+  color: var(--foreground);
+  font-size: 1rem;
+  line-height: 1.35;
+  white-space: nowrap;
+}
+.topics-menu-panel a + a { box-shadow: 0 -1px 0 var(--rule); }
+/* The whole row lights, so the target is the row rather than the word inside it. */
+.topics-menu-panel a:hover {
+  background: var(--accent);
+  box-shadow: none;
+}
+.topics-menu-panel a:hover + a { box-shadow: none; }
+.topics-menu-panel .count {
+  font-family: var(--font-latin), system-ui, sans-serif;
+  font-size: .8rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted-foreground);
+}
+.topics-menu-panel a:hover .count { color: var(--brand); }
+
+/* Sits under the six on its own rule: it leaves the menu rather than filtering by one of
+   its rows, so it should not look like a seventh topic. */
+.topics-menu-panel .topics-menu-all {
+  margin-top: .25rem;
+  padding-top: .6rem;
+  border-top: 1px solid var(--rule);
+  color: var(--brand);
+  font-size: .88rem;
+  justify-content: flex-start;
+}
+.topics-menu-panel .topics-menu-all:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+/* Section headings sit centred with air around them, so a scroll reads as a set of
+   spreads rather than one continuous column. */
+.section-title {
+  text-align: center;
+  font-size: clamp(1.25rem, 2.6vw, 1.65rem);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin: 4.5rem 0 2rem;
+}
+[dir="rtl"] .section-title { letter-spacing: 0; text-transform: none; }
+
 .page-title {
-  font-size: clamp(1.9rem, 4vw, 2.6rem);
-  margin: .5rem 0 2rem;
+  font-size: clamp(2.2rem, 4.8vw, 3.2rem);
+  margin: .5rem 0 .7rem;
+}
+/* Superscript rather than inline: the count qualifies the title, it is not part of it. */
+.page-title .count,
+.topic-index h2 .count {
+  font-family: var(--font-latin), system-ui, sans-serif;
+  font-size: .38em;
+  font-weight: 500;
+  vertical-align: super;
+  margin-inline-start: .5ch;
+  color: var(--brand);
+}
+
+/* Sort is two buttons, not a select: with two options a menu costs a click to show what
+   a pair of labels already says. */
+.sort-bar {
+  display: flex;
+  gap: .4rem;
+  margin: 0 0 1.5rem;
+}
+.sort-bar button {
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  padding: .3rem .85rem;
+  font-family: var(--font-latin), system-ui, sans-serif;
+  font-size: .74rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+[dir="rtl"] .sort-bar button {
+  font-family: var(--font-arabic), sans-serif;
+  letter-spacing: 0;
+  text-transform: none;
+  font-size: .85rem;
+}
+.sort-bar button:hover { color: var(--foreground); border-color: var(--foreground); }
+.sort-bar button[aria-pressed="true"] {
+  color: var(--background);
+  background: var(--foreground);
+  border-color: var(--foreground);
+}
+
+/* The one line that says what the site is. Set at reading size rather than as a
+   headline: it is a definition, not a slogan, and the wordmark above it already carries
+   the identity. */
+.intro {
+  max-width: 46ch;
+  margin: .5rem auto 2rem;
+  text-align: center;
+  font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+  font-weight: 400;
+  line-height: 1.55;
+  color: var(--muted-foreground);
+  letter-spacing: 0;
 }
 
 /* ── hero ─────────────────────────────────────────────────────────────────── */
@@ -203,66 +523,84 @@ h1, h2, h3, .display {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(8, 10, 14, .88) 0%, rgba(8, 10, 14, .45) 45%, rgba(8, 10, 14, .12) 100%);
+  /* Even, not bottom-weighted: the type now sits in the middle of the frame. */
+  background: rgba(8, 10, 14, .5);
 }
+/* Centred over the artwork rather than tucked into a bottom corner: the title is the
+   subject of the picture, not a caption on it. Centring also spares the RTL mirror. */
 .hero-text {
   position: absolute;
-  inset-inline: 0;
-  bottom: 0;
+  inset: 0;
   z-index: 1;
-  padding: clamp(1.25rem, 4vw, 2.5rem);
+  padding: clamp(1.5rem, 5vw, 3.5rem);
   display: flex;
   flex-direction: column;
-  gap: .6rem;
-  max-width: 46ch;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: .9rem;
 }
-.hero-text h1 {
-  font-size: clamp(1.7rem, 4.4vw, 2.8rem);
-  line-height: 1.12;
+.hero-text h1,
+.hero-text h2 {
+  font-size: clamp(2.4rem, 6.4vw, 4.2rem);
+  line-height: 1.05;
+  font-weight: 700;
   margin: 0;
+  max-width: 18ch;
 }
+.hero-text p { max-width: 46ch; }
+/* Type over artwork needs a size up and a shadow to sit on: the painting underneath is
+   busy at exactly the scale small labelling type occupies. */
+.hero-text .meta,
+.band-text .meta {
+  font-size: .78rem;
+  text-shadow: 0 1px 3px rgba(8, 10, 14, .6);
+}
+[dir="rtl"] .hero-text .meta,
+[dir="rtl"] .band-text .meta { font-size: .88rem; }
 .hero-text p { margin: 0; color: #ded9d0; }
 .hero-text .meta { color: #b9b3a9; }
-.hero-text .meta .topic { color: #e9b9ab; }
+.hero-text .meta .topic { color: #f0937a; }
 
 /* ── cards ────────────────────────────────────────────────────────────────── */
 
 .three-up {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  /* Fixed at three on a wide page: auto-fit would slip to four and the cards would stop
+     being the same object the rest of the page is built from. */
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 2rem 1.75rem;
+}
+
+@media (max-width: 52rem) {
+  .three-up { grid-template-columns: 1fr; }
 }
 
 .card { display: block; }
 .card img {
   width: 100%;
-  aspect-ratio: 4 / 3;
+  /* Square. At 4/3 in a three-column measure the paintings were reduced to thumbnails,
+     and the artwork is half of why anyone stops on a card. */
+  aspect-ratio: 1 / 1;
   object-fit: cover;
-  border-radius: 6px;
-  margin-bottom: .85rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
   background: var(--surface);
 }
 .card h3 {
+  font-weight: 600;
   font-size: 1.18rem;
   line-height: 1.25;
   margin: .4rem 0 .35rem;
 }
 .card p {
   margin: 0;
-  color: var(--muted);
+  color: var(--muted-foreground);
   font-size: .93rem;
   line-height: 1.55;
 }
 .card:hover h3 { text-decoration: underline; text-underline-offset: 3px; }
 
-.round-row .card img {
-  aspect-ratio: 1;
-  border-radius: 50%;
-  max-width: 15rem;
-  margin-inline: auto;
-}
-.round-row .card { text-align: center; }
-.round-row .meta { justify-content: center; }
 
 /* ── full-bleed feature band ──────────────────────────────────────────────── */
 
@@ -298,10 +636,10 @@ h1, h2, h3, .display {
   gap: .5rem;
   max-width: 44ch;
 }
-.band-text h2 { font-size: clamp(1.4rem, 3.2vw, 2rem); margin: 0; line-height: 1.18; }
+.band-text h2 { font-size: clamp(1.8rem, 4vw, 2.8rem); margin: 0; line-height: 1.1; font-weight: 700; }
 .band-text p { margin: 0; color: #ded9d0; }
 .band-text .meta { color: #b9b3a9; }
-.band-text .meta .topic { color: #e9b9ab; }
+.band-text .meta .topic { color: #f0937a; }
 
 /* ── topic strip ──────────────────────────────────────────────────────────── */
 
@@ -315,7 +653,7 @@ h1, h2, h3, .display {
   border-radius: 999px;
   padding: .45rem 1rem;
   font-size: .9rem;
-  color: var(--muted);
+  color: var(--muted-foreground);
 }
 .topic-strip a:hover { border-color: var(--foreground); color: var(--foreground); }
 
@@ -338,7 +676,7 @@ h1, h2, h3, .display {
   border-radius: 5px;
 }
 .listrow h3 { font-size: 1.15rem; margin: .35rem 0 .3rem; line-height: 1.25; }
-.listrow p { margin: 0; color: var(--muted); font-size: .92rem; }
+.listrow p { margin: 0; color: var(--muted-foreground); font-size: .92rem; }
 .listrow:hover h3 { text-decoration: underline; text-underline-offset: 3px; }
 @media (max-width: 30rem) {
   .listrow { grid-template-columns: 4.5rem 1fr; gap: .9rem; }
@@ -348,7 +686,7 @@ h1, h2, h3, .display {
 
 .situation { max-width: 40rem; margin-inline: auto; }
 
-.art { margin: 0 0 1.75rem; }
+.art { margin: 0 0 3.25rem; }
 .art img {
   width: 100%;
   aspect-ratio: 16 / 9;
@@ -377,16 +715,42 @@ h1, h2, h3, .display {
 }
 
 .situation-head h1 {
-  font-size: clamp(1.8rem, 4.6vw, 2.6rem);
-  line-height: 1.14;
+  font-size: clamp(2.1rem, 5.2vw, 3.1rem);
+  line-height: 1.1;
   margin: .5rem 0 .6rem;
 }
 .situation-head .standfirst {
   font-size: 1.12rem;
-  color: var(--muted);
+  color: var(--muted-foreground);
   margin: 0;
   line-height: 1.6;
 }
+
+/* Provenance, directly under the standfirst: who checked this and when. Set in the
+   labelling face rather than the reading one — it is apparatus, not prose. */
+.byline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .6ch;
+  margin: 1rem 0 0;
+  font-family: var(--font-latin), system-ui, sans-serif;
+  font-size: .78rem;
+  color: var(--faint);
+}
+[dir="rtl"] .byline { font-family: var(--font-arabic), sans-serif; font-size: .85rem; }
+.byline strong { font-weight: 500; color: var(--brand); }
+
+/* An unverified entry is not a missing byline, it is a warning, so it carries a mark
+   rather than going quiet. */
+.byline-flag {
+  border: 1px solid color-mix(in srgb, var(--brand) 40%, transparent);
+  border-radius: 999px;
+  padding: .1rem .6rem;
+  color: var(--brand);
+  letter-spacing: .04em;
+}
+[dir="rtl"] .byline-flag { letter-spacing: 0; }
 
 /* The source block is the centre of the page, so it gets the only inset surface. */
 .source {
@@ -419,8 +783,53 @@ h1, h2, h3, .display {
   margin: .9rem 0 0;
   font-size: .8rem;
   letter-spacing: .06em;
-  color: var(--accent);
+  color: var(--brand);
 }
+/* Narrator and grading, verbatim from dorar.net, with the credit that links back.
+   Arabic by nature (names of narrators and scholars), so RTL in every locale. */
+.source-dorar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .3rem 1.1rem;
+  margin: 1rem 0 0;
+  font-size: .85rem;
+  color: var(--faint);
+  direction: rtl;
+  text-align: right;
+}
+.source-dorar a {
+  color: var(--brand);
+  text-decoration: none;
+}
+.source-dorar a:hover { text-decoration: underline; }
+
+/* dorar.net's own topical classification of the cited hadith, as quiet chips. */
+.source-cats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+  margin: .8rem 0 0;
+  direction: rtl;
+}
+.source-cats a {
+  font-size: .75rem;
+  color: var(--faint);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  padding: .1rem .6rem;
+  text-decoration: none;
+}
+.source-cats a:hover { color: var(--brand); border-color: var(--brand); }
+
+/* The site-wide credit at the foot of the sayings index. */
+.dorar-note {
+  margin: 3rem 0 0;
+  font-size: .85rem;
+  color: var(--faint);
+}
+.dorar-note a { color: var(--brand); text-decoration: none; }
+.dorar-note a:hover { text-decoration: underline; }
+
 /* Sample data must never be mistaken for a verified source. */
 .source.is-placeholder {
   border-style: dashed;
@@ -429,7 +838,28 @@ h1, h2, h3, .display {
 .source.is-placeholder .source-text,
 .source.is-placeholder .source-translation { color: var(--faint); }
 
-.prose p { font-size: 1.06rem; line-height: 1.75; margin: 0 0 1.1rem; }
+.prose p { font-size: 1.12rem; line-height: 1.8; margin: 0 0 1.3rem; }
+
+/* An ornament instead of a rule between the source and the reading of it: it marks the
+   turn without drawing a line across the column. */
+.prose::before {
+  content: "";
+  display: block;
+  width: 3.5rem;
+  height: 1px;
+  margin: 0 auto 2.5rem;
+  background: var(--faint);
+  box-shadow: -.75rem 0 0 -.3rem var(--faint), .75rem 0 0 -.3rem var(--faint);
+}
+
+/* Latin only. Arabic is cursive — a raised initial would cut a word out of its joins. */
+[dir="ltr"] .prose > p:first-of-type::first-letter {
+  float: left;
+  font-size: 3.4em;
+  line-height: .82;
+  padding: .08em .1em 0 0;
+  color: var(--brand);
+}
 
 /* The takeaway is the sentence people screenshot, so it is set as a pulled statement
    rather than a callout: a hairline above it, the label small, the text a size up. */
@@ -452,7 +882,7 @@ h1, h2, h3, .display {
   font-size: .7rem;
   letter-spacing: .14em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--brand);
   margin-bottom: .5rem;
 }
 [dir="rtl"] .takeaway span {
@@ -463,92 +893,168 @@ h1, h2, h3, .display {
 }
 
 .save { margin-top: 2.5rem; }
+/* A hairline pill that fills on hover rather than only darkening its edge: the old one
+   changed by one border colour, which on a page of hairlines was not enough to read as
+   the one thing here you can press. */
 .save button {
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
   border: 1px solid var(--rule);
   border-radius: 999px;
-  padding: .5rem 1.3rem;
+  padding: .55rem 1.3rem;
+  font-family: inherit;
   font-size: .9rem;
-  color: var(--muted);
-  cursor: pointer;
+  color: var(--muted-foreground);
   background: transparent;
+  transition: color .18s ease, border-color .18s ease, background-color .18s ease,
+    transform .12s ease;
 }
-.save button:hover { border-color: var(--foreground); color: var(--foreground); }
+.save button svg { width: 1.05em; height: 1.05em; }
+.save button:hover {
+  border-color: color-mix(in srgb, var(--brand) 55%, transparent);
+  background: color-mix(in srgb, var(--brand) 9%, transparent);
+  color: var(--brand);
+}
+/* The press itself, so the button answers under the finger before the server does. */
+.save button:active { transform: scale(.97); }
+.save button:disabled { opacity: .6; }
+
+/* Fired when the action returns. Overshoot on the mark alone — scaling the whole pill
+   would shove the paragraph under it.
+
+   The overshoot lives in the keyframe, not the curve. A springy bezier here overshot
+   every keyframe target on top of a scale that already peaks at 1.4, so the mark
+   rebounded twice. This curve settles, and it is the one verdict-settle uses, so the
+   page keeps one motion character rather than two. */
+.save button.is-pop svg { animation: save-pop .42s cubic-bezier(.16, 1, .3, 1); }
+@keyframes save-pop {
+  0%   { transform: scale(1); }
+  35%  { transform: scale(1.4) rotate(-6deg); }
+  100% { transform: scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .save button { transition: none; }
+  .save button:active { transform: none; }
+  .save button.is-pop svg { animation: none; }
+}
 
 /* ── search ───────────────────────────────────────────────────────────────── */
 
 .search-form { display: flex; gap: .75rem; align-items: baseline; }
+/* An editorial underline field, not a control. The shadcn Input underneath brings its
+   own rounded border and a focus ring drawn as a box-shadow — unset both, or the ring
+   paints a box around the rule and the text sits flush against it, which is what read
+   as the field being cut off. */
 .search-form input {
   flex: 1;
   min-width: 0;
   border: none;
   border-bottom: 1px solid var(--rule);
+  border-radius: 0;
   background: transparent;
   color: var(--foreground);
-  padding: .55rem 0;
+  height: auto;
+  padding: .55rem .15rem;
   font-size: 1.15rem;
   font-family: inherit;
 }
-.search-form input:focus { outline: none; border-bottom-color: var(--foreground); }
+.search-form input:focus,
+.search-form input:focus-visible {
+  outline: none;
+  box-shadow: none;
+  border-bottom-color: var(--foreground);
+}
 .search-form button {
   background: none;
   border: none;
   color: var(--foreground);
   font: inherit;
   font-size: .9rem;
-  cursor: pointer;
   text-decoration: underline;
   text-underline-offset: 4px;
 }
 .rows + .muted, .search-form + .muted { margin-top: 2rem; }
 
+/* Results fade in rather than replacing the previous answer in place. Short enough that
+   it never becomes a wait of its own — the point is to stop text being overwritten under
+   the eye, not to perform a transition. */
+.search-fade { animation: search-fade .18s ease-out both; }
+@keyframes search-fade {
+  from { opacity: 0; transform: translateY(2px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* The skeleton is .listrow's own grid, so the real rows land exactly where the grey ones
+   were. A placeholder in a different shape moves the page twice per search. */
+.skeleton-row { align-items: start; }
+.skeleton-text {
+  display: flex;
+  flex-direction: column;
+  gap: .6rem;
+  padding-top: .4rem;
+}
+.skeleton {
+  display: block;
+  background: var(--muted);
+  border-radius: 4px;
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+.skeleton-thumb { width: 100%; aspect-ratio: 1; border-radius: 5px; }
+.skeleton-line { height: .62rem; }
+.skeleton-line.meta  { width: 7rem; height: .5rem; }
+.skeleton-line.title { width: 58%; height: .95rem; }
+.skeleton-line.body  { width: 84%; }
+/* Staggered, so it reads as one surface breathing instead of three lights blinking. */
+.skeleton-row:nth-child(2) .skeleton { animation-delay: .12s; }
+.skeleton-row:nth-child(3) .skeleton { animation-delay: .24s; }
+@keyframes skeleton-pulse {
+  50% { opacity: .45; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .search-fade { animation: none; }
+  .skeleton { animation: none; opacity: .7; }
+}
+
 /* ── sample-data banner ───────────────────────────────────────────────────── */
 
+/* White on the brand is a 9.4:1 bar in light. In dark --brand flips to #ec7a5c, a tint
+   meant for text *on* the ground, and the same rule became white on salmon at 2.8:1 —
+   the loudest thing on the page and the least readable. Dark puts the ground back on
+   top of it, which is what --primary-foreground is for. */
 .sample-banner {
-  background: var(--accent);
+  background: var(--brand);
   color: #fff;
   text-align: center;
   font-size: .78rem;
   letter-spacing: .04em;
   padding: .4rem 1rem;
 }
+.dark .sample-banner { color: var(--primary-foreground); }
+
+/* Tailwind's preflight puts a default arrow on buttons, so every button rule here was
+   carrying its own cursor line — and the ones added since forgot to. Stated once. */
+button:not(:disabled), [role="button"]:not([aria-disabled="true"]) { cursor: pointer; }
 
 :where(a):focus-visible, :where(button):focus-visible, :where(input):focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--brand);
   outline-offset: 3px;
   border-radius: 3px;
 }
 
 /* ── sayings ──────────────────────────────────────────────────────────────── */
 
+/* The lede sits under its title, not in the reading column: one sentence of orientation
+   runs to the measure of the page, where the 52ch cap meant for body copy was breaking
+   it across lines right under the heading. */
 .lede {
   font-size: 1.08rem;
-  color: var(--muted);
-  max-width: 52ch;
+  color: var(--muted-foreground);
   margin: 0 0 1.75rem;
   line-height: 1.65;
 }
 
-/* The grading key is displayed rather than hidden behind a tooltip: a comparison whose
-   grade you cannot see is what this section exists to avoid becoming. */
-.grade-key {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: .5rem;
-  padding: .8rem 1rem;
-  border: 1px solid var(--rule);
-  border-radius: 8px;
-  background: var(--surface);
-  margin-bottom: 2.5rem;
-}
-.grade-key-label {
-  font-size: .7rem;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--faint);
-  margin-inline-end: .3rem;
-}
-[dir="rtl"] .grade-key-label { letter-spacing: 0; text-transform: none; font-size: .8rem; }
 
 .grade {
   display: inline-flex;
@@ -564,17 +1070,30 @@ h1, h2, h3, .display {
 .grade-quran, .grade-sahih { color: #2f6b4f; }
 .grade-hasan { color: #2c5a86; }
 .grade-disputed { color: #8a5a12; }
-.grade-historical { color: var(--muted); }
+.grade-historical { color: var(--muted-foreground); }
 .dark .grade-quran,
 .dark .grade-sahih { color: #7fc09b; }
 .dark .grade-hasan { color: #86b2e0; }
 .dark .grade-disputed { color: #d9a95f; }
 
 /* Directory. Deliberately plain: it is a way through, not the thing itself. */
-.quote-index { list-style: none; margin: 0; padding: 0; }
-.quote-index li { border-top: 1px solid var(--rule); }
-.quote-index li:last-child { border-bottom: 1px solid var(--rule); }
-.quote-index a { display: block; padding: 1.5rem 0; }
+.quote-index,
+.topic-index { list-style: none; margin: 0; padding: 0; }
+.quote-index li,
+.topic-index li { border-top: 1px solid var(--rule); }
+.quote-index li:last-child,
+.topic-index li:last-child { border-bottom: 1px solid var(--rule); }
+/* Text and grade on one line, the grade at the far end: the verdict wraps at a reading
+   measure, so on a wide column it used to leave the right half of every row empty. */
+.quote-index a {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: .75rem 2rem;
+  padding: 1.5rem 0;
+}
+.quote-index-text { min-width: 0; flex: 1 1 28rem; }
 .quote-index .saying-q {
   display: block;
     font-family: var(--font-display), Georgia, serif;
@@ -583,10 +1102,34 @@ h1, h2, h3, .display {
   text-wrap: balance;
 }
 [dir="rtl"] .quote-index .saying-q { direction: ltr; text-align: left; }
-.quote-index p { margin: .5rem 0 0; color: var(--muted); font-size: .95rem; max-width: 60ch; }
-.quote-index-meta { display: flex; align-items: center; gap: .6rem; margin-top: .8rem; }
+.quote-index p { margin: .5rem 0 0; color: var(--muted-foreground); font-size: .95rem; max-width: 60ch; }
+.quote-index-meta { display: flex; align-items: center; gap: .6rem; }
 .quote-index a:hover .saying-q { text-decoration: underline; text-underline-offset: 4px; }
 .pending { font-size: .78rem; color: var(--faint); }
+
+/* Name, weight, then what is inside. The row is one target: the titles are a preview of
+   the topic, not six more places to aim at. */
+.topic-index a {
+  display: block;
+  padding: 1.5rem .5rem;
+  color: var(--foreground);
+}
+.topic-index h2 {
+  margin: 0;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.5rem, 3vw, 1.9rem);
+  font-weight: 600;
+  line-height: 1.2;
+}
+.topic-index p {
+  margin: .5rem 0 0;
+  max-width: 60ch;
+  color: var(--muted-foreground);
+  font-size: .95rem;
+  line-height: 1.55;
+}
+.topic-index a:hover h2 { text-decoration: underline; text-underline-offset: 4px; }
+.topic-index a:hover .count { color: var(--brand); }
 
 /* ── one saying ───────────────────────────────────────────────────────────── */
 
@@ -609,7 +1152,7 @@ h1, h2, h3, .display {
   font-family: var(--font-display), Georgia, serif;
   font-size: 1.45rem;
   line-height: 1.35;
-  color: var(--muted);
+  color: var(--muted-foreground);
   text-wrap: balance;
 }
 .saying-grade { display: flex; align-items: center; gap: .7rem; margin: 1rem 0 2rem; }
@@ -650,7 +1193,7 @@ h1, h2, h3, .display {
   font-size: .7rem;
   letter-spacing: .14em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--brand);
   margin-bottom: .5rem;
 }
 [dir="rtl"] .verdict span {
@@ -669,7 +1212,7 @@ h1, h2, h3, .display {
   background: transparent;
 }
 .pending-note strong { display: block; font-size: .9rem; margin-bottom: .35rem; }
-.pending-note p { margin: 0; font-size: .9rem; color: var(--muted); line-height: 1.6; }
+.pending-note p { margin: 0; font-size: .9rem; color: var(--muted-foreground); line-height: 1.6; }
 
 .saying-cta {
   display: block;
@@ -683,7 +1226,7 @@ h1, h2, h3, .display {
   font-size: .72rem;
   letter-spacing: .12em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--brand);
   margin-bottom: .3rem;
 }
 [dir="rtl"] .saying-cta span { letter-spacing: 0; text-transform: none; font-size: .84rem; }
@@ -703,8 +1246,7 @@ h1, h2, h3, .display {
   place-items: center;
   background: none;
   border: none;
-  color: var(--muted);
-  cursor: pointer;
+  color: var(--muted-foreground);
   padding: 0;
 }
 .site-search-open:hover { color: var(--foreground); }
@@ -737,14 +1279,14 @@ h1, h2, h3, .display {
 .site-search-hits strong { display: block; font-weight: 500; font-size: .95rem; }
 .site-search-hits span {
   display: block;
-  color: var(--muted);
+  color: var(--muted-foreground);
   font-size: .82rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 .site-search-all { border-top: 1px solid var(--rule); margin-top: .4rem; padding-top: .4rem; }
-.site-search-all a { font-size: .85rem; color: var(--accent); }
+.site-search-all a { font-size: .85rem; color: var(--brand); }
 .site-search-empty {
   display: flex;
   flex-direction: column;
@@ -772,7 +1314,7 @@ h1, h2, h3, .display {
   flex: none;
   padding: .8rem 0;
   font-size: .95rem;
-  color: var(--muted);
+  color: var(--muted-foreground);
   border-bottom: 2px solid transparent;
   white-space: nowrap;
 }
@@ -798,8 +1340,7 @@ h1, h2, h3, .display {
   border: 1px solid var(--rule);
   border-radius: 999px;
   background: transparent;
-  color: var(--muted);
-  cursor: pointer;
+  color: var(--muted-foreground);
 }
 .shelf-nav button:hover { border-color: var(--foreground); color: var(--foreground); }
 @media (hover: none) { .shelf-nav { display: none; } }
@@ -810,50 +1351,75 @@ h1, h2, h3, .display {
   gap: 1.75rem;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
-  scrollbar-width: none;
   padding-bottom: .5rem;
 }
-.shelf-track::-webkit-scrollbar { display: none; }
 .shelf-item { scroll-snap-align: start; }
 
 /* ── paths ────────────────────────────────────────────────────────────────── */
 
-/* Read in order, so the layout says so: numbered rows rather than cards, with the
-   commitment stated on the right where it can be compared down the column. */
-.path-rows { list-style: none; margin: 1.25rem 0 0; padding: 0; }
-.path-rows li {
+/* The circle is reserved for this one object. Every situation on the site is a
+   rectangle; a path is the only thing that is not a single situation, so it is the only
+   thing that is round. A second shape has to mean something or it is decoration.
+   The commitment still travels with it — a bare circle would drop the one line that
+   tells a reader what they are agreeing to before they start. */
+.path-circles {
+  list-style: none;
+  margin: 1.25rem 0 0;
+  padding: 0;
   display: grid;
-  grid-template-columns: 3rem 1fr auto;
-  gap: 1.5rem 2rem;
-  align-items: start;
-  padding: 1.75rem 0;
-  border-top: 1px solid rgb(255 255 255 / .16);
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 3rem 2.5rem;
 }
-.path-rows li:last-child { border-bottom: 1px solid rgb(255 255 255 / .16); }
+.path-circles li { text-align: center; }
+.path-circles img {
+  width: 100%;
+  max-width: 14rem;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-inline: auto;
+  display: block;
+}
 
 .path-n {
+  display: block;
+  margin-top: 1.1rem;
   font-family: var(--font-latin), system-ui, sans-serif;
   font-variant-numeric: tabular-nums;
-  font-size: .9rem;
+  font-size: .8rem;
+  letter-spacing: .12em;
   color: #e9b9ab;
 }
 
-.path-row-main h3 { margin: 0 0 .4rem; font-size: 1.45rem; }
-.path-row-main p {
-  margin: 0;
-  color: #b3b8c0;
-  max-width: 46ch;
+.path-circles h3 { margin: .35rem 0 .5rem; font-size: 1.45rem; }
+.path-circles p {
+  margin: 0 auto;
+  color: #c3b9ad;
+  max-width: 34ch;
   line-height: 1.6;
 }
 
-.path-row-facts { display: flex; gap: 2rem; margin: 0; }
-.path-row-facts dt { font-size: .72rem; color: #8e96a1; }
-.path-row-facts dd { margin: .2rem 0 0; font-size: .95rem; white-space: nowrap; }
-
-@media (max-width: 46rem) {
-  .path-rows li { grid-template-columns: 2.5rem 1fr; }
-  .path-row-facts { grid-column: 2; }
+.path-facts {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin: 1.1rem 0 0;
 }
+.path-facts dt {
+  font-family: var(--font-latin), system-ui, sans-serif;
+  font-size: .68rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: #9c9086;
+}
+[dir="rtl"] .path-facts dt {
+  font-family: var(--font-arabic), sans-serif;
+  letter-spacing: 0;
+  text-transform: none;
+  font-size: .78rem;
+}
+.path-facts dd { margin: .2rem 0 0; font-size: .95rem; white-space: nowrap; }
 
 /* ── contents and share ───────────────────────────────────────────────────── */
 
@@ -865,7 +1431,6 @@ h1, h2, h3, .display {
   background: none;
   border: none;
   padding: 0;
-  cursor: pointer;
   font: inherit;
   font-size: .72rem;
   letter-spacing: .14em;
@@ -883,9 +1448,44 @@ h1, h2, h3, .display {
   border-radius: 8px;
 }
 .contents li + li { margin-top: .55rem; }
-.contents a { font-size: .95rem; color: var(--muted); }
+.contents a { font-size: .95rem; color: var(--muted-foreground); }
 .contents a span { color: var(--faint); }
 .contents a:hover { color: var(--foreground); }
+
+/* The rule belongs to the row, so it runs the full measure with both controls sitting
+   on it. Inside the row the share block drops its own spacing and border. */
+.share-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 1.5rem;
+  margin-top: 2.5rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--rule);
+}
+.share-row .share { margin-top: 0; padding-top: 0; border-top: none; }
+.share-row .save { margin-top: 0; }
+
+/* Same pill as Save: they sit at the same end of the same rule on their own pages, so
+   they should not read as two different kinds of control. */
+.share-card {
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  padding: .5rem 1.15rem;
+  font-size: .9rem;
+  color: var(--muted-foreground);
+  transition: color .18s ease, border-color .18s ease, background-color .18s ease;
+}
+.share-card:hover {
+  border-color: color-mix(in srgb, var(--brand) 55%, transparent);
+  background: color-mix(in srgb, var(--brand) 9%, transparent);
+  color: var(--brand);
+}
+.share-card:disabled { opacity: .6; }
 
 .share {
   display: flex;
@@ -910,9 +1510,8 @@ h1, h2, h3, .display {
   height: 2.1rem;
   border: 1px solid var(--rule);
   border-radius: 999px;
-  color: var(--muted);
+  color: var(--muted-foreground);
   background: transparent;
-  cursor: pointer;
 }
 .share-links a:hover, .share-links button:hover { border-color: var(--foreground); color: var(--foreground); }
 
@@ -927,7 +1526,6 @@ h1, h2, h3, .display {
   font: inherit;
   font-size: .9rem;
   padding: .55rem 1.5rem;
-  cursor: pointer;
 }
 .load-more button:hover { border-color: var(--foreground); }
 .load-more p { margin: 0; color: var(--faint); font-size: .85rem; }
@@ -948,33 +1546,37 @@ h1, h2, h3, .display {
 
 .tone-warm   { background: #f3ede2; }
 .tone-paper  { background: var(--surface); }
-.tone-ink    { background: #171c25; color: #ece8e1; }
+/* Warm ink, not blue-black: the page is cream and the artwork is sepia, and a cool
+   #171c25 slab sat outside that family. Same contrast job, same palette. */
+.tone-ink    { background: #241d18; color: #f0ebe3; }
 .tone-ink .section-title { border-color: rgb(255 255 255 / .16); }
-.tone-ink .card p, .tone-ink .listrow p { color: #b3b8c0; }
+.tone-ink .card p, .tone-ink .listrow p { color: #c3b9ad; }
 .tone-ink .card h3, .tone-ink .listrow h3 { color: #ece8e1; }
-.tone-ink .meta { color: #8e96a1; }
+.tone-ink .meta { color: #9c9086; }
 .tone-ink .meta .topic { color: #e9b9ab; }
-.tone-ink .shelf-nav button { border-color: rgb(255 255 255 / .22); color: #b3b8c0; }
+.tone-ink .shelf-nav button { border-color: rgb(255 255 255 / .22); color: #c3b9ad; }
 .tone-ink .shelf-nav button:hover { border-color: #ece8e1; color: #ece8e1; }
 
-.dark .tone-warm { background: #141922; }
-.dark .tone-paper { background: #12161d; }
+/* Dark drops the warm grounds. Near black there is no room to separate four cool tones
+   by lightness and still keep .meta's grey above 4.5:1 on every one of them — the lift
+   that would have made a third band legible puts caption text at 4.3:1. So dark carries
+   two grounds off the page instead of three: the surface lift, and the deep slab. warm
+   and paper share the lift; the home page never places them next to each other. */
+.dark .tone-warm,
+.dark .tone-paper { background: var(--surface); }
+/* Ink stays the slab it is in light, cool rather than sepia. Its light-mode children are
+   all warm greys, so dark hands them back to the palette. */
+.dark .tone-ink { background: #0e1218; color: var(--foreground); }
+.dark .tone-ink .section-title { border-color: var(--rule); }
+.dark .tone-ink .card p, .dark .tone-ink .listrow p { color: var(--muted-foreground); }
+.dark .tone-ink .card h3, .dark .tone-ink .listrow h3 { color: var(--foreground); }
+.dark .tone-ink .meta { color: var(--faint); }
+.dark .tone-ink .meta .topic { color: var(--brand); }
+.dark .tone-ink .shelf-nav button { border-color: var(--rule); color: var(--muted-foreground); }
+.dark .tone-ink .shelf-nav button:hover { border-color: var(--foreground); color: var(--foreground); }
 
 /* ── sayings preview ──────────────────────────────────────────────────────── */
 
-/* No artwork here on purpose: the section is about words people already carry, so it is
-   set in type alone. The strongest-graded saying leads at size with its verdict; the
-   rest follow as compact rows, because presenting them as equal would be a claim the
-   grading does not support. */
-.sayings-lead-layout {
-  display: grid;
-  grid-template-columns: 1.35fr 1fr;
-  gap: 2.5rem 3rem;
-  align-items: start;
-  margin-top: 1.25rem;
-}
-
-.saying { display: block; padding-top: 1.1rem; border-top: 1px solid var(--foreground); }
 .saying-q {
   display: block;
     font-family: var(--font-display), Georgia, serif;
@@ -985,342 +1587,309 @@ h1, h2, h3, .display {
 /* The saying circulates in English; mirroring it would misdescribe where it comes from. */
 [dir="rtl"] .saying-q { direction: ltr; text-align: left; }
 
-/* A mark, not a division: a full-width rule in the foreground colour was the heaviest
-   stroke on the page, spent on decoration, and it did not match the 1px hairlines the
-   rows use for real separation. A short accent tick reads as an annotation instead. */
-.saying-lead { border-top: none; padding-top: 0; }
-.saying-lead::before {
-  content: "";
-  display: block;
-  width: 2.5rem;
-  height: 2px;
-  background: var(--accent);
-  margin-bottom: 1.1rem;
-}
-.saying-lead .saying-q { font-size: 1.85rem; line-height: 1.25; }
-
-.saying-verdict {
-  margin: 1rem 0 0;
-  font-size: 1.02rem;
-  line-height: 1.65;
-  color: var(--muted);
-  max-width: 42ch;
-}
-
-/* One authored moment on this page: the verdict lifts out of a shallow blur as the
-   section mounts, so attention lands on the sentence carrying the argument. It starts
-   from the readable state, so nothing is hidden if the animation never runs. */
-.saying-lead .saying-verdict,
-.saying-lead .saying-meta {
-  animation: verdict-settle 800ms cubic-bezier(.16, 1, .3, 1) both;
-}
-.saying-lead .saying-meta { animation-delay: 120ms; }
-
-@keyframes verdict-settle {
-  from { transform: translateY(10px); filter: blur(5px); opacity: .5; }
-  to   { transform: none; filter: blur(0); opacity: 1; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .saying-lead .saying-verdict,
-  .saying-lead .saying-meta { animation: none; }
-}
-
-.saying-meta {
-  display: flex;
-  align-items: center;
-  gap: .5rem;
-  margin-top: 1.1rem;
-  font-size: .8rem;
-  color: var(--muted);
-}
-
-.saying-rest { list-style: none; margin: 0; padding: 0; }
-.saying-rest li { border-top: 1px solid var(--rule); }
-.saying-rest li:last-child { border-bottom: 1px solid var(--rule); }
-.saying-rest a {
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  gap: .55rem;
-  padding: 1rem 0;
-}
-.saying-rest .saying-q {
-    font-family: var(--font-display), Georgia, serif;
-  font-size: 1.08rem;
-  line-height: 1.35;
-}
-.saying-rest-all a { font-size: .9rem; text-decoration: underline; text-underline-offset: 4px; }
-
-.saying:hover .saying-q, .saying-rest a:hover .saying-q { text-decoration: underline; text-underline-offset: 4px; }
-
-@media (max-width: 46rem) {
-  .sayings-lead-layout { grid-template-columns: 1fr; }
-}
-
-/* ── header search ────────────────────────────────────────────────────────── */
-
-.site-search { position: relative; display: flex; align-items: center; }
-.site-search-open {
-  display: grid;
-  place-items: center;
-  background: none;
-  border: none;
-  color: var(--muted);
-  cursor: pointer;
-  padding: 0;
-}
-.site-search-open:hover { color: var(--foreground); }
-.site-search-panel {
-  position: absolute;
-  top: calc(100% + .9rem);
-  inset-inline-end: 0;
-  width: min(26rem, 78vw);
-  background: var(--surface);
-  border: 1px solid var(--rule);
-  border-radius: 10px;
-  box-shadow: 0 18px 40px -24px rgb(0 0 0 / .45);
-  padding: .75rem;
-  z-index: 40;
-}
-.site-search-field input {
-  width: 100%;
-  border: 1px solid var(--rule);
-  border-radius: 6px;
-  background: var(--background);
-  color: var(--foreground);
-  padding: .6rem .8rem;
-  font: inherit;
-  font-size: .95rem;
-}
-.site-search-field input:focus { outline: none; border-color: var(--foreground); }
-.site-search-hits { list-style: none; margin: .6rem 0 0; padding: 0; }
-.site-search-hits a { display: block; padding: .55rem .6rem; border-radius: 6px; }
-.site-search-hits a:hover { background: var(--background); }
-.site-search-hits strong { display: block; font-weight: 500; font-size: .95rem; }
-.site-search-hits span {
-  display: block;
-  color: var(--muted);
-  font-size: .82rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.site-search-all { border-top: 1px solid var(--rule); margin-top: .4rem; padding-top: .4rem; }
-.site-search-all a { font-size: .85rem; color: var(--accent); }
-.site-search-empty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: .7rem;
-  padding: 2rem 1rem;
-  margin: 0;
-  color: var(--faint);
-  font-size: .88rem;
-}
-
-/* ── topic bar ────────────────────────────────────────────────────────────── */
-
-.topic-bar {
-  display: flex;
-  gap: 1.5rem;
-  overflow-x: auto;
-  scrollbar-width: none;
-  border-bottom: 1px solid var(--rule);
-  margin-bottom: 2rem;
-  padding-bottom: .1rem;
-}
-.topic-bar::-webkit-scrollbar { display: none; }
-.topic-bar a {
-  flex: none;
-  padding: .8rem 0;
-  font-size: .95rem;
-  color: var(--muted);
-  border-bottom: 2px solid transparent;
-  white-space: nowrap;
-}
-.topic-bar a:hover { color: var(--foreground); }
-/* Current is marked by weight and rule, not colour alone. */
-.topic-bar a[aria-current="page"] {
-  color: var(--foreground);
-  border-bottom-color: var(--foreground);
-  font-weight: 500;
-}
-
-/* ── shelf ────────────────────────────────────────────────────────────────── */
-
-.shelf { margin-top: 1rem; }
-.shelf-head { display: flex; align-items: end; justify-content: space-between; gap: 1rem; }
-.shelf-title { flex: 1; }
-.shelf-nav { display: flex; gap: .4rem; padding-bottom: .8rem; }
-.shelf-nav button {
-  display: grid;
-  place-items: center;
-  width: 2rem;
-  height: 2rem;
-  border: 1px solid var(--rule);
-  border-radius: 999px;
-  background: transparent;
-  color: var(--muted);
-  cursor: pointer;
-}
-.shelf-nav button:hover { border-color: var(--foreground); color: var(--foreground); }
-@media (hover: none) { .shelf-nav { display: none; } }
-.shelf-track {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(15rem, 1fr);
-  gap: 1.75rem;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-  padding-bottom: .5rem;
-}
-.shelf-track::-webkit-scrollbar { display: none; }
-.shelf-item { scroll-snap-align: start; }
-
-/* ── paths ────────────────────────────────────────────────────────────────── */
-
-/* Read in order, so the layout says so: numbered rows rather than cards, with the
-   commitment stated on the right where it can be compared down the column. */
-.path-rows { list-style: none; margin: 1.25rem 0 0; padding: 0; }
-.path-rows li {
-  display: grid;
-  grid-template-columns: 3rem 1fr auto;
-  gap: 1.5rem 2rem;
-  align-items: start;
-  padding: 1.75rem 0;
-  border-top: 1px solid rgb(255 255 255 / .16);
-}
-.path-rows li:last-child { border-bottom: 1px solid rgb(255 255 255 / .16); }
-
-.path-n {
-  font-family: var(--font-latin), system-ui, sans-serif;
-  font-variant-numeric: tabular-nums;
+/* Equal rows, and the link out under them. The lead-plus-stubs split that used to live
+   here implied a ranking the grades do not support, and left a trench down the middle. */
+.quote-index-all {
+  margin: 1.25rem 0 0;
   font-size: .9rem;
-  color: #e9b9ab;
 }
+.quote-index-all a { text-decoration: underline; text-underline-offset: 4px; }
 
-.path-row-main h3 { margin: 0 0 .4rem; font-size: 1.45rem; }
-.path-row-main p {
-  margin: 0;
-  color: #b3b8c0;
-  max-width: 46ch;
-  line-height: 1.6;
+/* ── auth ─────────────────────────────────────────────────────────────────── */
+
+/* A single-purpose page, so it is a narrow column centred in the measure rather than a
+   form dropped at the top-left of a full-width page. Everything here uses the site's own
+   type: the heading in the display face, the labels in the labelling face. */
+.auth {
+  max-width: 24rem;
+  margin-inline: auto;
+  padding: clamp(2rem, 7vh, 5rem) 0;
 }
+.auth h1 { font-size: clamp(1.8rem, 4vw, 2.4rem); margin: 0; }
+.auth .lede { margin: .75rem 0 0; font-size: 1rem; }
 
-.path-row-facts { display: flex; gap: 2rem; margin: 0; }
-.path-row-facts dt { font-size: .72rem; color: #8e96a1; }
-.path-row-facts dd { margin: .2rem 0 0; font-size: .95rem; white-space: nowrap; }
+.auth-form { display: flex; flex-direction: column; gap: 1.4rem; margin-top: 2.25rem; }
 
-@media (max-width: 46rem) {
-  .path-rows li { grid-template-columns: 2.5rem 1fr; }
-  .path-row-facts { grid-column: 2; }
-}
-
-/* ── contents and share ───────────────────────────────────────────────────── */
-
-.contents { margin-bottom: 1.5rem; }
-.contents > button {
-  display: inline-flex;
-  align-items: center;
-  gap: .45rem;
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  font: inherit;
+.auth-field { display: flex; flex-direction: column; gap: .4rem; }
+.auth-field span {
+  font-family: var(--font-latin), system-ui, sans-serif;
   font-size: .72rem;
-  letter-spacing: .14em;
+  letter-spacing: .1em;
   text-transform: uppercase;
   color: var(--faint);
 }
-[dir="rtl"] .contents > button { letter-spacing: 0; text-transform: none; font-size: .84rem; }
-.contents > button:hover { color: var(--foreground); }
-.contents svg { transition: transform .18s ease; }
-.contents ol {
-  list-style: none;
-  margin: .9rem 0 0;
-  padding: 1rem 1.2rem;
+[dir="rtl"] .auth-field span {
+  font-family: var(--font-arabic), sans-serif;
+  letter-spacing: 0;
+  text-transform: none;
+  font-size: .85rem;
+}
+/* Underline rather than a box: the same device the search field uses, so a form does not
+   introduce a second kind of input. */
+.auth-field input {
+  font: inherit;
+  font-size: 1.05rem;
+  padding: .5rem 0;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--rule);
+  border-radius: 0;
+}
+.auth-field input:focus {
+  outline: none;
+  border-bottom-color: var(--foreground);
+}
+
+.auth-actions { display: flex; align-items: center; gap: 1.25rem; margin-top: .5rem; }
+.auth-primary {
+  flex: 1;
+  padding: .7rem 1.4rem;
+  border-radius: 999px;
+  background: var(--foreground);
+  color: var(--background);
+  font-size: .95rem;
+}
+.auth-primary:hover { opacity: .9; }
+.auth-secondary {
+  font-size: .92rem;
+  color: var(--muted-foreground);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  white-space: nowrap;
+}
+.auth-secondary:hover { color: var(--foreground); }
+
+/* Two notices, told apart by colour and mark rather than position alone. */
+.auth-notice {
+  margin: 1.75rem 0 0;
+  padding: .8rem 1rem;
   border: 1px solid var(--rule);
   border-radius: 8px;
+  background: var(--surface);
+  font-size: .92rem;
 }
-.contents li + li { margin-top: .55rem; }
-.contents a { font-size: .95rem; color: var(--muted); }
-.contents a span { color: var(--faint); }
-.contents a:hover { color: var(--foreground); }
+.auth-notice.is-error { border-color: color-mix(in srgb, var(--brand) 45%, transparent); color: var(--brand); }
 
-.share {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-top: 2.5rem;
-  padding-top: 1.2rem;
-  border-top: 1px solid var(--rule);
+/* ── search results ───────────────────────────────────────────────────────── */
+
+.search-results { list-style: none; margin: 0; padding: 0; }
+.search-results li { border-top: 1px solid var(--rule); }
+.search-results li:last-child { border-bottom: 1px solid var(--rule); }
+.search-results a { display: block; padding: 1.25rem 0; }
+.search-results strong { display: block; font-size: 1.12rem; font-weight: 500; line-height: 1.35; }
+.search-summary { display: block; margin-top: .3rem; color: var(--muted-foreground); font-size: .95rem; }
+.search-results a:hover strong { text-decoration: underline; text-underline-offset: 4px; }
+
+/* A situation, a saying and an intention look alike in a list, and they land in three
+   different places, so each result says which it is. */
+.search-kind {
+  display: block;
+  margin-bottom: .25rem;
+  font-family: var(--font-latin), system-ui, sans-serif;
+  font-size: .68rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--brand);
 }
-.share-label {
-  font-size: .72rem;
-  letter-spacing: .14em;
+[dir="rtl"] .search-kind {
+  font-family: var(--font-arabic), sans-serif;
+  letter-spacing: 0;
+  text-transform: none;
+  font-size: .8rem;
+}
+
+/* ── share sheet ──────────────────────────────────────────────────────────── */
+
+.sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: rgb(8 10 14 / .55);
+  backdrop-filter: blur(3px);
+}
+
+/* Landscape, not a column: stacked, the preview plus five controls plus the actions ran
+   past the bottom of a laptop viewport. */
+.sheet {
+  position: fixed;
+  z-index: 61;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(64rem, calc(100vw - 3rem));
+  padding: 1.75rem 2rem 2rem;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 18px;
+  box-shadow: 0 30px 60px rgb(0 0 0 / .28);
+}
+.sheet-title { font-size: 1.1rem; margin: 0 0 1.25rem; }
+
+.sheet-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  gap: 1.75rem;
+  align-items: start;
+}
+@media (max-width: 46rem) {
+  .sheet-body { grid-template-columns: 1fr; }
+}
+
+.sheet-side { display: flex; flex-direction: column; gap: .5rem; }
+.sheet-field > span,
+.sheet-toggle > span {
+  font-family: var(--font-latin), system-ui, sans-serif;
+  font-size: .68rem;
+  letter-spacing: .1em;
   text-transform: uppercase;
   color: var(--faint);
 }
-[dir="rtl"] .share-label { letter-spacing: 0; text-transform: none; font-size: .84rem; }
-.share-links { display: flex; gap: .5rem; }
-.share-links a, .share-links button {
-  display: grid;
-  place-items: center;
-  width: 2.1rem;
-  height: 2.1rem;
-  border: 1px solid var(--rule);
-  border-radius: 999px;
-  color: var(--muted);
-  background: transparent;
-  cursor: pointer;
+[dir="rtl"] [dir="rtl"] .sheet-field > span,
+[dir="rtl"] .sheet-toggle > span {
+  font-family: var(--font-arabic), sans-serif;
+  letter-spacing: 0;
+  text-transform: none;
+  font-size: .82rem;
 }
-.share-links a:hover, .share-links button:hover { border-color: var(--foreground); color: var(--foreground); }
 
-/* ── load more ────────────────────────────────────────────────────────────── */
-
-.load-more { display: flex; justify-content: center; padding: 2.5rem 0 1rem; }
-.load-more button {
+/* The frame follows the chosen canvas, so the ratio control shows its own result. */
+/* Sized from width, not height. Fixing the height and clamping the width meant a
+   landscape card kept a portrait frame, so the image letterboxed inside it and the type
+   came out a fraction of its real size. Each ratio caps its own width so the derived
+   heights land in the same band. */
+.sheet-preview {
+  position: relative;
+  width: 100%;
+  margin-inline: auto;
   border: 1px solid var(--rule);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--background);
+}
+.sheet-preview.is-story { aspect-ratio: 9 / 16; max-width: min(100%, 17rem); }
+.sheet-preview.is-square { aspect-ratio: 1; max-width: min(100%, 26rem); }
+.sheet-preview.is-wide { aspect-ratio: 16 / 9; max-width: min(100%, 28rem); }
+
+
+.sheet-controls { display: flex; flex-direction: column; gap: 1rem; }
+.sheet-field { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+
+.sheet-swatches { display: flex; gap: .5rem; }
+.sheet-swatches button {
+  width: 1.8rem;
+  height: 1.8rem;
   border-radius: 999px;
-  background: transparent;
+  border: 1px solid var(--rule);
+}
+/* A ring, not a tick: a tick inside a colour chip fights whatever colour it lands on. */
+.sheet-swatches button[aria-pressed="true"] { outline: 2px solid var(--brand); outline-offset: 2px; }
+
+.sheet-choices {
+  display: flex;
+  gap: .25rem;
+  padding: .25rem;
+  background: var(--secondary);
+  border-radius: 999px;
+}
+.sheet-choices button {
+  border: none;
+  border-radius: 999px;
+  padding: .3rem .8rem;
+  font-size: .8rem;
+  color: var(--muted-foreground);
+}
+.sheet-choices button:hover { color: var(--foreground); }
+.sheet-choices button[aria-pressed="true"] {
+  background: var(--surface);
   color: var(--foreground);
-  font: inherit;
-  font-size: .9rem;
-  padding: .55rem 1.5rem;
-  cursor: pointer;
+  box-shadow: 0 1px 3px rgb(0 0 0 / .12);
 }
-.load-more button:hover { border-color: var(--foreground); }
-.load-more p { margin: 0; color: var(--faint); font-size: .85rem; }
 
-/* ── page sections ────────────────────────────────────────────────────────── */
-
-/* A section band bleeds its ground to the viewport while the content stays on the
-   column. Margin and padding cancel, so nothing overflows and the page never scrolls
-   sideways. */
-.band-section {
-  margin-inline: calc(50% - 50vw);
-  padding-inline: calc(50vw - 50%);
-  padding-block: 3.5rem;
-  margin-block: 3.5rem;
+.sheet-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: .85rem;
+  border-top: 1px solid var(--rule);
 }
-.band-section .section-title { margin-top: 0; }
-.band-section + .band-section { margin-block-start: -3.5rem; }
+.sheet-toggle > span { display: flex; flex-direction: column; gap: .15rem; }
+/* The note carries the sentence case; the label above it stays a label. */
+.sheet-toggle em {
+  font-style: normal;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: .82rem;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--muted-foreground);
+}
+[dir="rtl"] .sheet-toggle em { font-family: var(--font-arabic), sans-serif; }
 
-.tone-warm   { background: #f3ede2; }
-.tone-paper  { background: var(--surface); }
-.tone-ink    { background: #171c25; color: #ece8e1; }
-.tone-ink .section-title { border-color: rgb(255 255 255 / .16); }
-.tone-ink .card p, .tone-ink .listrow p { color: #b3b8c0; }
-.tone-ink .card h3, .tone-ink .listrow h3 { color: #ece8e1; }
-.tone-ink .meta { color: #8e96a1; }
-.tone-ink .meta .topic { color: #e9b9ab; }
-.tone-ink .shelf-nav button { border-color: rgb(255 255 255 / .22); color: #b3b8c0; }
-.tone-ink .shelf-nav button:hover { border-color: #ece8e1; color: #ece8e1; }
+.sheet-toggle button[role="switch"] {
+  position: relative;
+  flex: none;
+  width: 2.6rem;
+  height: 1.5rem;
+  border-radius: 999px;
+  background: var(--secondary);
+  border: 1px solid var(--rule);
+  transition: background-color .18s ease, border-color .18s ease;
+}
+.sheet-toggle button[role="switch"]::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  inset-inline-start: 3px;
+  width: 1.05rem;
+  height: 1.05rem;
+  border-radius: 999px;
+  background: var(--background);
+  transform: translateY(-50%);
+  transition: inset-inline-start .18s ease;
+}
+.sheet-toggle button[aria-checked="true"] {
+  background: var(--foreground);
+  border-color: var(--foreground);
+}
+.sheet-toggle button[aria-checked="true"]::after { inset-inline-start: calc(100% - 1.05rem - 3px); }
 
+.sheet-actions { display: flex; gap: .6rem; margin-top: .25rem; }
+.sheet-primary,
+.sheet-secondary {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  border-radius: 999px;
+  padding: .65rem 1rem;
+  font-size: .92rem;
+  white-space: nowrap;
+}
+.sheet-primary { background: var(--foreground); color: var(--background); }
+.sheet-primary:hover { opacity: .9; }
+.sheet-secondary { border: 1px solid var(--rule); color: var(--muted-foreground); }
+.sheet-secondary:hover { border-color: var(--foreground); color: var(--foreground); }
 
+.sheet-copy {
+  align-self: center;
+  font-size: .85rem;
+  color: var(--faint);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.sheet-copy:hover { color: var(--foreground); }
+
+.sheet-close {
+  position: absolute;
+  top: 1.1rem;
+  inset-inline-end: 1.25rem;
+  display: inline-flex;
+  padding: .3rem;
+  border-radius: 999px;
+  color: var(--faint);
+}
+.sheet-close:hover { color: var(--foreground); background: var(--secondary); }
 
 /* ── intentions (Nawiya) ──────────────────────────────────────────────────── */
 
@@ -1331,7 +1900,7 @@ h1, h2, h3, .display {
   font-size: .78rem;
   letter-spacing: .14em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--brand);
   margin: 0 0 1rem;
   font-family: var(--font-latin), system-ui, sans-serif;
   font-weight: 600;
@@ -1353,6 +1922,8 @@ h1, h2, h3, .display {
   border-top: 1px solid var(--rule);
 }
 .intent-list li:last-child { border-bottom: 1px solid var(--rule); }
+/* Search links to an intention by anchor; the sticky bar would sit on top of it. */
+.intent-list li { scroll-margin-top: 6rem; }
 
 /* Aligned to the reading edge, so the turn mark falls between two straight edges. */
 .intent-act {
@@ -1360,7 +1931,7 @@ h1, h2, h3, .display {
   text-align: end;
   font-family: var(--font-display), Georgia, serif;
   font-size: 1.12rem;
-  color: var(--muted);
+  color: var(--muted-foreground);
 }
 [dir="rtl"] .intent-act { font-family: var(--font-display-ar), var(--font-arabic), serif; }
 
@@ -1377,7 +1948,7 @@ h1, h2, h3, .display {
 
 .intent-note {
   margin: .55rem 0 0;
-  color: var(--muted);
+  color: var(--muted-foreground);
   font-size: .95rem;
   line-height: 1.6;
   max-width: 52ch;
@@ -1388,7 +1959,8 @@ h1, h2, h3, .display {
   font-size: .78rem;
   color: var(--faint);
 }
-.intent-source em { font-style: normal; }
+.intent-source a { color: inherit; text-decoration: none; }
+.intent-source a:hover { color: var(--brand); }
 
 @media (max-width: 40rem) {
   .intent-list li { grid-template-columns: 1fr; gap: .5rem; }
@@ -1407,4 +1979,133 @@ h1, h2, h3, .display {
   html {
     @apply font-sans;
   }
+}
+/* ── site footer ──────────────────────────────────────────────────────────── */
+
+/* Full-bleed ground, content back on the column — same cancel-out as .band-section. */
+.site-footer {
+  position: relative;
+  /* No margin: main's own bottom padding is the gap, and the wave is exactly that tall,
+     so the sand starts where the last band ends instead of leaving a cream stripe
+     between two grounds. */
+  margin-inline: calc(50% - 50vw);
+  padding-inline: calc(50vw - 50%);
+  padding-block: 3rem 1.75rem;
+  background: var(--footer-bg);
+  color: var(--footer-fg);
+}
+/* Light keeps the page in paper: a warm sand deep enough to clear .tone-warm, which is
+   what the home page ends on — a step above it and the wave separated two identical
+   beiges. No ink slab under a light page.
+   Dark goes deeper than the page rather than above it, in the same warm family. */
+:root {
+  --footer-bg: #e4d9c6;
+  --footer-fg: #1b1f27;
+  --footer-muted: #6b7280;
+  --footer-line: rgb(0 0 0 / .16);
+}
+.dark {
+  /* Cool, matching the page rather than the artwork: same family as the ground, one step
+     below it. #0e1218 puts the 76px serif wordmark at 13.2:1, in line with body, instead
+     of the 14:1 that the near-black was reaching. */
+  --footer-bg: #0e1218;
+  --footer-fg: #dcd8d1;
+  --footer-muted: #868e9a;
+  --footer-line: rgb(255 255 255 / .16);
+}
+
+/* The seam. preserveAspectRatio: none lets one path stretch to any viewport; sitting a
+   pixel low avoids a hairline of page background between wave and footer. */
+.footer-wave {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 100%;
+  margin-bottom: -1px;
+  width: 100%;
+  height: clamp(36px, 5vw, 64px);
+  display: block;
+  fill: var(--footer-bg);
+}
+
+/* qalam's arrangement: the links run across the top on a rule, and the mark sits on the
+   baseline beneath with the fine print opposite it. Two full-width rows, so nothing gets
+   pushed to the far edges with a hole between them. */
+.footer-inner { display: grid; gap: 2.25rem; }
+.footer-id {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: end;
+  gap: 1rem 3rem;
+}
+.footer-id .footer-fine { justify-self: end; text-align: end; }
+
+.footer-mark {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(2.6rem, 7vw, 4.5rem);
+  line-height: 1;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+[dir="rtl"] .footer-mark {
+  font-family: var(--font-display-ar), var(--font-arabic), serif;
+  text-transform: none;
+  letter-spacing: 0;
+  line-height: 1.3;
+}
+
+/* A row at the reading edge, not four links pinned to the corners of a 60rem rule.
+   space-between made the gaps grow with the viewport until they stopped reading as one
+   group, and left the last one stranded opposite the wordmark below it. */
+.footer-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .9rem 2.25rem;
+  padding-bottom: 1.1rem;
+  border-bottom: 1px solid var(--footer-line);
+  font-family: var(--font-latin), system-ui, sans-serif;
+  font-size: .75rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+[dir="rtl"] .footer-nav { letter-spacing: 0; text-transform: none; font-size: .95rem; font-family: inherit; }
+.footer-nav a { color: var(--footer-fg); opacity: .8; }
+.footer-nav a:hover { opacity: 1; text-decoration: underline; text-underline-offset: 4px; }
+
+.footer-fine {
+  margin: 0;
+  max-width: 44ch;
+  font-family: var(--font-latin), system-ui, sans-serif;
+  font-size: .78rem;
+  line-height: 1.5;
+  color: var(--footer-muted);
+}
+[dir="rtl"] .footer-fine { font-family: inherit; font-size: .85rem; }
+
+.footer-legal {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 2.25rem;
+}
+
+/* ponytail: placeholder hrefs — swap in the real handles when the accounts exist. */
+.footer-social { display: flex; gap: .6rem; }
+.footer-social a {
+  display: grid;
+  place-items: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 999px;
+  border: 1px solid var(--footer-line);
+  color: var(--footer-fg);
+  opacity: .8;
+}
+.footer-social a:hover { opacity: 1; border-color: var(--footer-fg); }
+.footer-social svg { width: 1rem; height: 1rem; }
+
+@media (max-width: 40rem) {
+  .footer-id { grid-template-columns: 1fr; }
+  .footer-id .footer-fine { justify-self: start; text-align: start; }
 }
