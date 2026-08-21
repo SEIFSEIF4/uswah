@@ -22,8 +22,31 @@ export type ActionResult = { errors?: string[] };
 
 const denied = async () => ((await adminEmail()) ? null : { errors: ["Not authorized."] });
 const msg = (e: unknown) => (e instanceof Error ? e.message : String(e));
-const done = () => {
+
+/**
+ * Best-effort ping to the reader site so its cached content reads flush now
+ * rather than when their hour expires. Both tags every time: two cache entries
+ * is not a cost worth a per-action tag map. A failure only delays freshness,
+ * so it logs and moves on.
+ */
+async function revalidateSite() {
+  const url = process.env.SITE_URL;
+  const secret = process.env.REVALIDATE_SECRET;
+  if (!url || !secret) return;
+  try {
+    await fetch(`${url}/api/revalidate`, {
+      method: "POST",
+      headers: { "content-type": "application/json", "x-revalidate-secret": secret },
+      body: JSON.stringify({ tags: ["content:sayings", "content:intentions"] }),
+    });
+  } catch (e) {
+    console.error("[dashboard] site revalidation failed:", msg(e));
+  }
+}
+
+const done = async () => {
   revalidatePath("/", "layout");
+  await revalidateSite();
   return {};
 };
 

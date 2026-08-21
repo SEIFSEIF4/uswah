@@ -18,6 +18,7 @@ export type Database = {
       dorar_hadith: {
         Row: {
           categories: Json | null
+          cited: Json | null
           fetched_at: string
           hadith_id: string | null
           query: string
@@ -27,6 +28,7 @@ export type Database = {
         }
         Insert: {
           categories?: Json | null
+          cited?: Json | null
           fetched_at: string
           hadith_id?: string | null
           query: string
@@ -36,6 +38,7 @@ export type Database = {
         }
         Update: {
           categories?: Json | null
+          cited?: Json | null
           fetched_at?: string
           hadith_id?: string | null
           query?: string

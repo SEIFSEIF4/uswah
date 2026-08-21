@@ -8,7 +8,6 @@
     "start": "next start -p 3001",
     "admin:seed": "tsx --env-file=.env.local scripts/seed-admin.ts",
     "content:push": "tsx --env-file=.env.local scripts/push-content.ts",
-    "content:import": "tsx --env-file=.env.local scripts/import-mock.ts",
     "content:test": "tsx scripts/content-schema.test.ts"
   },
   "dependencies": {

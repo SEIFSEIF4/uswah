@@ -4,15 +4,17 @@
 node_modules/
 .next/
 .turbo/
+*.tsbuildinfo
+**/.impeccable/hook.cache.json
 .vercel/
 .DS_Store
 
 # Flutter
-app/build/
-app/.dart_tool/
-app/.flutter-plugins*
-app/ios/Pods/
-app/**/GeneratedPluginRegistrant.*
+apps/mobile/build/
+apps/mobile/.dart_tool/
+apps/mobile/.flutter-plugins*
+apps/mobile/ios/Pods/
+apps/mobile/**/GeneratedPluginRegistrant.*
 
 # Supabase CLI local stack
 supabase/.branches/

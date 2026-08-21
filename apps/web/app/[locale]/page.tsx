@@ -91,7 +91,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
              the intention — enough to show what the section is, not to be it. */}
       <SectionTitle>{t.intentions}</SectionTitle>
       <ul className="intent-list">
-        {featuredIntentions().map((i) => (
+        {(await featuredIntentions()).map((i) => (
           <li key={i.slug}>
             <span className="intent-act">{i.act[locale]}</span>
             <span className="intent-turn" aria-hidden="true">
@@ -128,7 +128,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       <section className="band-section">
         <SectionTitle>{t.sayings}</SectionTitle>
         <ol className="quote-index">
-          {quotesSorted()
+          {(await quotesSorted())
             .slice(0, 3)
             .map((q) => (
               <li key={q.slug}>

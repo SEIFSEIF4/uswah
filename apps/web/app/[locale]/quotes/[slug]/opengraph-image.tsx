@@ -19,7 +19,7 @@ export default async function Image({
   const { locale: raw, slug } = await params;
   const locale: Locale = isLocale(raw) ? raw : "en";
   const rtl = locale === "ar";
-  const q = quoteBySlug(slug);
+  const q = await quoteBySlug(slug);
 
   const [regular, semibold, arabic] = await Promise.all([
     font("Inter-Regular.woff"),

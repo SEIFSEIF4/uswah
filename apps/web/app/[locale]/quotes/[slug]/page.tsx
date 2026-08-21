@@ -46,8 +46,8 @@ const copy = {
   },
 } as const;
 
-export function generateStaticParams() {
-  return allQuotes().flatMap((q) => LOCALES.map((locale) => ({ locale, slug: q.slug })));
+export async function generateStaticParams() {
+  return (await allQuotes()).flatMap((q) => LOCALES.map((locale) => ({ locale, slug: q.slug })));
 }
 
 export async function generateMetadata({
@@ -57,7 +57,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale, slug } = await params;
   if (!isLocale(locale)) return {};
-  const q = quoteBySlug(slug);
+  const q = await quoteBySlug(slug);
   if (!q) return {};
 
   const publishable = GRADES[q.grade].storable;
@@ -84,13 +84,13 @@ export default async function Saying({
   const { locale, slug } = await params;
   if (!isLocale(locale)) notFound();
 
-  const q = quoteBySlug(slug);
+  const q = await quoteBySlug(slug);
   if (!q) notFound();
 
   const t = copy[locale];
   const grade = GRADES[q.grade];
   const situation = q.situation ? situationBySlug(q.situation) : undefined;
-  const more = relatedQuotes(slug);
+  const more = await relatedQuotes(slug);
 
   return (
     <article className="saying-page">

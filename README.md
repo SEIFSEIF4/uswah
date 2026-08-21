@@ -8,25 +8,26 @@ Name: أسوة, from Quran 33:21 — *"in the Messenger of Allah you have a beau
 ## Layout
 
 ```
-supabase/     Schema, migrations, tests, seed data   ← the contract. Seif owns it.
-web/          Next.js: public site + admin           ← Seif
-app/          Flutter: iOS + Android                 ← [friend]
-docs/         Plan, content guidelines
+supabase/          Schema, migrations, tests, seed data   ← the contract. Seif owns it.
+apps/web/          Next.js: public site                   ← Seif
+apps/dashboard/    Next.js: content review dashboard      ← Seif
+apps/mobile/       Flutter: iOS + Android                 ← [friend]
+docs/              Plan, design, content guidelines
 ```
 
-One repo, no monorepo tooling. Next.js and Flutter share no code — only the database —
-so there is nothing for Turborepo or a workspace to wire together. Each folder builds and
-deploys on its own.
+Turborepo + pnpm workspace at the root: `pnpm dev` / `pnpm build` fan out to the Next.js
+apps. Flutter shares no code with them — only the database — so `apps/mobile` stays out
+of the workspace and builds on its own.
 
 ## Who touches what
 
-- **Only Seif edits `supabase/` and `web/`.** Only [friend] edits `app/`.
+- **Only Seif edits `supabase/`, `apps/web/` and `apps/dashboard/`.** Only [friend] edits `apps/mobile/`.
 - **Nobody edits the other's folder**, including "just a quick fix". Open an issue instead.
 - **Schema changes are additive and never in place**: a new timestamped file in
   `supabase/migrations/`, never an edit to one already applied. Announce it before applying —
   the app is reading those columns in production.
 - **Neither client writes content.** Both read via the publishable key under RLS. Content
-  writes happen only from `web/` admin using the service role, server-side.
+  writes happen only from the dashboard using the service role, server-side.
 
 Branch names: `web/<thing>` and `app/<thing>`. You will almost never touch the same files,
 so conflicts should only ever happen in `supabase/`.

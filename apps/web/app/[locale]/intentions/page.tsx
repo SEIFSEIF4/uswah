@@ -62,7 +62,7 @@ export default async function Intentions({
 
       {/* Act, the turn, then the intention. The act aligns to the reading edge so the
           mark between them sits against two straight edges rather than floating. */}
-      {intentionsByGroup().map(({ group, items }) => (
+      {(await intentionsByGroup()).map(({ group, items }) => (
         <section key={group.slug} className="intent-group">
           <h2>{group[locale]}</h2>
           <ul className="intent-list">

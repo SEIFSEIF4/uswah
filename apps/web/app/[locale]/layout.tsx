@@ -161,7 +161,7 @@ export default async function LocaleLayout({
               <LocaleSwitch locale={locale} />
               <SiteSearch
                 locale={locale}
-                index={searchIndex(locale)}
+                index={await searchIndex(locale)}
               />
               <ThemeToggle locale={locale} />
             </div>

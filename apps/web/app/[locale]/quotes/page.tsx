@@ -42,7 +42,7 @@ export default async function Quotes({ params }: { params: Promise<{ locale: str
 
       {/* A directory, not the content. Strongest evidence first. */}
       <ol className="quote-index">
-        {quotesSorted().map((q) => (
+        {(await quotesSorted()).map((q) => (
           <li key={q.slug}>
             <Link href={`/${locale}/quotes/${q.slug}`}>
               <div className="quote-index-text">
