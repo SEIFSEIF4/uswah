@@ -294,4 +294,51 @@ export const QUOTES: Quote[] = [
         "Gözlemde buluşup sebepte ayrılıyorlar. Atasözü şansa omuz silker; ayet bir sebep koyar ve bir şey ister: gitmesini bekleme, ver.",
     },
   },
+  {
+    slug: "all-men-are-created-equal",
+    saying: "All men are created equal.",
+    grade: "sahih",
+    source: {
+      label: {
+        en: "Al-Silsila al-Sahiha 2700",
+        ar: "السلسلة الصحيحة ٢٧٠٠",
+        tr: "es-Silsiletü's-Sahîha 2700",
+      },
+      original:
+        "يا أيها الناسُ ! إنَّ ربَّكم واحدٌ، و إنَّ أباكم واحدٌ، ألا لا فضلَ لعربيٍّ على عجميٍّ، و لا لعجميٍّ على عربيٍّ، و لا لأحمرَ على أسودَ، و لا لأسودَ على أحمرَ إلا بالتقوى إنَّ أكرمَكم عند اللهِ أتقاكُم، ألا هل بلَّغتُ ؟ قالوا : بلى يا رسولَ اللهِ قال : فيُبَلِّغُ الشاهدُ الغائبَ",
+      dorar: {
+        rawi: "جابر بن عبدالله",
+        mohdith: "الألباني",
+        grade: "إسناده صحيح",
+        id: "ZPLhpN7x",
+        takhrij:
+          "أخرجه أبو نعيم في ((حلية الأولياء)) (3/100)، والبيهقي في ((شعب الإيمان)) (5137) باختلاف يسير",
+        categories: [
+          { id: "92bd5d0a31ead2aa0eae85ae25463321", name: "تفسير آيات - سورة الحج" },
+          { id: "c72aa615c8384f3977a9cffb3537ce40", name: "أقضية وأحكام - الشاهد يرى ما لا يرى الغائب" },
+          { id: "ba5c369d31bfa6283a2cfbf7b6667d16", name: "رقائق وزهد - تقوى الله" },
+          { id: "53761e1eea", name: "إيمان - توحيد الربوبية" },
+          { id: "669c3c7252", name: "رقائق وزهد - الورع والتقوى" },
+        ],
+      },
+    },
+    en: {
+      angle:
+        "The Farewell Sermon, eleven centuries before 1776: one Lord, one father, no Arab over non-Arab, no colour over colour. Lineage has nothing left to stand on, because everyone's origin is the same.",
+      closeness:
+        "Very close, and older, and wider. The declaration says men; the sermon opens with O people. And where one asserts equality as self-evident, the other gives it a ground, one Lord and one father, and keeps the one measure that still ranks anyone: taqwa.",
+    },
+    ar: {
+      angle:
+        "خطبة الوداع قبل إعلان ١٧٧٦ بأحد عشر قرنًا: الرب واحد والأب واحد، فلا عربي فوق عجمي ولا لون فوق لون. لم يبق للنسب ما يقوم عليه، لأن الأصل واحد.",
+      closeness:
+        "قريب جدًا وأقدم وأوسع. الإعلان بلفظه عن «الرجال»، والخطبة تفتتح بـ«يا أيها الناس». ثم إن الإعلان يقرر المساواة بديهيةً، والخطبة تعطيها علتها: ربٌّ واحد وأبٌ واحد، وتبقي المعيار الوحيد الذي يتفاضل به الناس: التقوى.",
+    },
+    tr: {
+      angle:
+        "Veda Hutbesi, 1776'daki bildiriden on bir yüzyıl önce: Rab bir, ata bir; ne Arap'ın Arap olmayana ne bir rengin ötekine üstünlüğü var. Köken bir olunca soyun dayanacağı bir şey kalmıyor.",
+      closeness:
+        "Çok yakın, daha eski ve daha geniş. Bildirinin sözcüğü 'erkekler'dir; hutbe 'Ey insanlar' diye açılır. Biri eşitliği apaçık bir gerçek olarak ilan eder; öteki ona bir gerekçe verir: tek Rab, tek ata. Ve insanları hâlâ derecelendiren tek ölçüyü bırakır: takva.",
+    },
+  },
 ];
