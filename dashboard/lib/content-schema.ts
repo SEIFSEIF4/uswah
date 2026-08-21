@@ -4,11 +4,11 @@
 // These rules mirror the database exactly. If you change one, change the other:
 // supabase/migrations/20260810000000_init.sql
 
-export const LOCALES = ["en", "ar"] as const;
+export const LOCALES = ["en", "ar", "tr"] as const;
 export type Locale = (typeof LOCALES)[number];
 
 export const COLLECTIONS = ["bukhari", "muslim"] as const;
-export const RESERVED_SLUGS = ["search", "about", "login", "saved", "topics", "quotes", "intentions"];
+export const RESERVED_SLUGS = ["search", "about", "login", "saved", "topics", "quotes", "intentions", "new"];
 
 export const IMAGE_LICENCES = ["public-domain", "cc0", "cc-by-4.0", "cc-by-sa-4.0", "cc-by-2.0"];
 

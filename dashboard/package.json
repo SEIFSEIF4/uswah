@@ -1,15 +1,13 @@
 {
-  "name": "web",
+  "name": "dashboard",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3001",
     "build": "next build",
-    "start": "next start",
-    "lint": "eslint",
-    "routes:test": "tsx scripts/routes.test.ts",
-    "image:find": "tsx scripts/find-image.ts",
-    "image:test": "tsx scripts/image-screen.test.ts"
+    "start": "next start -p 3001",
+    "content:push": "tsx --env-file=.env.local scripts/push-content.ts",
+    "content:test": "tsx scripts/content-schema.test.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
@@ -17,25 +15,20 @@
     "@supabase/supabase-js": "^2.112.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "html-to-image": "^1.11.13",
     "lucide-react": "^1.31.0",
     "next": "16.3.0",
-    "next-themes": "^0.4.6",
-    "qrcode": "^1.5.4",
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "shadcn": "^4.16.2",
     "tailwind-merge": "^3.6.0",
-    "tw-animate-css": "^1.4.0"
+    "tw-animate-css": "^1.4.0",
+    "yaml": "^2.9.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
-    "@types/qrcode": "^1.5.6",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "16.3.0",
     "tailwindcss": "^4",
     "tsx": "^4.23.11",
     "typescript": "^5"

@@ -32,4 +32,4 @@ export const localeFromHeader = (header: string | null): Locale =>
     .find(isLocale) ?? DEFAULT_LOCALE;
 
 /** Slugs that would shadow a route. Enforced by the content pipeline too. */
-export const RESERVED_SLUGS = new Set(["search", "about", "login", "saved", "topics", "quotes", "intentions"]);
+export const RESERVED_SLUGS = new Set(["search", "about", "login", "saved", "topics", "quotes", "intentions", "new"]);

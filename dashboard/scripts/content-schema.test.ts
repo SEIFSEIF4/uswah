@@ -1,6 +1,6 @@
 // pnpm content:test — fails if the validator stops catching the things that matter.
 import assert from "node:assert/strict";
-import { validate } from "./content-schema";
+import { validate } from "../lib/content-schema";
 
 const ok = {
   slug: "asked-for-money-again",

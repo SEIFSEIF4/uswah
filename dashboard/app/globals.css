@@ -1,0 +1,68 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* The site's token layer, verbatim (web/app/globals.css), so the shared ui
+   components render with the same identity here. The editorial styles below it
+   stay in the site — this app is a tool, not a publication. */
+:root {
+  --background: #faf8f4;
+  --foreground: #14181f;
+  --card: #ffffff;
+  --card-foreground: #14181f;
+  --popover: #ffffff;
+  --popover-foreground: #14181f;
+  --primary: #14181f;
+  --primary-foreground: #faf8f4;
+  --secondary: #f1ece2;
+  --secondary-foreground: #14181f;
+  --muted: #f1ece2;
+  --muted-foreground: #59606c;
+  --accent: #f1ece2;
+  --accent-foreground: #14181f;
+  --destructive: #8c3a2b;
+  --border: #e3ded4;
+  --input: #e3ded4;
+  --ring: #7d2b1d;
+  --radius: 0.5rem;
+
+  --brand: #7d2b1d;
+  --faint: #8a919c;
+  --surface: var(--card);
+  --rule: var(--border);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-rule: var(--rule);
+  --color-accent: var(--accent);
+  --color-brand: var(--brand);
+  --font-sans: var(--font-latin);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
