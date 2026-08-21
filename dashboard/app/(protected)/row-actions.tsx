@@ -3,14 +3,27 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { deleteSituationAction, setPublishedAction } from "./actions";
 
-export function RowActions({ slug, published }: { slug: string; published: boolean }) {
+type Result = { errors?: string[] };
+
+/** Publish/unpublish and delete for one list row. The actions come in as props
+ *  so situations, sayings and intentions share this one component. */
+export function RowActions({
+  slug,
+  published,
+  publish,
+  remove,
+}: {
+  slug: string;
+  published: boolean;
+  publish: (slug: string, published: boolean) => Promise<Result>;
+  remove: (slug: string) => Promise<Result>;
+}) {
   const [errors, setErrors] = useState<string[]>([]);
   const [pending, start] = useTransition();
   const router = useRouter();
 
-  const run = (fn: () => Promise<{ errors?: string[] }>) =>
+  const run = (fn: () => Promise<Result>) =>
     start(async () => {
       const res = await fn();
       setErrors(res.errors ?? []);
@@ -24,7 +37,7 @@ export function RowActions({ slug, published }: { slug: string; published: boole
           variant="outline"
           size="xs"
           disabled={pending}
-          onClick={() => run(() => setPublishedAction(slug, !published))}
+          onClick={() => run(() => publish(slug, !published))}
         >
           {published ? "Unpublish" : "Publish"}
         </Button>
@@ -33,8 +46,8 @@ export function RowActions({ slug, published }: { slug: string; published: boole
           size="xs"
           disabled={pending}
           onClick={() => {
-            if (window.confirm(`Delete "${slug}" and its entries? Saves go with it.`))
-              run(() => deleteSituationAction(slug));
+            if (window.confirm(`Delete "${slug}"? This cannot be undone.`))
+              run(() => remove(slug));
           }}
         >
           Delete

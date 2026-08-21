@@ -35,12 +35,11 @@
   --rule: var(--border);
 }
 
-/* The site's dark values, keyed off the system setting since a tool needs no
-   toggle. Declaring real dark support also stops Chrome's auto-dark feature
-   from repainting the light palette into mud. */
-@media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: dark;
+/* The site's dark values. next-themes writes `.dark` on <html> (system-following
+   by default, toggleable from the header). Declaring real dark support also stops
+   Chrome's auto-dark feature from repainting the light palette into mud. */
+.dark {
+  color-scheme: dark;
     --background: #15171c;
     --foreground: #e3dfd8;
     --card: #1d2027;
@@ -64,7 +63,6 @@
     --faint: #868e9a;
     --surface: var(--card);
     --rule: var(--border);
-  }
 }
 
 @theme inline {

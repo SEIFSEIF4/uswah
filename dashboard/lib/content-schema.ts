@@ -8,7 +8,7 @@ export const LOCALES = ["en", "ar", "tr"] as const;
 export type Locale = (typeof LOCALES)[number];
 
 export const COLLECTIONS = ["bukhari", "muslim"] as const;
-export const RESERVED_SLUGS = ["search", "about", "login", "saved", "topics", "quotes", "intentions", "new"];
+export const RESERVED_SLUGS = ["search", "about", "login", "saved", "topics", "quotes", "sayings", "intentions", "new"];
 
 export const IMAGE_LICENCES = ["public-domain", "cc0", "cc-by-4.0", "cc-by-sa-4.0", "cc-by-2.0"];
 
@@ -42,6 +42,86 @@ export type SituationDoc = {
 const isFilled = (v: unknown): v is string =>
   typeof v === "string" && v.trim().length > 0;
 
+const slugProblem = (slug: unknown): string | null => {
+  if (!isFilled(slug)) return "missing slug";
+  if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(slug))
+    return `slug "${slug}" must be lowercase words joined by single hyphens`;
+  if (RESERVED_SLUGS.includes(slug)) return `slug "${slug}" would shadow the /${slug} route`;
+  return null;
+};
+
+// ── sayings ───────────────────────────────────────────────────────────────────
+export const GRADES = ["quran", "sahih", "hasan", "disputed", "historical"] as const;
+export type Grade = (typeof GRADES)[number];
+/** What may go live without a scholarly reviewer. Mirrors weak_grades_stay_drafts. */
+export const PUBLISHABLE_GRADES: readonly Grade[] = ["quran", "sahih"];
+
+export type SayingDoc = {
+  slug: string;
+  published: boolean;
+  saying: string;
+  grade: Grade;
+  situation_slug?: string;
+  source_original?: string;
+  translations: Partial<Record<Locale, { angle: string; closeness: string; source_label: string }>>;
+};
+
+export function validateSaying(doc: SayingDoc): string[] {
+  const e: string[] = [];
+  const bad = slugProblem(doc.slug);
+  if (bad) e.push(bad);
+  if (!isFilled(doc.saying)) e.push("missing the saying itself");
+  if (!GRADES.includes(doc.grade)) e.push(`unknown grade "${doc.grade}"`);
+
+  const declared = Object.keys(doc.translations ?? {}) as Locale[];
+  if (declared.length === 0) e.push("no translations");
+  for (const loc of declared) {
+    if (!LOCALES.includes(loc)) e.push(`unknown locale "${loc}"`);
+    const t = doc.translations[loc];
+    if (!isFilled(t?.angle)) e.push(`${loc}: missing angle`);
+    if (!isFilled(t?.closeness)) e.push(`${loc}: missing closeness`);
+    if (!isFilled(t?.source_label)) e.push(`${loc}: missing source label`);
+  }
+
+  if (doc.published && !PUBLISHABLE_GRADES.includes(doc.grade))
+    e.push(`grade "${doc.grade}" cannot be published until a scholarly reviewer joins — keep it a draft`);
+  return e;
+}
+
+// ── intentions ────────────────────────────────────────────────────────────────
+export const ACT_GROUPS = [
+  "worship", "body", "daily", "order", "travel", "occasions", "people",
+  "service", "self", "learning", "knowledge", "craft", "stewardship",
+] as const;
+export type ActGroup = (typeof ACT_GROUPS)[number];
+
+export type IntentionDoc = {
+  slug: string;
+  published: boolean;
+  act_group: ActGroup;
+  source_original?: string;
+  translations: Partial<Record<Locale, { act: string; intention: string; note: string; source_label: string }>>;
+};
+
+export function validateIntention(doc: IntentionDoc): string[] {
+  const e: string[] = [];
+  const bad = slugProblem(doc.slug);
+  if (bad) e.push(bad);
+  if (!ACT_GROUPS.includes(doc.act_group)) e.push(`unknown group "${doc.act_group}"`);
+
+  const declared = Object.keys(doc.translations ?? {}) as Locale[];
+  if (declared.length === 0) e.push("no translations");
+  for (const loc of declared) {
+    if (!LOCALES.includes(loc)) e.push(`unknown locale "${loc}"`);
+    const t = doc.translations[loc];
+    if (!isFilled(t?.act)) e.push(`${loc}: missing act`);
+    if (!isFilled(t?.intention)) e.push(`${loc}: missing intention`);
+    if (!isFilled(t?.note)) e.push(`${loc}: missing note`);
+    if (!isFilled(t?.source_label)) e.push(`${loc}: missing source label`);
+  }
+  return e;
+}
+
 /** Returns a list of human-readable problems. Empty means the document may be pushed. */
 export function validate(doc: unknown, file: string): string[] {
   const e: string[] = [];
@@ -50,11 +130,8 @@ export function validate(doc: unknown, file: string): string[] {
 
   if (!d || typeof d !== "object") return [`${file}: not a YAML mapping`];
 
-  if (!isFilled(d.slug)) at("missing slug");
-  else if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(d.slug))
-    at(`slug "${d.slug}" must be lowercase words joined by single hyphens`);
-  else if (RESERVED_SLUGS.includes(d.slug))
-    at(`slug "${d.slug}" would shadow the /${d.slug} route`);
+  const badSlug = slugProblem(d.slug);
+  if (badSlug) at(badSlug);
 
   if (typeof d.published !== "boolean") at("published must be true or false");
 

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 
 const latin = Inter({ subsets: ["latin", "latin-ext"], variable: "--font-latin" });
@@ -11,9 +12,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    // suppressHydrationWarning: next-themes writes the theme class on <html>
+    // before hydration, which is the point.
+    <html lang="en" suppressHydrationWarning>
       <body className={`${latin.variable} bg-background font-sans text-foreground antialiased`}>
-        {children}
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   );

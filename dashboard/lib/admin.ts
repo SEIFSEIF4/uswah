@@ -10,7 +10,7 @@
 import { createClient as createServiceClient, type SupabaseClient } from "@supabase/supabase-js";
 import { createClient } from "./supabase/server";
 import type { Database } from "./supabase/database.types";
-import type { Locale, SituationDoc } from "./content-schema";
+import type { IntentionDoc, Locale, SayingDoc, SituationDoc } from "./content-schema";
 
 /** The public site, for "view page" links out of the dashboard. */
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
@@ -127,6 +127,111 @@ export async function loadSituationDoc(slug: string): Promise<SituationDoc | nul
       reviewed_at: day(e.reviewed_at),
     })),
   };
+}
+
+// ── sayings ───────────────────────────────────────────────────────────────────
+
+export type SayingRow = {
+  slug: string;
+  saying: string;
+  grade: string;
+  situation_slug: string | null;
+  published_at: string | null;
+  locales: Locale[];
+};
+
+export async function listSayings(): Promise<SayingRow[]> {
+  const { data, error } = await adminDb()
+    .from("sayings")
+    .select("slug, saying, grade, situation_slug, published_at, created_at, saying_translations(locale)")
+    .order("created_at", { ascending: false });
+  if (error) throw new Error(error.message);
+  return data.map((s) => ({
+    slug: s.slug,
+    saying: s.saying,
+    grade: s.grade,
+    situation_slug: s.situation_slug,
+    published_at: s.published_at,
+    locales: s.saying_translations.map((t) => t.locale as Locale),
+  }));
+}
+
+export async function loadSayingDoc(slug: string): Promise<SayingDoc | null> {
+  const { data: s, error } = await adminDb()
+    .from("sayings")
+    .select("slug, saying, grade, situation_slug, source_original, published_at, saying_translations(locale, angle, closeness, source_label)")
+    .eq("slug", slug)
+    .maybeSingle();
+  if (error) throw new Error(error.message);
+  if (!s) return null;
+  return {
+    slug: s.slug,
+    published: s.published_at !== null,
+    saying: s.saying,
+    grade: s.grade as SayingDoc["grade"],
+    situation_slug: s.situation_slug ?? undefined,
+    source_original: s.source_original ?? undefined,
+    translations: Object.fromEntries(
+      s.saying_translations.map((t) => [
+        t.locale,
+        { angle: t.angle, closeness: t.closeness, source_label: t.source_label },
+      ]),
+    ),
+  };
+}
+
+// ── intentions ────────────────────────────────────────────────────────────────
+
+export type IntentionRow = {
+  slug: string;
+  act_group: string;
+  act: string; // English act name, for the list
+  published_at: string | null;
+  locales: Locale[];
+};
+
+export async function listIntentions(): Promise<IntentionRow[]> {
+  const { data, error } = await adminDb()
+    .from("intentions")
+    .select("slug, act_group, published_at, created_at, intention_translations(locale, act)")
+    .order("created_at", { ascending: false });
+  if (error) throw new Error(error.message);
+  return data.map((i) => ({
+    slug: i.slug,
+    act_group: i.act_group,
+    act: i.intention_translations.find((t) => t.locale === "en")?.act ?? "",
+    published_at: i.published_at,
+    locales: i.intention_translations.map((t) => t.locale as Locale),
+  }));
+}
+
+export async function loadIntentionDoc(slug: string): Promise<IntentionDoc | null> {
+  const { data: i, error } = await adminDb()
+    .from("intentions")
+    .select("slug, act_group, source_original, published_at, intention_translations(locale, act, intention, note, source_label)")
+    .eq("slug", slug)
+    .maybeSingle();
+  if (error) throw new Error(error.message);
+  if (!i) return null;
+  return {
+    slug: i.slug,
+    published: i.published_at !== null,
+    act_group: i.act_group as IntentionDoc["act_group"],
+    source_original: i.source_original ?? undefined,
+    translations: Object.fromEntries(
+      i.intention_translations.map((t) => [
+        t.locale,
+        { act: t.act, intention: t.intention, note: t.note, source_label: t.source_label },
+      ]),
+    ),
+  };
+}
+
+/** Every situation slug, for linking a saying to one. */
+export async function situationSlugs(): Promise<string[]> {
+  const { data, error } = await adminDb().from("situations").select("slug").order("slug");
+  if (error) throw new Error(error.message);
+  return data.map((s) => s.slug);
 }
 
 export type DorarRow = Database["public"]["Tables"]["dorar_hadith"]["Row"];

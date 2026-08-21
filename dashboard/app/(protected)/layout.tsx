@@ -2,6 +2,7 @@ import Link from "next/link";
 import { adminEmail, SITE_URL } from "@/lib/admin";
 import { signOut } from "../login/actions";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 /**
  * The proxy guarantees a session; this layer decides whether it is an admin's.
@@ -37,11 +38,18 @@ export default async function ProtectedLayout({ children }: { children: React.Re
           <Link href="/" className="text-sm text-muted-foreground hover:text-foreground">
             Situations
           </Link>
+          <Link href="/sayings" className="text-sm text-muted-foreground hover:text-foreground">
+            Sayings
+          </Link>
+          <Link href="/intentions" className="text-sm text-muted-foreground hover:text-foreground">
+            Intentions
+          </Link>
           <a href={SITE_URL} className="text-sm text-muted-foreground hover:text-foreground">
             View site
           </a>
           <div className="ms-auto flex items-center gap-3">
             <span className="text-xs text-muted-foreground">{email}</span>
+            <ThemeToggle />
             <form action={signOut}>
               <Button variant="ghost" size="sm" type="submit">
                 Sign out

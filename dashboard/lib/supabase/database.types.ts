@@ -45,6 +45,141 @@ export type Database = {
         }
         Relationships: []
       }
+      intention_translations: {
+        Row: {
+          act: string
+          intention: string
+          intention_id: string
+          locale: string
+          note: string
+          source_label: string
+        }
+        Insert: {
+          act: string
+          intention: string
+          intention_id: string
+          locale: string
+          note: string
+          source_label: string
+        }
+        Update: {
+          act?: string
+          intention?: string
+          intention_id?: string
+          locale?: string
+          note?: string
+          source_label?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "intention_translations_intention_id_fkey"
+            columns: ["intention_id"]
+            isOneToOne: false
+            referencedRelation: "intentions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      intentions: {
+        Row: {
+          act_group: string
+          created_at: string
+          id: string
+          published_at: string | null
+          slug: string
+          source_original: string | null
+        }
+        Insert: {
+          act_group: string
+          created_at?: string
+          id?: string
+          published_at?: string | null
+          slug: string
+          source_original?: string | null
+        }
+        Update: {
+          act_group?: string
+          created_at?: string
+          id?: string
+          published_at?: string | null
+          slug?: string
+          source_original?: string | null
+        }
+        Relationships: []
+      }
+      saying_translations: {
+        Row: {
+          angle: string
+          closeness: string
+          locale: string
+          saying_id: string
+          source_label: string
+        }
+        Insert: {
+          angle: string
+          closeness: string
+          locale: string
+          saying_id: string
+          source_label: string
+        }
+        Update: {
+          angle?: string
+          closeness?: string
+          locale?: string
+          saying_id?: string
+          source_label?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "saying_translations_saying_id_fkey"
+            columns: ["saying_id"]
+            isOneToOne: false
+            referencedRelation: "sayings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sayings: {
+        Row: {
+          created_at: string
+          grade: string
+          id: string
+          published_at: string | null
+          saying: string
+          situation_slug: string | null
+          slug: string
+          source_original: string | null
+        }
+        Insert: {
+          created_at?: string
+          grade: string
+          id?: string
+          published_at?: string | null
+          saying: string
+          situation_slug?: string | null
+          slug: string
+          source_original?: string | null
+        }
+        Update: {
+          created_at?: string
+          grade?: string
+          id?: string
+          published_at?: string | null
+          saying?: string
+          situation_slug?: string | null
+          slug?: string
+          source_original?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sayings_situation_slug_fkey"
+            columns: ["situation_slug"]
+            isOneToOne: false
+            referencedRelation: "situations"
+            referencedColumns: ["slug"]
+          },
+        ]
+      }
       entries: {
         Row: {
           id: string
