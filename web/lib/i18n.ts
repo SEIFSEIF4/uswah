@@ -26,8 +26,10 @@ export function splitLocale(pathname: string): { locale: Locale; path: string } 
 
 /** Picks a locale from an Accept-Language header. First tag wins; no q-value ranking. */
 export const localeFromHeader = (header: string | null): Locale =>
-  LOCALES.find((l) => new RegExp(`(^|,)\\s*${l}\\b`, "i").test(header ?? "")) ??
-  DEFAULT_LOCALE;
+  (header ?? "")
+    .split(",")
+    .map((tag) => tag.trim().slice(0, 2).toLowerCase())
+    .find(isLocale) ?? DEFAULT_LOCALE;
 
 /** Slugs that would shadow a route. Enforced by the content pipeline too. */
 export const RESERVED_SLUGS = new Set(["search", "about", "login", "saved", "topics", "quotes", "intentions"]);
