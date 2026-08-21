@@ -1,0 +1,8 @@
+packages:
+  - web
+  - dashboard
+onlyBuiltDependencies:
+  - esbuild
+ignoredBuiltDependencies:
+  - sharp
+  - unrs-resolver

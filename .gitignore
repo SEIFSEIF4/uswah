@@ -3,6 +3,7 @@
 .env*.local
 node_modules/
 .next/
+.turbo/
 .vercel/
 .DS_Store
 
