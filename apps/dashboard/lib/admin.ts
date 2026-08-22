@@ -70,7 +70,7 @@ export async function loadSituationDoc(slug: string): Promise<SituationDoc | nul
   const { data: s, error } = await adminDb()
     .from("situations")
     .select(
-      `slug, published_at,
+      `slug, published_at, topic, minutes, feature,
        image_url, image_credit, image_source_url, image_license, image_cleared_by, image_cleared_at,
        situation_translations(locale, title, summary, image_alt),
        entries(position, reviewed_by, reviewed_at,
@@ -89,6 +89,9 @@ export async function loadSituationDoc(slug: string): Promise<SituationDoc | nul
   return {
     slug: s.slug,
     published: s.published_at !== null,
+    topic: (s.topic as SituationDoc["topic"]) ?? undefined,
+    minutes: s.minutes ?? undefined,
+    feature: (s.feature as SituationDoc["feature"]) ?? undefined,
     image: s.image_url
       ? {
           url: s.image_url,

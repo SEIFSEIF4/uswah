@@ -5,10 +5,7 @@ import {
   allSituations,
   featuredIntentions,
   GRADES,
-  heroSituation,
-  PATHS,
   quotesSorted,
-  topicImage,
   topicName,
   TOPICS,
 } from "@/lib/content";
@@ -23,7 +20,6 @@ const copy = {
     intentions: "The same day, differently",
     allIntentions: "All intentions",
     more: "More situations",
-    paths: "Read in order",
     sayings: "Sayings you already know",
     allSayings: "All sayings",
     browse: "Browse everything",
@@ -34,7 +30,6 @@ const copy = {
     intentions: "اليوم نفسه، بنيّة أخرى",
     allIntentions: "كل النيّات",
     more: "مواقف أخرى",
-    paths: "اقرأ بالترتيب",
     sayings: "مقولات تعرفها بالفعل",
     allSayings: "كل المقولات",
     browse: "تصفّح كل شيء",
@@ -45,7 +40,6 @@ const copy = {
     intentions: "Aynı gün, başka türlü",
     allIntentions: "Bütün niyetler",
     more: "Başka durumlar",
-    paths: "Sırayla oku",
     sayings: "Zaten bildiğin sözler",
     allSayings: "Bütün sözler",
     browse: "Hepsine göz at",
@@ -57,8 +51,10 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
   if (!isLocale(locale)) notFound();
 
   const t = copy[locale];
-  const hero = heroSituation();
-  const rest = allSituations().filter((s) => s.slug !== hero.slug);
+  const all = await allSituations();
+  const hero = all.find((s) => s.feature === "hero") ?? all[0];
+  if (!hero) notFound(); // an empty database has no front page
+  const rest = all.filter((s) => s.slug !== hero.slug);
 
   return (
     <>
@@ -153,32 +149,6 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
         </p>
       </section>
 
-      {/* 6. Paths, on ink and circular. The circle is reserved for this one object: a
-             sequence you commit to, which is the only thing on the page that is not a
-             single situation. Nothing else on the site is round. */}
-      <section className="band-section tone-ink">
-        <SectionTitle>{t.paths}</SectionTitle>
-        <ol className="path-circles">
-          {PATHS.map((p, i) => (
-            <li key={p.slug}>
-              {/* Decorative: the path is already named in the heading below it. */}
-              <img src={p.image} alt="" />
-              <span className="path-n">{String(i + 1).padStart(2, "0")}</span>
-              <h3>{p[locale].title}</h3>
-              <p>{p[locale].blurb}</p>
-              <dl className="path-facts">
-                {p[locale].facts.map(([k, v]) => (
-                  <div key={k}>
-                    <dt>{k}</dt>
-                    <dd>{v}</dd>
-                  </div>
-                ))}
-              </dl>
-            </li>
-          ))}
-        </ol>
-      </section>
-
       {/* 7. The long tail, as a shelf you push through rather than a grid you scan. */}
       <Shelf title={t.more} locale={locale}>
         {rest.slice(3, 9).map((s) => (
@@ -232,7 +202,8 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
 
           <ul className="grid list-none grid-cols-2 gap-4 p-0 sm:grid-cols-3">
             {TOPICS.map((topic) => {
-              const art = topicImage(topic.slug);
+              // Stand-in artwork: the topic borrows from its newest situation.
+              const art = all.find((s) => s.topic === topic.slug)?.image;
               return (
                 <li key={topic.slug}>
                   <Link href={`/${locale}/topics/${topic.slug}`} className="group block">

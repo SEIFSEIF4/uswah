@@ -1017,22 +1017,6 @@ html[data-theme-wipe="active"]::view-transition-new(root) {
   .skeleton { animation: none; opacity: .7; }
 }
 
-/* ── sample-data banner ───────────────────────────────────────────────────── */
-
-/* White on the brand is a 9.4:1 bar in light. In dark --brand flips to #ec7a5c, a tint
-   meant for text *on* the ground, and the same rule became white on salmon at 2.8:1 —
-   the loudest thing on the page and the least readable. Dark puts the ground back on
-   top of it, which is what --primary-foreground is for. */
-.sample-banner {
-  background: var(--brand);
-  color: #fff;
-  text-align: center;
-  font-size: .78rem;
-  letter-spacing: .04em;
-  padding: .4rem 1rem;
-}
-.dark .sample-banner { color: var(--primary-foreground); }
-
 /* Tailwind's preflight puts a default arrow on buttons, so every button rule here was
    carrying its own cursor line — and the ones added since forgot to. Stated once. */
 button:not(:disabled), [role="button"]:not([aria-disabled="true"]) { cursor: pointer; }
@@ -1356,70 +1340,6 @@ button:not(:disabled), [role="button"]:not([aria-disabled="true"]) { cursor: poi
 .shelf-item { scroll-snap-align: start; }
 
 /* ── paths ────────────────────────────────────────────────────────────────── */
-
-/* The circle is reserved for this one object. Every situation on the site is a
-   rectangle; a path is the only thing that is not a single situation, so it is the only
-   thing that is round. A second shape has to mean something or it is decoration.
-   The commitment still travels with it — a bare circle would drop the one line that
-   tells a reader what they are agreeing to before they start. */
-.path-circles {
-  list-style: none;
-  margin: 1.25rem 0 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
-  gap: 3rem 2.5rem;
-}
-.path-circles li { text-align: center; }
-.path-circles img {
-  width: 100%;
-  max-width: 14rem;
-  aspect-ratio: 1;
-  object-fit: cover;
-  border-radius: 50%;
-  margin-inline: auto;
-  display: block;
-}
-
-.path-n {
-  display: block;
-  margin-top: 1.1rem;
-  font-family: var(--font-latin), system-ui, sans-serif;
-  font-variant-numeric: tabular-nums;
-  font-size: .8rem;
-  letter-spacing: .12em;
-  color: #e9b9ab;
-}
-
-.path-circles h3 { margin: .35rem 0 .5rem; font-size: 1.45rem; }
-.path-circles p {
-  margin: 0 auto;
-  color: #c3b9ad;
-  max-width: 34ch;
-  line-height: 1.6;
-}
-
-.path-facts {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-  margin: 1.1rem 0 0;
-}
-.path-facts dt {
-  font-family: var(--font-latin), system-ui, sans-serif;
-  font-size: .68rem;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  color: #9c9086;
-}
-[dir="rtl"] .path-facts dt {
-  font-family: var(--font-arabic), sans-serif;
-  letter-spacing: 0;
-  text-transform: none;
-  font-size: .78rem;
-}
-.path-facts dd { margin: .2rem 0 0; font-size: .95rem; white-space: nowrap; }
 
 /* ── contents and share ───────────────────────────────────────────────────── */
 
@@ -2089,21 +2009,6 @@ button:not(:disabled), [role="button"]:not([aria-disabled="true"]) { cursor: poi
   gap: 1rem;
   margin-top: 2.25rem;
 }
-
-/* ponytail: placeholder hrefs — swap in the real handles when the accounts exist. */
-.footer-social { display: flex; gap: .6rem; }
-.footer-social a {
-  display: grid;
-  place-items: center;
-  width: 2.1rem;
-  height: 2.1rem;
-  border-radius: 999px;
-  border: 1px solid var(--footer-line);
-  color: var(--footer-fg);
-  opacity: .8;
-}
-.footer-social a:hover { opacity: 1; border-color: var(--footer-fg); }
-.footer-social svg { width: 1rem; height: 1rem; }
 
 @media (max-width: 40rem) {
   .footer-id { grid-template-columns: 1fr; }

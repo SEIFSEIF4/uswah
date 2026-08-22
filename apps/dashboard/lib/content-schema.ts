@@ -12,9 +12,18 @@ export const RESERVED_SLUGS = ["search", "about", "login", "saved", "topics", "q
 
 export const IMAGE_LICENCES = ["public-domain", "cc0", "cc-by-4.0", "cc-by-sa-4.0", "cc-by-2.0"];
 
+export const TOPICS = ["money", "work", "family", "self", "friendship", "hardship"] as const;
+export type Topic = (typeof TOPICS)[number];
+export const FEATURES = ["hero", "band"] as const;
+
 export type SituationDoc = {
   slug: string;
   published: boolean;
+  topic?: Topic;
+  /** Reading estimate shown on every card. */
+  minutes?: number;
+  /** Which home-page slot this fronts, if any. One of each, site-wide. */
+  feature?: (typeof FEATURES)[number];
   image?: {
     url: string;
     credit: string;
@@ -134,6 +143,16 @@ export function validate(doc: unknown, file: string): string[] {
   if (badSlug) at(badSlug);
 
   if (typeof d.published !== "boolean") at("published must be true or false");
+
+  if (d.topic !== undefined && !TOPICS.includes(d.topic)) at(`unknown topic "${d.topic}"`);
+  if (d.minutes !== undefined && (!Number.isInteger(d.minutes) || d.minutes <= 0))
+    at("minutes must be a positive whole number");
+  if (d.feature !== undefined && !FEATURES.includes(d.feature))
+    at(`feature must be ${FEATURES.join(" or ")}`);
+  // The reader site files everything under a topic and stamps a read time on
+  // every card, so a published situation without them has nowhere to render.
+  if (d.published && !d.topic) at("published needs a topic");
+  if (d.published && !d.minutes) at("published needs a reading estimate (minutes)");
 
   const declared = Object.keys(d.translations ?? {}) as Locale[];
   if (declared.length === 0) at("no translations");

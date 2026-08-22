@@ -357,8 +357,11 @@ export type Database = {
           image_license: string | null
           image_source_url: string | null
           image_url: string | null
+          minutes: number | null
           published_at: string | null
           slug: string
+          topic: string | null
+          feature: string | null
         }
         Insert: {
           created_at?: string
@@ -369,8 +372,11 @@ export type Database = {
           image_license?: string | null
           image_source_url?: string | null
           image_url?: string | null
+          minutes?: number | null
           published_at?: string | null
           slug: string
+          topic?: string | null
+          feature?: string | null
         }
         Update: {
           created_at?: string
@@ -381,8 +387,11 @@ export type Database = {
           image_license?: string | null
           image_source_url?: string | null
           image_url?: string | null
+          minutes?: number | null
           published_at?: string | null
           slug?: string
+          topic?: string | null
+          feature?: string | null
         }
         Relationships: []
       }

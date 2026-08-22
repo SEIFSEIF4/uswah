@@ -10,8 +10,10 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import {
   COLLECTIONS,
+  FEATURES,
   IMAGE_LICENCES,
   LOCALES,
+  TOPICS,
   type Locale,
   type SituationDoc,
 } from "@/lib/content-schema";
@@ -217,6 +219,53 @@ export function SituationForm({
               ))}
             </div>
           </div>
+        </div>
+        <div className="grid gap-3 sm:grid-cols-3">
+          <label className={label}>
+            Topic
+            <select
+              className={select}
+              value={doc.topic ?? ""}
+              onChange={(e) =>
+                patch({ topic: (e.target.value || undefined) as SituationDoc["topic"] })
+              }
+            >
+              <option value="">—</option>
+              {TOPICS.map((t) => (
+                <option key={t} value={t}>
+                  {t}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className={label}>
+            Minutes — the reading estimate on every card
+            <Input
+              type="number"
+              min={1}
+              value={doc.minutes ?? ""}
+              onChange={(e) =>
+                patch({ minutes: e.target.value ? Number(e.target.value) : undefined })
+              }
+            />
+          </label>
+          <label className={label}>
+            Home-page slot — one hero and one band, site-wide
+            <select
+              className={select}
+              value={doc.feature ?? ""}
+              onChange={(e) =>
+                patch({ feature: (e.target.value || undefined) as SituationDoc["feature"] })
+              }
+            >
+              <option value="">none</option>
+              {FEATURES.map((f) => (
+                <option key={f} value={f}>
+                  {f}
+                </option>
+              ))}
+            </select>
+          </label>
         </div>
         <label className="flex items-center gap-1.5 text-sm">
           <input

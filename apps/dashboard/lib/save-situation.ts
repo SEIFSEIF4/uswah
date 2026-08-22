@@ -29,6 +29,9 @@ export async function saveSituation(db: Db, doc: SituationDoc) {
       {
         slug: doc.slug,
         published_at: doc.published ? (existing?.published_at ?? new Date().toISOString()) : null,
+        topic: doc.topic ?? null,
+        minutes: doc.minutes ?? null,
+        feature: doc.feature ?? null,
         image_url: doc.image?.url ?? null,
         image_credit: doc.image?.credit ?? null,
         image_source_url: doc.image?.source_url ?? null,

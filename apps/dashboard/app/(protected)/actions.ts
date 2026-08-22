@@ -37,7 +37,7 @@ async function revalidateSite() {
     await fetch(`${url}/api/revalidate`, {
       method: "POST",
       headers: { "content-type": "application/json", "x-revalidate-secret": secret },
-      body: JSON.stringify({ tags: ["content:sayings", "content:intentions"] }),
+      body: JSON.stringify({ tags: ["content:situations", "content:sayings", "content:intentions"] }),
     });
   } catch (e) {
     console.error("[dashboard] site revalidation failed:", msg(e));

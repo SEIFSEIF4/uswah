@@ -5,6 +5,8 @@ import { validate } from "../lib/content-schema";
 const ok = {
   slug: "asked-for-money-again",
   published: true,
+  topic: "money",
+  minutes: 2,
   translations: {
     en: { title: "T", summary: "S" },
     ar: { title: "ت", summary: "س" },
@@ -44,6 +46,11 @@ fails((d) => (d.slug = "Asked_For_Money"), "lowercase words");
 // declared a locale, then left it half-written, and marked it live
 fails((d) => delete d.entries[0].translations.ar.body, "ar is incomplete");
 fails((d) => (d.translations.fr = { title: "x", summary: "y" }), "unknown locale");
+fails((d) => (d.topic = "gym"), "unknown topic");
+fails((d) => delete d.topic, "published needs a topic");
+fails((d) => (d.minutes = 0), "positive whole number");
+fails((d) => delete d.minutes, "reading estimate");
+fails((d) => (d.feature = "sidebar"), "feature must be");
 
 // --- images -----------------------------------------------------------------
 const withImage = () => {

@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 import { Inter, Newsreader, Noto_Naskh_Arabic } from "next/font/google";
 import localFont from "next/font/local";
 import { LOCALES, dirFor, isLocale } from "@/lib/i18n";
-import { USING_SAMPLE_DATA } from "@/lib/content";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { ThemeProvider } from "@/components/theme-provider";
 import { LocaleSwitch } from "@/components/locale-switch";
@@ -135,7 +134,6 @@ export default async function LocaleLayout({
         className={`${latin.variable} ${display.variable} ${arabic.variable} ${displayAr.variable} ${scripture.variable} antialiased`}
       >
         <ThemeProvider>
-        {USING_SAMPLE_DATA && <div className="sample-banner">{t.sample}</div>}
         <div className="mx-auto flex min-h-screen max-w-[76rem] flex-col px-6">
           {/* Masthead: the wordmark owns its own line, the way a masthead does, and the
               bar under it carries navigation. No signed-in state here on purpose —
@@ -148,7 +146,7 @@ export default async function LocaleLayout({
           {/* Outside <header> on purpose: a sticky element can only travel inside its
               own parent's box, so the bar has to be a child of the tall page column. */}
           <div className="masthead-bar">
-            <TopicsMenu locale={locale} topics={topicMenu(locale)} />
+            <TopicsMenu locale={locale} topics={await topicMenu(locale)} />
             {/* Saved is not here on purpose: it is empty for anyone not signed in, and
                 the way in is the save itself. It stays in the footer for the return trip. */}
             <MastheadNav
@@ -191,23 +189,11 @@ export default async function LocaleLayout({
             </div>
             {/* The copyright is a colophon line, not a sibling of the navigation: it sits
                 on its own rule at the foot, with the accounts opposite. */}
+            {/* No social row: the accounts do not exist yet, and a link that goes
+                nowhere is a promise the footer cannot keep. It returns with real
+                handles. */}
             <div className="footer-legal">
               <p className="footer-fine">© {new Date().getFullYear()} {t.home}</p>
-              {/* Mock accounts: the circles are the qalam.global shape, the hrefs are
-                  placeholders until the real handles exist. */}
-              <div className="footer-social">
-                  {[
-                    ["Instagram", "M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4Zm5 5.6a3.4 3.4 0 1 0 0 6.8 3.4 3.4 0 0 0 0-6.8ZM17.4 6a.9.9 0 1 0 0 1.8.9.9 0 0 0 0-1.8Z"],
-                    ["Facebook", "M13.5 21v-8h2.7l.4-3h-3.1V8.1c0-.9.3-1.5 1.5-1.5h1.7V3.9c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3V10H7.3v3H10v8h3.5Z"],
-                    ["X", "M3 3h4.6l4.4 6 5-6H20l-6.6 7.9L21 21h-4.6l-4.7-6.4L6.2 21H4l7-8.4L3 3Z"],
-                  ].map(([name, d]) => (
-                  <a key={name} href="#" aria-label={name}>
-                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                      <path d={d} />
-                    </svg>
-                  </a>
-                ))}
-              </div>
             </div>
           </footer>
         </div>

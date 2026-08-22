@@ -30,8 +30,10 @@ const copy = {
   },
 } as const;
 
-export function generateStaticParams() {
-  return allSituations().flatMap((s) => LOCALES.map((locale) => ({ locale, slug: s.slug })));
+export async function generateStaticParams() {
+  return (await allSituations()).flatMap((s) =>
+    LOCALES.map((locale) => ({ locale, slug: s.slug })),
+  );
 }
 
 export async function generateMetadata({
@@ -41,7 +43,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale, slug } = await params;
   if (!isLocale(locale)) return {};
-  const s = situationBySlug(slug);
+  const s = await situationBySlug(slug);
   if (!s) return {};
   return {
     title: `${s[locale].title} · Uswah`,
@@ -61,12 +63,12 @@ export default async function Situation({
   const { locale, slug } = await params;
   if (!isLocale(locale) || RESERVED_SLUGS.has(slug)) notFound();
 
-  const s = situationBySlug(slug);
+  const s = await situationBySlug(slug);
   if (!s) notFound();
 
   const t = copy[locale];
   const text = s[locale as Locale];
-  const related = relatedSituations(slug);
+  const related = await relatedSituations(slug);
 
   return (
     <article className="situation">

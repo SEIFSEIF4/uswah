@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { isLocale, LOCALES } from "@/lib/i18n";
-import { situationsByTopic, topicName, TOPICS } from "@/lib/content";
+import { allSituations, topicName, TOPICS } from "@/lib/content";
 
 const copy = {
   en: {
@@ -30,6 +30,7 @@ export default async function Topics({ params }: { params: Promise<{ locale: str
   if (!isLocale(locale)) notFound();
 
   const t = copy[locale];
+  const all = await allSituations();
 
   return (
     <>
@@ -45,7 +46,7 @@ export default async function Topics({ params }: { params: Promise<{ locale: str
           of "money" as though that were what the subject looks like. */}
       <ol className="topic-index">
         {TOPICS.map((topic) => {
-          const items = situationsByTopic(topic.slug);
+          const items = all.filter((s) => s.topic === topic.slug);
           return (
             <li key={topic.slug}>
               <Link href={`/${locale}/topics/${topic.slug}`}>

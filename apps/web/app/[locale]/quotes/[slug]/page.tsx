@@ -89,7 +89,7 @@ export default async function Saying({
 
   const t = copy[locale];
   const grade = GRADES[q.grade];
-  const situation = q.situation ? situationBySlug(q.situation) : undefined;
+  const situation = q.situation ? await situationBySlug(q.situation) : undefined;
   const more = await relatedQuotes(slug);
 
   return (

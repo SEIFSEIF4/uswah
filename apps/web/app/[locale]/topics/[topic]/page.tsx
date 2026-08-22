@@ -23,7 +23,7 @@ export default async function Topic({
   if (!isLocale(locale)) notFound();
   if (!TOPICS.some((t) => t.slug === topic)) notFound();
 
-  const items = situationsByTopic(topic as TopicSlug);
+  const items = await situationsByTopic(topic as TopicSlug);
 
   return (
     <>
