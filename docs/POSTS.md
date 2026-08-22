@@ -125,53 +125,30 @@ Read it in Arabic, English, and Turkish — link in bio.
 #hadith #حديث #sunnah #السنة #أسوة
 ```
 
-Division of labor: an image model may compose the art slides and render
-the SHORT Latin lines (verify them letter by letter before use — one
-wrong glyph and the slide is remade). Arabic is never machine-rendered:
-slides 3, 4, and 6 and every Arabic label get their type set in Canva
-over the generated or plain-paper ground.
+Division of labor, settled after trying it the other way: image models
+produce ONLY the meaningful images — the artwork, the crops, a textured
+ground. Every word, label, shadow scrim, and layout is set by hand in
+Canva. Machine-composed slides came out worse than the sum of their
+parts; the assets stay clean and the typography stays ours.
 
-### The ChatGPT prompt
+### Asset prompts
 
-Attach the eight files from `content/posts/intro/`, then:
+The eight crops in `content/posts/intro/` cover slides 1, 2, and 5. The
+type-only slides (3, 4, and the closing slide) sit on a painted ground
+rather than a flat fill, so one more generated asset:
 
 ```
-You are composing an Instagram carousel for Uswah, an editorial site
-that answers real-life situations from the Quran and Sahih hadith.
-Produce 4 slide images, 1080x1350 portrait, using ONLY the attached
-artwork — do not repaint, restyle, or regenerate it, only place, crop,
-and add flat typography.
-
-Design system: warm paper cream ground (#f6f1e7 range), deep blue-black
-ink text, an editorial serif for headlines (Newsreader-like), generous
-margins, no decoration, no gradients, no drop shadows, no rounded-glass
-effects. Quiet and bookish, not social-media loud.
-
-Slide 1, from cover.jpg: keep the image full-bleed. In the empty wall
-area, the single word "Uswah" in large serif ink. Low on the paving,
-small: "For the situations you actually live."
-
-Slide 2: a 2x3 grid of money.jpg, work.jpg, family.jpg, self.jpg,
-friendship.jpg, hardship.jpg with thin paper-cream gutters. Above the
-grid on a paper band: "Six areas of an ordinary life." Under each tile
-a small caption in English only: Money, Work, Family, Yourself, People,
-Hardship.
-
-Slide 3, from rooftop.jpg: full-bleed. In the sky, stacked and centered,
-just two lines: "English . Turkce . Arabic" then smaller "Every
-situation, in all three."
-
-Slide 4: plain paper-cream ground, no artwork. Centered, medium serif:
-"Practical guidance for real situations, answered from the Quran and
-Sahih hadith, with the source shown." Leave the lower half of the slide
-completely empty.
-
-Hard rules: no Arabic text anywhere (it is added later by hand), no
-text I did not specify, no hashtags, no logos, no watermarks, no
-invented UI elements, no borders. Render each Latin line exactly as
-written, then double-check every word's spelling against my text.
+SERIES STYLE (from docs/ART.md) applies. 1080x1350 portrait.
+Save to content/posts/intro/paper-v1.jpg.
+Subject: an empty painted ground in the series' warm paper cream — flat
+matte gouache laid in soft horizontal strokes, visible paper grain, the
+tone barely deepening toward the edges. No objects, no wall, no floor
+line, no horizon: only quiet painted paper, even enough that dark serif
+type will sit on it anywhere.
+Hard rules: no text, no borders, no vignette, no stains or blots, no
+gradient bands, no gloss.
 ```
 
-The Arabic on slides 1, 2, and 3, all of slide "proof" (the hadith),
-and the closing slide are then finished in Canva, where the type is
-real. Never post a machine-rendered Arabic glyph.
+Everything else is Canva: the wordmark and Arabic from real fonts, text
+shadows only if a busy area of art demands one, and the closing slide
+built once as a saved template.
