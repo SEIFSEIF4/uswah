@@ -765,23 +765,27 @@ html[data-theme-wipe="active"]::view-transition-new(root) {
   border-radius: 8px;
   overflow: hidden;
 }
-/* The rosette from the Canva cards, as a faint watermark behind the text. Drawn
-   through a mask so the shape takes the brand token and follows the theme. */
+/* The rosette from the Canva cards, repeated at three sizes behind the text: a large
+   one bleeding off the top-left corner, a medium one off the bottom-right, a small
+   whole one in the middle. Drawn through mask layers so one brand-token fill colours
+   all three and follows the theme; the corner crops are the composition, and the
+   block's overflow clipping is what makes them read that way. */
 .source::before {
   content: "";
   position: absolute;
   z-index: -1;
   inset: 0;
-  margin: auto;
-  /* Sized by height so the full rosette fits whatever the block holds: a one-line
-     verse keeps a small whole mark, a long hadith gets a larger one, never a crop. */
-  height: min(13rem, 86%);
-  aspect-ratio: 734 / 731;
   background: var(--brand);
-  opacity: .12;
-  -webkit-mask: url(/ornament.svg) center / contain no-repeat;
-  mask: url(/ornament.svg) center / contain no-repeat;
+  opacity: .1;
   pointer-events: none;
+  -webkit-mask-image: url(/ornament.svg), url(/ornament.svg), url(/ornament.svg);
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: left -5rem top -5rem, right -3rem bottom -3.5rem, center;
+  -webkit-mask-size: 16rem, 11rem, 5rem;
+  mask-image: url(/ornament.svg), url(/ornament.svg), url(/ornament.svg);
+  mask-repeat: no-repeat;
+  mask-position: left -5rem top -5rem, right -3rem bottom -3.5rem, center;
+  mask-size: 16rem, 11rem, 5rem;
 }
 .source-text {
   font-family: var(--font-scripture), serif;
