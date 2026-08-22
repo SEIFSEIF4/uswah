@@ -207,12 +207,12 @@ no alt text is needed. Compositions are single centered emblems with
 generous margin, safe for the 4:3 tile crop. Use the shared block above
 with every prompt.
 
-- [ ] `money` — the tied purse
-- [ ] `work` — the ladder before the day
-- [ ] `family` — two pairs of slippers at the threshold
-- [ ] `self` — the ewer and basin, washing not yet begun
-- [ ] `friendship` — two chairs angled toward each other
-- [ ] `hardship` — the worn stair climbing out of shadow
+- [x] `money` — the tied purse (`/art/topics/money-v1.jpg`)
+- [x] `work` — the ladder before the day (`/art/topics/work-v1.jpg`)
+- [x] `family` — two pairs of slippers at the threshold (`/art/topics/family-v1.jpg`)
+- [x] `self` — the ewer and basin, washing not yet begun (`/art/topics/self-v1.jpg`)
+- [x] `friendship` — two chairs angled toward each other (`/art/topics/friendship-v1.jpg`)
+- [x] `hardship` — the worn stair climbing out of shadow (`/art/topics/hardship-v1.jpg`)
 
 ### `money` — المال
 

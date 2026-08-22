@@ -207,14 +207,12 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
 
           <ul className="grid list-none grid-cols-2 gap-4 p-0 sm:grid-cols-3">
             {TOPICS.map((topic) => {
-              // Stand-in artwork: the topic borrows from its newest situation.
-              const art = all.find((s) => s.topic === topic.slug)?.image;
               return (
                 <li key={topic.slug}>
                   <Link href={`/${locale}/topics/${topic.slug}`} className="group block">
                     {/* Decorative: the label underneath already names the category. */}
                     <img
-                      src={art?.url}
+                      src={topic.image}
                       alt=""
                       loading="lazy"
                       className="aspect-[4/3] w-full rounded-xl object-cover"

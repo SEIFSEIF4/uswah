@@ -16,13 +16,14 @@ import { LOCALES, type Locale } from "./i18n";
 
 export type TopicSlug = "money" | "work" | "family" | "self" | "friendship" | "hardship";
 
-export const TOPICS: { slug: TopicSlug; en: string; ar: string; tr: string }[] = [
-  { slug: "money", en: "Money", ar: "المال", tr: "Para" },
-  { slug: "work", en: "Work", ar: "العمل", tr: "İş" },
-  { slug: "family", en: "Family", ar: "الأهل", tr: "Aile" },
-  { slug: "self", en: "Yourself", ar: "النفس", tr: "Kendin" },
-  { slug: "friendship", en: "People", ar: "الناس", tr: "İnsanlar" },
-  { slug: "hardship", en: "Hardship", ar: "الشدّة", tr: "Zorluk" },
+/* Each topic carries its own tile emblem; see docs/ART.md for the series. */
+export const TOPICS: { slug: TopicSlug; en: string; ar: string; tr: string; image: string }[] = [
+  { slug: "money", en: "Money", ar: "المال", tr: "Para", image: "/art/topics/money-v1.jpg" },
+  { slug: "work", en: "Work", ar: "العمل", tr: "İş", image: "/art/topics/work-v1.jpg" },
+  { slug: "family", en: "Family", ar: "الأهل", tr: "Aile", image: "/art/topics/family-v1.jpg" },
+  { slug: "self", en: "Yourself", ar: "النفس", tr: "Kendin", image: "/art/topics/self-v1.jpg" },
+  { slug: "friendship", en: "People", ar: "الناس", tr: "İnsanlar", image: "/art/topics/friendship-v1.jpg" },
+  { slug: "hardship", en: "Hardship", ar: "الشدّة", tr: "Zorluk", image: "/art/topics/hardship-v1.jpg" },
 ];
 
 export const topicName = (slug: TopicSlug, locale: Locale) =>
