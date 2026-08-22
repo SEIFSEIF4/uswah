@@ -79,6 +79,12 @@ export const metadata: Metadata = {
   title: "Uswah",
   description:
     "Practical guidance for real situations, from the original source.",
+  // og:site_name — link previews (Discord above the title, others below) name the
+  // site from this; without it every shared card reads as anonymous.
+  openGraph: {
+    siteName: "Uswah",
+    type: "website",
+  },
 };
 
 export function generateStaticParams() {
