@@ -719,6 +719,9 @@ html[data-theme-wipe="active"]::view-transition-new(root) {
   line-height: 1.1;
   margin: .5rem 0 .6rem;
 }
+/* Arabic stacks marks above the letters (رُقِّي), and at 1.1 they climb out of the
+   line box into the meta row above. Looser leading keeps them inside the heading. */
+[dir="rtl"] .situation-head h1 { line-height: 1.35; margin-top: .75rem; }
 .situation-head .standfirst {
   font-size: 1.12rem;
   color: var(--muted-foreground);

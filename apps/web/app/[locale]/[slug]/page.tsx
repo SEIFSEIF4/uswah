@@ -74,7 +74,10 @@ export default async function Situation({
     <article className="situation">
       <figure className="art">
         <img src={s.image.url} alt={text.imageAlt} />
-        {/* Credit sits with the artwork, always. It is a condition of using it. */}
+        {/* Credit sits with borrowed artwork, always: it is a condition of using it.
+            The house's own paintings carry no caption, the way a magazine does not
+            credit itself under every illustration. */}
+        {!s.image.credit.startsWith("Uswah studio") && (
         <figcaption>
           <a href={s.image.sourceUrl} rel="noreferrer noopener" target="_blank">
             {s.image.credit}
@@ -85,6 +88,7 @@ export default async function Situation({
             {s.image.license}
           </span>
         </figcaption>
+        )}
       </figure>
 
       <Contents
