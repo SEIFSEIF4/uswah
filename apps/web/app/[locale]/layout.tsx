@@ -151,8 +151,8 @@ export default async function LocaleLayout({
                 the way in is the save itself. It stays in the footer for the return trip. */}
             <MastheadNav
               items={[
-                { href: `/${locale}/intentions`, label: t.intentions },
                 { href: `/${locale}/quotes`, label: t.quotes },
+                { href: `/${locale}/intentions`, label: t.intentions },
               ]}
             />
             <div className="masthead-tools">
@@ -175,8 +175,8 @@ export default async function LocaleLayout({
             </svg>
             <div className="footer-inner">
               <nav className="footer-nav">
-                <Link href={`/${locale}/intentions`}>{t.intentions}</Link>
                 <Link href={`/${locale}/quotes`}>{t.quotes}</Link>
+                <Link href={`/${locale}/intentions`}>{t.intentions}</Link>
                 <Link href={`/${locale}/saved`}>{t.saved}</Link>
                 <Link href={`/${locale}/search`}>{t.search}</Link>
               </nav>

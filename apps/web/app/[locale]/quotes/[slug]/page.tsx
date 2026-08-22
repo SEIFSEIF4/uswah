@@ -22,7 +22,6 @@ const copy = {
     pendingWhy:
       "Below the current publishing threshold. Until a scholarly reviewer joins the project, only the Quran and the two Sahih collections are published, so this comparison is shown but not relied on.",
     next: "More sayings",
-    back: "All sayings",
   },
   ar: {
     parallel: "الزاوية",
@@ -32,7 +31,6 @@ const copy = {
     pendingWhy:
       "دون عتبة النشر الحالية. وإلى أن ينضم مراجع شرعي إلى المشروع، لا يُنشر إلا القرآن والصحيحان، فهذه المقارنة معروضة لا معتمدة.",
     next: "مقولات أخرى",
-    back: "كل المقولات",
   },
   tr: {
     parallel: "Karşılığı",
@@ -42,7 +40,6 @@ const copy = {
     pendingWhy:
       "Şu anki yayın eşiğinin altında. Projeye ilim ehli bir denetçi katılana kadar yalnızca Kur'an ve iki Sahih yayımlanıyor; bu karşılaştırma gösteriliyor ama dayanak alınmıyor.",
     next: "Başka sözler",
-    back: "Bütün sözler",
   },
 } as const;
 
@@ -94,10 +91,7 @@ export default async function Saying({
 
   return (
     <article className="saying-page">
-      <Link href={`/${locale}/quotes`} className="saying-back">
-        {t.back}
-      </Link>
-
+      {/* No back link: the masthead's Sayings link is lit on this page and is the way back. */}
       {/* The saying is the smallest thing here on purpose: it is what the reader already
           has. The source it is measured against gets the weight. It also keeps LTR in
           Arabic, because it circulates in English and mirroring it would misdescribe it. */}
@@ -106,7 +100,8 @@ export default async function Saying({
       </p>
 
       <div className="saying-grade">
-        <span className={`grade grade-${q.grade}`}>{grade[locale]}</span>
+        {/* For Quran the ref already opens with the word Quran, so the badge would double it. */}
+        {q.grade !== "quran" && <span className={`grade grade-${q.grade}`}>{grade[locale]}</span>}
         <span className="saying-ref">{q.source.label[locale]}</span>
       </div>
 

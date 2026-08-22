@@ -760,6 +760,20 @@ html[data-theme-wipe="active"]::view-transition-new(root) {
   border: 1px solid var(--rule);
   border-radius: 8px;
 }
+/* A quiet ornament heads the block: the rub el hizb, the mark Arabic typography
+   already uses to open scripture. A glyph, not an image, so it scales and takes the
+   theme colour for free; swap `content` for url(...) if a drawn ornament arrives. */
+.source::before {
+  content: "۞";
+  display: block;
+  text-align: center;
+  font-family: var(--font-scripture), serif;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--brand);
+  opacity: .5;
+  margin-bottom: 1.1rem;
+}
 .source-text {
   font-family: var(--font-scripture), serif;
   font-size: 1.32rem;
@@ -811,15 +825,45 @@ html[data-theme-wipe="active"]::view-transition-new(root) {
   margin: .8rem 0 0;
   direction: rtl;
 }
-.source-cats a {
+.source-cats button {
   font-size: .75rem;
+  font-family: inherit;
   color: var(--faint);
+  background: none;
   border: 1px solid var(--rule);
   border-radius: 999px;
   padding: .1rem .6rem;
-  text-decoration: none;
+  cursor: pointer;
 }
-.source-cats a:hover { color: var(--brand); border-color: var(--brand); }
+.source-cats button:hover { color: var(--brand); border-color: var(--brand); }
+
+/* The card a chip opens: a native popover, so centring, top layer, light-dismiss and
+   Escape all come from the platform. */
+.cat-pop {
+  /* Preflight zeroes every margin, which erases the UA centring popovers ship with,
+     so the fixed inset + auto margin is restated here. */
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  height: fit-content;
+  width: min(24rem, calc(100vw - 3rem));
+  padding: 1.3rem 1.5rem;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  background: var(--popover);
+  color: var(--popover-foreground);
+  box-shadow: 0 12px 32px rgb(0 0 0 / .18);
+}
+.cat-pop::backdrop { background: rgb(0 0 0 / .25); }
+.cat-pop strong { display: block; font-size: .95rem; margin-bottom: .5rem; }
+.cat-pop p {
+  margin: 0 0 .9rem;
+  font-size: .85rem;
+  line-height: 1.7;
+  color: var(--muted-foreground);
+}
+.cat-pop a { font-size: .85rem; color: var(--brand); text-decoration: none; }
+.cat-pop a:hover { text-decoration: underline; }
 
 /* The site-wide credit at the foot of the sayings index. */
 .dorar-note {
@@ -1117,18 +1161,8 @@ button:not(:disabled), [role="button"]:not([aria-disabled="true"]) { cursor: poi
 
 /* ── one saying ───────────────────────────────────────────────────────────── */
 
-.saying-page { max-width: 40rem; margin-inline: auto; }
-
-.saying-back {
-  display: inline-block;
-  margin-bottom: 2rem;
-  font-size: .8rem;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  color: var(--faint);
-}
-[dir="rtl"] .saying-back { letter-spacing: 0; text-transform: none; font-size: .9rem; }
-.saying-back:hover { color: var(--foreground); }
+/* The top padding is the room the removed back link used to hold. */
+.saying-page { max-width: 40rem; margin-inline: auto; padding-top: 2rem; }
 
 /* Smaller than the source it is measured against. That inversion is the argument. */
 .saying-line {
