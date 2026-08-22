@@ -1196,9 +1196,7 @@ button:not(:disabled), [role="button"]:not([aria-disabled="true"]) { cursor: poi
   font-family: var(--font-display-ar), var(--font-arabic), serif;
   line-height: 1.6;
 }
-/* No bottom margin: the source block's own margin is the only gap below the ref. */
-.saying-grade { display: flex; align-items: center; gap: .7rem; margin: .6rem 0 0; }
-.saying-ref { font-size: .85rem; color: var(--faint); }
+/* The grade badge and ref live inside the source block now; no header row for them. */
 
 .saying-block { margin: 2rem 0; }
 .saying-block h2 {

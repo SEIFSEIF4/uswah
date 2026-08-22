@@ -5,7 +5,6 @@ import { isLocale, LOCALES } from "@/lib/i18n";
 import {
   allQuotes,
   GRADES,
-  gradeInLabel,
   quoteBySlug,
   relatedQuotes,
   situationBySlug,
@@ -101,21 +100,14 @@ export default async function Saying({
         {q[locale].saying ?? q.saying}
       </p>
 
-      <div className="saying-grade">
-        {/* "Sahih" before "Sahih al-Bukhari 1471" (or "Quran" before "Quran 2:276")
-            says it twice; the badge appears only when the ref does not carry it. */}
-        {!gradeInLabel(q, locale) && (
-          <span className={`grade grade-${q.grade}`}>{grade[locale]}</span>
-        )}
-        <span className="saying-ref">{q.source.label[locale]}</span>
-      </div>
-
-      {q.source.original && (
-        <section className="source">
-          <p className="source-text">{q.source.original}</p>
-          {q.source.dorar && <DorarSource dorar={q.source.dorar} locale={locale} />}
-        </section>
-      )}
+      {/* The reference lives inside the source block, under the text it references,
+          the same way the situation pages carry theirs. Floating it on the page
+          ground made the Quran pages look unlike the hadith ones. */}
+      <section className="source">
+        {q.source.original && <p className="source-text">{q.source.original}</p>}
+        <p className="source-ref">{q.source.label[locale]}</p>
+        {q.source.dorar && <DorarSource dorar={q.source.dorar} locale={locale} />}
+      </section>
 
       <section className="saying-block">
         <h2>{t.parallel}</h2>
