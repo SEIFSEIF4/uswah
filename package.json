@@ -3,6 +3,8 @@
   "private": true,
   "scripts": {
     "dev": "turbo dev",
+    "dev:web": "pnpm --filter web dev",
+    "dev:dashboard": "pnpm --filter dashboard dev",
     "build": "turbo build",
     "lint": "turbo lint",
     "db:types": "sh scripts/gen-types.sh"
