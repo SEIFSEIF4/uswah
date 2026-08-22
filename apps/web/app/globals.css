@@ -752,27 +752,36 @@ html[data-theme-wipe="active"]::view-transition-new(root) {
 }
 [dir="rtl"] .byline-flag { letter-spacing: 0; }
 
-/* The source block is the centre of the page, so it gets the only inset surface. */
+/* The source block is the centre of the page, so it gets the only inset surface.
+   isolation makes the watermark's negative z-index stay inside this box instead of
+   dropping behind the opaque block background. */
 .source {
+  position: relative;
+  isolation: isolate;
   margin: 2.5rem 0;
   padding: 1.6rem 1.75rem;
   background: var(--surface);
   border: 1px solid var(--rule);
   border-radius: 8px;
+  overflow: hidden;
 }
-/* A quiet ornament heads the block: the rub el hizb, the mark Arabic typography
-   already uses to open scripture. A glyph, not an image, so it scales and takes the
-   theme colour for free; swap `content` for url(...) if a drawn ornament arrives. */
+/* The rosette from the Canva cards, as a faint watermark behind the text. Drawn
+   through a mask so the shape takes the brand token and follows the theme. */
 .source::before {
-  content: "۞";
-  display: block;
-  text-align: center;
-  font-family: var(--font-scripture), serif;
-  font-size: 1.5rem;
-  line-height: 1;
-  color: var(--brand);
-  opacity: .5;
-  margin-bottom: 1.1rem;
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  margin: auto;
+  /* Sized by height so the full rosette fits whatever the block holds: a one-line
+     verse keeps a small whole mark, a long hadith gets a larger one, never a crop. */
+  height: min(13rem, 86%);
+  aspect-ratio: 734 / 731;
+  background: var(--brand);
+  opacity: .12;
+  -webkit-mask: url(/ornament.svg) center / contain no-repeat;
+  mask: url(/ornament.svg) center / contain no-repeat;
+  pointer-events: none;
 }
 .source-text {
   font-family: var(--font-scripture), serif;
