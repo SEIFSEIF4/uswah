@@ -68,7 +68,8 @@ const arDigits = (s: string) => s.replace(/[0-9]/g, (d) => "٠١٢٣٤٥٦٧٨٩
 function sourceLabel(kind: string, collection: string | null, ref: string) {
   if (kind === "quran")
     return { en: `Quran ${ref}`, ar: `القرآن ${arDigits(ref)}`, tr: `Kur'an ${ref}` };
-  const b = BOOKS[collection ?? ""] ?? { en: collection ?? "", ar: collection ?? "", tr: collection ?? "" };
+  // The DB constraint admits only bukhari or muslim here, so the lookup always hits.
+  const b = BOOKS[collection!];
   return { en: `${b.en} ${ref}`, ar: `${b.ar} ${arDigits(ref)}`, tr: `${b.tr} ${ref}` };
 }
 
@@ -173,10 +174,6 @@ export async function topicMenu(locale: Locale) {
     name: topicName(t.slug, locale),
     count: all.filter((s) => s.topic === t.slug).length,
   }));
-}
-
-export async function situationsByTopic(topic: TopicSlug) {
-  return (await loadSituations()).filter((s) => s.topic === topic);
 }
 
 /** Other situations sharing a topic, then anything else, never the one you are reading. */

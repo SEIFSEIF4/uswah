@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { isLocale, LOCALES } from "@/lib/i18n";
-import { situationsByTopic, topicName, TOPICS, type TopicSlug } from "@/lib/content";
+import { allSituations, topicName, TOPICS, type TopicSlug } from "@/lib/content";
 import { LoadMore } from "@/components/load-more";
 import { TopicBar } from "@/components/topic-bar";
 
@@ -23,7 +23,7 @@ export default async function Topic({
   if (!isLocale(locale)) notFound();
   if (!TOPICS.some((t) => t.slug === topic)) notFound();
 
-  const items = await situationsByTopic(topic as TopicSlug);
+  const items = (await allSituations()).filter((s) => s.topic === topic);
 
   return (
     <>
