@@ -73,8 +73,14 @@ const scripture = Noto_Naskh_Arabic({
 });
 
 export const metadata: Metadata = {
+  // Absolute URLs in og:image and canonicals resolve against this. Without the
+  // Vercel fallback, production pointed scrapers at localhost and every share
+  // card's image came up broken.
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+    process.env.NEXT_PUBLIC_SITE_URL ??
+      (process.env.VERCEL_PROJECT_PRODUCTION_URL
+        ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+        : "http://localhost:3000"),
   ),
   title: "Uswah",
   description:
