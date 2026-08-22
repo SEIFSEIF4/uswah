@@ -792,7 +792,8 @@ html[data-theme-wipe="active"]::view-transition-new(root) {
   mask-position: left -5rem top -5rem, right -3rem bottom -3.5rem, center;
   mask-size: 16rem, 11rem, 5rem;
 }
-.source:hover::before { opacity: 1; }
+/* Full opacity crossed over the words; the bloom stops at a shade that stays behind them. */
+.source:hover::before { opacity: .22; }
 .source-text {
   font-family: var(--font-scripture), serif;
   font-size: 1.32rem;
