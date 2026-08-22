@@ -112,17 +112,19 @@ export default async function Saying({
   const { data: claims } = await supabase.auth.getClaims();
   let saved = false;
   if (claims?.claims?.sub) {
-    const { data: saying } = await supabase
+    const { data: saying, error: sayingError } = await supabase
       .from("sayings")
       .select("id")
       .eq("slug", slug)
       .maybeSingle();
+    if (sayingError) throw sayingError;
     if (saying) {
-      const { data: savedRow } = await supabase
+      const { data: savedRow, error: savedError } = await supabase
         .from("saved_sayings")
         .select("saying_id")
         .eq("saying_id", saying.id)
         .maybeSingle();
+      if (savedError) throw savedError;
       saved = Boolean(savedRow);
     }
   }

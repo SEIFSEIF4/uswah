@@ -9,6 +9,10 @@ assert.doesNotMatch(button, /onClick=.*set.*saved/i, "heart must not optimistica
 assert.match(button, /aria-pressed=\{saved\}/);
 assert.match(page, /from\("saved_sayings"\)/);
 assert.match(page, /<SayingSaveButton/);
+assert.match(page, /error: sayingError/);
+assert.match(page, /if \(sayingError\) throw sayingError/);
+assert.match(page, /error: savedError/);
+assert.match(page, /if \(savedError\) throw savedError/);
 assert.match(action, /redirect\([\s\S]*\/quotes\//, "login must return to the quote");
 assert.match(action, /if \(existing\)[\s\S]*delete\(\)[\s\S]*else[\s\S]*insert/);
 assert.match(action, /if \(error\) throw error/, "database failures must not claim success");
