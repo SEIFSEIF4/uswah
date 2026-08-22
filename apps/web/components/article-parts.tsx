@@ -26,10 +26,16 @@ export function Share({ title, locale }: { title: string; locale: Locale }) {
   const [copyStatus, setCopyStatus] = useState<"copied" | "failed" | null>(null);
   const url = useSyncExternalStore(subscribeToUrl, getUrlSnapshot, getUrlServerSnapshot);
   const copyTimeoutRef = useRef<number | null>(null);
+  const isMountedRef = useRef(false);
   const t = copy[locale];
 
-  useEffect(() => () => {
-    if (copyTimeoutRef.current !== null) window.clearTimeout(copyTimeoutRef.current);
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+      if (copyTimeoutRef.current !== null) window.clearTimeout(copyTimeoutRef.current);
+      copyTimeoutRef.current = null;
+    };
   }, []);
 
   const targets = [
@@ -40,9 +46,11 @@ export function Share({ title, locale }: { title: string; locale: Locale }) {
 
   async function copyLink() {
     const copied = await copyText(window.location.href);
+    if (!isMountedRef.current) return;
     if (copyTimeoutRef.current !== null) window.clearTimeout(copyTimeoutRef.current);
     setCopyStatus(copied ? "copied" : "failed");
     copyTimeoutRef.current = window.setTimeout(() => {
+      if (!isMountedRef.current) return;
       setCopyStatus(null);
       copyTimeoutRef.current = null;
     }, 2000);

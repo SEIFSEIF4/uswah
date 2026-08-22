@@ -166,6 +166,7 @@ export function ShareCard({
   const frameRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const copyTimeoutRef = useRef<number | null>(null);
+  const isMountedRef = useRef(false);
 
   const page = `/${locale}/quotes/${slug}`;
   const { w, h } = CARD_SIZES[ratio];
@@ -186,8 +187,13 @@ export function ShareCard({
     };
   }, [qr, page, theme]);
 
-  useEffect(() => () => {
-    if (copyTimeoutRef.current !== null) window.clearTimeout(copyTimeoutRef.current);
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+      if (copyTimeoutRef.current !== null) window.clearTimeout(copyTimeoutRef.current);
+      copyTimeoutRef.current = null;
+    };
   }, []);
 
   // The card lays out at export size; the frame decides how far down it scales.
@@ -261,9 +267,11 @@ export function ShareCard({
 
   const copyLink = useCallback(async () => {
     const copied = await copyText(new URL(page, window.location.href).toString());
+    if (!isMountedRef.current) return;
     if (copyTimeoutRef.current !== null) window.clearTimeout(copyTimeoutRef.current);
     setCopyStatus(copied ? "copied" : "failed");
     copyTimeoutRef.current = window.setTimeout(() => {
+      if (!isMountedRef.current) return;
       setCopyStatus(null);
       copyTimeoutRef.current = null;
     }, 2000);
