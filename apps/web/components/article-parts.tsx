@@ -4,45 +4,10 @@ import { useEffect, useState } from "react";
 import type { Locale } from "@/lib/i18n";
 
 const copy = {
-  en: { contents: "Contents", top: "Back to top", share: "Share", copied: "Link copied" },
-  ar: { contents: "المحتويات", top: "إلى الأعلى", share: "شارك", copied: "نُسخ الرابط" },
-  tr: { contents: "İçindekiler", top: "Başa dön", share: "Paylaş", copied: "Bağlantı kopyalandı" },
+  en: { share: "Share", copied: "Link copied" },
+  ar: { share: "شارك", copied: "نُسخ الرابط" },
+  tr: { share: "Paylaş", copied: "Bağlantı kopyalandı" },
 } as const;
-
-/**
- * The contents panel from Qalam's long reads, collapsed by default.
- *
- * Ours are one to three minutes, so this appears only when a situation carries enough
- * sections to be worth indexing. Passing an empty list renders nothing at all.
- */
-export function Contents({ items, locale }: { items: { id: string; label: string }[]; locale: Locale }) {
-  const [open, setOpen] = useState(false);
-  if (items.length < 3) return null;
-  const t = copy[locale];
-
-  return (
-    <nav className="contents">
-      <button type="button" onClick={() => setOpen((v) => !v)} aria-expanded={open}>
-        {t.contents}
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"
-             style={{ transform: open ? "rotate(180deg)" : undefined }}>
-          <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </button>
-      {open && (
-        <ol>
-          {items.map((i, n) => (
-            <li key={i.id}>
-              <a href={`#${i.id}`} onClick={() => setOpen(false)}>
-                <span aria-hidden="true">{n + 1}.</span> {i.label}
-              </a>
-            </li>
-          ))}
-        </ol>
-      )}
-    </nav>
-  );
-}
 
 /** Share row. Copy-link gives feedback in place rather than through a toast. */
 export function Share({ title, locale }: { title: string; locale: Locale }) {

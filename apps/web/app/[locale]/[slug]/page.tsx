@@ -5,7 +5,7 @@ import { isLocale, LOCALES, RESERVED_SLUGS, type Locale } from "@/lib/i18n";
 import { allSituations, relatedSituations, situationBySlug } from "@/lib/content";
 import { Byline, Card, Meta, SectionTitle } from "@/components/cards";
 import { toggleSave } from "../login/actions";
-import { Contents, Share } from "@/components/article-parts";
+import { Share } from "@/components/article-parts";
 import { SaveButton } from "@/components/save-button";
 import { DorarSource } from "@/components/dorar-source";
 
@@ -91,15 +91,8 @@ export default async function Situation({
         )}
       </figure>
 
-      <Contents
-        locale={locale}
-        items={[
-          { id: "source", label: locale === "ar" ? "المصدر" : "The source" },
-          { id: "why", label: locale === "ar" ? "الشرح" : "What it means" },
-          { id: "do", label: locale === "ar" ? "ماذا تفعل" : "What to do" },
-        ]}
-      />
-
+      {/* No contents panel: a two-minute read with three sections needs no index.
+          The ids on the sections stay, so deep links keep working. */}
       <header className="situation-head">
         <Meta s={s} locale={locale} />
         <h1>{text.title}</h1>

@@ -1399,36 +1399,7 @@ button:not(:disabled), [role="button"]:not([aria-disabled="true"]) { cursor: poi
 
 /* ── paths ────────────────────────────────────────────────────────────────── */
 
-/* ── contents and share ───────────────────────────────────────────────────── */
-
-.contents { margin-bottom: 1.5rem; }
-.contents > button {
-  display: inline-flex;
-  align-items: center;
-  gap: .45rem;
-  background: none;
-  border: none;
-  padding: 0;
-  font: inherit;
-  font-size: .72rem;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: var(--faint);
-}
-[dir="rtl"] .contents > button { letter-spacing: 0; text-transform: none; font-size: .84rem; }
-.contents > button:hover { color: var(--foreground); }
-.contents svg { transition: transform .18s ease; }
-.contents ol {
-  list-style: none;
-  margin: .9rem 0 0;
-  padding: 1rem 1.2rem;
-  border: 1px solid var(--rule);
-  border-radius: 8px;
-}
-.contents li + li { margin-top: .55rem; }
-.contents a { font-size: .95rem; color: var(--muted-foreground); }
-.contents a span { color: var(--faint); }
-.contents a:hover { color: var(--foreground); }
+/* ── share ────────────────────────────────────────────────────────────────── */
 
 /* The rule belongs to the row, so it runs the full measure with both controls sitting
    on it. Inside the row the share block drops its own spacing and border. */
