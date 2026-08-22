@@ -995,6 +995,11 @@ html[data-theme-wipe="active"]::view-transition-new(root) {
   background: color-mix(in srgb, var(--brand) 9%, transparent);
   color: var(--brand);
 }
+.save button.is-saved {
+  border-color: color-mix(in srgb, var(--brand) 55%, transparent);
+  background: color-mix(in srgb, var(--brand) 9%, transparent);
+  color: var(--brand);
+}
 /* The press itself, so the button answers under the finger before the server does. */
 .save button:active { transform: scale(.97); }
 .save button:disabled { opacity: .6; }
@@ -1480,6 +1485,24 @@ button:not(:disabled), [role="button"]:not([aria-disabled="true"]) { cursor: poi
   background: transparent;
 }
 .share-links a:hover, .share-links button:hover { border-color: var(--foreground); color: var(--foreground); }
+.share-toast {
+  position: fixed;
+  inset-inline-start: 50%;
+  bottom: 1.5rem;
+  z-index: 30;
+  padding: .55rem .85rem;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--foreground);
+  box-shadow: 0 8px 24px rgb(0 0 0 / .1);
+  font-size: .82rem;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, .5rem);
+  transition: opacity .18s ease, transform .18s ease;
+}
+.share-toast.is-visible { opacity: 1; transform: translate(-50%, 0); }
 
 /* ── load more ────────────────────────────────────────────────────────────── */
 

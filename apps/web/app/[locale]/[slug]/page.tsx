@@ -8,24 +8,28 @@ import { toggleSave } from "../login/actions";
 import { Share } from "@/components/article-parts";
 import { SaveButton } from "@/components/save-button";
 import { DorarSource } from "@/components/dorar-source";
+import { createClient } from "@/lib/supabase/server";
 
 const copy = {
   en: {
     takeaway: "What to do",
     translated: "Translated by",
     save: "Save this",
+    saved: "Saved",
     related: "Next",
   },
   ar: {
     takeaway: "ماذا تفعل",
     translated: "ترجمة",
     save: "احفظ",
+    saved: "محفوظ",
     related: "التالي",
   },
   tr: {
     takeaway: "Ne yapmalı",
     translated: "Çeviren",
     save: "Bunu kaydet",
+    saved: "Kaydedildi",
     related: "Sonraki",
   },
 } as const;
@@ -69,6 +73,24 @@ export default async function Situation({
   const t = copy[locale];
   const text = s[locale as Locale];
   const related = await relatedSituations(slug);
+  const supabase = await createClient();
+  const { data: claims } = await supabase.auth.getClaims();
+  let saved = false;
+  if (claims?.claims?.sub) {
+    const { data: situation } = await supabase
+      .from("situations")
+      .select("id")
+      .eq("slug", slug)
+      .maybeSingle();
+    if (situation) {
+      const { data: savedRow } = await supabase
+        .from("saved_situations")
+        .select("situation_id")
+        .eq("situation_id", situation.id)
+        .maybeSingle();
+      saved = Boolean(savedRow);
+    }
+  }
 
   return (
     <article className="situation">
@@ -136,7 +158,7 @@ export default async function Situation({
         <form action={toggleSave} className="save">
           <input type="hidden" name="locale" value={locale} />
           <input type="hidden" name="slug" value={slug} />
-          <SaveButton label={t.save} />
+          <SaveButton label={saved ? t.saved : t.save} saved={saved} />
         </form>
       </div>
 

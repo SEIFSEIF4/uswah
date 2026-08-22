@@ -151,5 +151,6 @@ export async function toggleSave(formData: FormData) {
       .insert({ user_id: userId, situation_id: situation.id });
   }
 
+  revalidatePath(`/${locale}/${slug}`);
   revalidatePath(`/${locale}${DEFAULT_REDIRECT_ROUTE}`);
 }
