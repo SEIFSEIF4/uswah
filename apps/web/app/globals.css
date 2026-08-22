@@ -833,53 +833,9 @@ html[data-theme-wipe="active"]::view-transition-new(root) {
 }
 .source-dorar a:hover { text-decoration: underline; }
 
-/* dorar.net's own topical classification of the cited hadith, as quiet chips. */
-.source-cats {
-  display: flex;
-  flex-wrap: wrap;
-  gap: .4rem;
-  margin: .8rem 0 0;
-  direction: rtl;
-}
-.source-cats button {
-  font-size: .75rem;
-  font-family: inherit;
-  color: var(--faint);
-  background: none;
-  border: 1px solid var(--rule);
-  border-radius: 999px;
-  padding: .1rem .6rem;
-  cursor: pointer;
-}
-.source-cats button:hover { color: var(--brand); border-color: var(--brand); }
-
-/* The card a chip opens: a native popover, so centring, top layer, light-dismiss and
-   Escape all come from the platform. */
-.cat-pop {
-  /* Preflight zeroes every margin, which erases the UA centring popovers ship with,
-     so the fixed inset + auto margin is restated here. */
-  position: fixed;
-  inset: 0;
-  margin: auto;
-  height: fit-content;
-  width: min(24rem, calc(100vw - 3rem));
-  padding: 1.3rem 1.5rem;
-  border: 1px solid var(--rule);
-  border-radius: 8px;
-  background: var(--popover);
-  color: var(--popover-foreground);
-  box-shadow: 0 12px 32px rgb(0 0 0 / .18);
-}
-.cat-pop::backdrop { background: rgb(0 0 0 / .25); }
-.cat-pop strong { display: block; font-size: .95rem; margin-bottom: .5rem; }
-.cat-pop p {
-  margin: 0 0 .9rem;
-  font-size: .85rem;
-  line-height: 1.7;
-  color: var(--muted-foreground);
-}
-.cat-pop a { font-size: .85rem; color: var(--brand); text-decoration: none; }
-.cat-pop a:hover { text-decoration: underline; }
+/* No category chips: dorar's taxonomy navigated nowhere on this site, and the
+   permalink in the credit line reaches the full record. They return as on-site
+   navigation or not at all. */
 
 /* The site-wide credit at the foot of the sayings index. */
 .dorar-note {
