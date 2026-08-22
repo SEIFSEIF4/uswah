@@ -5,6 +5,7 @@ import { isLocale, LOCALES } from "@/lib/i18n";
 import {
   allQuotes,
   GRADES,
+  gradeInLabel,
   quoteBySlug,
   relatedQuotes,
   situationBySlug,
@@ -101,8 +102,11 @@ export default async function Saying({
       </p>
 
       <div className="saying-grade">
-        {/* For Quran the ref already opens with the word Quran, so the badge would double it. */}
-        {q.grade !== "quran" && <span className={`grade grade-${q.grade}`}>{grade[locale]}</span>}
+        {/* "Sahih" before "Sahih al-Bukhari 1471" (or "Quran" before "Quran 2:276")
+            says it twice; the badge appears only when the ref does not carry it. */}
+        {!gradeInLabel(q, locale) && (
+          <span className={`grade grade-${q.grade}`}>{grade[locale]}</span>
+        )}
         <span className="saying-ref">{q.source.label[locale]}</span>
       </div>
 

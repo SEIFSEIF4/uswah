@@ -271,6 +271,15 @@ export function allQuotes() {
   return loadQuotes();
 }
 
+/* Diacritic-insensitive, so Turkish "Sahîh-i Buhârî" still matches the grade "Sahih". */
+const stripMarks = (s: string) => s.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase();
+
+/** True when the source label already opens with the grade word ("Sahih" before
+    "Sahih al-Bukhari 1471"), so showing the badge next to it would double it. */
+export function gradeInLabel(q: Quote, locale: Locale) {
+  return stripMarks(q.source.label[locale]).startsWith(stripMarks(GRADES[q.grade][locale]));
+}
+
 /** Strongest evidence first, so a directory opens on its best case. */
 const GRADE_ORDER: Record<string, number> = {
   quran: 0,

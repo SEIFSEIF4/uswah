@@ -5,6 +5,7 @@ import {
   allSituations,
   featuredIntentions,
   GRADES,
+  gradeInLabel,
   quotesSorted,
   topicName,
   TOPICS,
@@ -134,7 +135,11 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
                     <p>{q[locale].closeness}</p>
                   </div>
                   <span className="quote-index-meta">
-                    <span className={`grade grade-${q.grade}`}>{GRADES[q.grade][locale]}</span>
+                    {/* The ref often opens with the grade word; the badge shows only
+                        when it adds something the ref does not already say. */}
+                    {!gradeInLabel(q, locale) && (
+                      <span className={`grade grade-${q.grade}`}>{GRADES[q.grade][locale]}</span>
+                    )}
                     {q.source.label[locale]}
                   </span>
                 </Link>
