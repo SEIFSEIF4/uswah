@@ -9,7 +9,7 @@
 
 import { unstable_cache } from "next/cache";
 import { db } from "./supabase/public";
-import type { DorarRef } from "./dorar";
+import type { BookKey, DorarRef } from "./dorar";
 import { LOCALES, type Locale } from "./i18n";
 
 // ── situations ──────────────────────────────────────────────────────────────
@@ -50,6 +50,8 @@ export type Situation = {
     label: { en: string; ar: string; tr: string };
     /** The bare page-or-number within the collection, e.g. "1471". */
     ref: string;
+    /** Set for hadith sources; the DB admits only these two collections. */
+    collection?: BookKey;
     original: string;
     translation?: Partial<Record<Locale, { text: string; translator: string }>>;
     dorar?: DorarRef;
@@ -146,6 +148,7 @@ const loadSituations = unstable_cache(
         source: {
           label: sourceLabel(entry.source.kind, entry.source.collection, entry.source.ref),
           ref: entry.source.ref,
+          collection: (entry.source.collection as BookKey | null) ?? undefined,
           original: entry.source.text_original,
           translation: Object.keys(translation).length ? translation : undefined,
           dorar: cited.get(r.slug) ?? undefined,

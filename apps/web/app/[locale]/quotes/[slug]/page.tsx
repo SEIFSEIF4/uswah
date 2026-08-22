@@ -111,8 +111,16 @@ export default async function Saying({
             dorar={q.source.dorar}
             locale={locale}
             /* Sayings store the ref only inside the label; its Latin-digit tail is
-               the number ("Sahih al-Bukhari 1471" -> "1471"). */
+               the number ("Sahih al-Bukhari 1471" -> "1471"), and its prefix names
+               the collection when it is one whose book record we hold. */
             number={q.source.label.en.match(/[\d/]+$/)?.[0]}
+            book={
+              q.source.label.en.startsWith("Sahih al-Bukhari")
+                ? "bukhari"
+                : q.source.label.en.startsWith("Sahih Muslim")
+                  ? "muslim"
+                  : undefined
+            }
           />
         )}
       </section>

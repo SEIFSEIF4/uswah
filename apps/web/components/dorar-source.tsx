@@ -1,5 +1,6 @@
 import type { Locale } from "@/lib/i18n";
-import type { DorarRef } from "@/lib/dorar";
+import type { BookKey, DorarRef } from "@/lib/dorar";
+import { SourceBook } from "@/components/source-book";
 
 const LABEL: Record<Locale, string> = {
   en: "Text and grading: the Hadith Encyclopedia, Dorar.net",
@@ -19,11 +20,14 @@ export function DorarSource({
   dorar,
   locale,
   number,
+  book,
 }: {
   dorar: DorarRef;
   locale: Locale;
   /** The cited row's page-or-number, dorar's الصفحة أو الرقم. */
   number?: string;
+  /** The collection, when it is one whose record we hold; opens the book card. */
+  book?: BookKey;
 }) {
   /* One chip per top-level theme (the part before the dash): dorar lists several
      subtopics under the same theme, and the repeats were the noise. */
@@ -52,15 +56,18 @@ export function DorarSource({
         <span>
           المحدث : <strong>{dorar.mohdith}</strong>
         </span>
-        {/* The two things with a real page behind them link out: the number to the
-            cited row's permalink, each chip to its dorar category. الراوي and المحدث
-            stay text — dorar gives us their names, not their pages. */}
+        {book && (
+          <span>
+            المصدر : <SourceBook book={book} locale={locale} />
+          </span>
+        )}
+        {/* What has a distinct destination is interactive: المصدر opens the book's
+            record, each chip its dorar category. The number stays plain text; its
+            only destination would be the permalink the credit line already links,
+            and the same trip twice is clutter. */}
         {number && (
           <span>
-            الصفحة أو الرقم :{" "}
-            <a href={`https://dorar.net/h/${dorar.id}`} target="_blank" rel="noreferrer">
-              {number}
-            </a>
+            الصفحة أو الرقم : <strong>{number}</strong>
           </span>
         )}
         {!gradedByCollection && (

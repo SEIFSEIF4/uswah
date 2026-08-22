@@ -846,6 +846,19 @@ html[data-theme-wipe="active"]::view-transition-new(root) {
 .source-dorar strong { font-weight: 500; color: var(--foreground); }
 .source-dorar a { font-weight: 500; color: var(--brand); text-decoration: none; }
 .source-dorar a:hover { text-decoration: underline; }
+/* المصدر opens the book card in place, so its trigger wears the same link clothes. */
+.book-trigger {
+  font: inherit;
+  font-weight: 500;
+  color: var(--brand);
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+.book-trigger:hover { text-decoration: underline; }
+/* The card itself is Arabic bibliography whatever the page locale. */
+.book-card { font-family: var(--font-arabic), sans-serif; text-align: right; }
 .source-credit {
   margin: .9rem 0 0;
   font-size: .8rem;
