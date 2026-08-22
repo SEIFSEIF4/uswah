@@ -1174,8 +1174,7 @@ button:not(:disabled), [role="button"]:not([aria-disabled="true"]) { cursor: poi
 
 /* ── one saying ───────────────────────────────────────────────────────────── */
 
-/* The top padding is the room the removed back link used to hold. */
-.saying-page { max-width: 40rem; margin-inline: auto; padding-top: 2rem; }
+.saying-page { max-width: 40rem; margin-inline: auto; padding-top: 1.25rem; }
 
 /* Smaller than the source it is measured against. That inversion is the argument. */
 .saying-line {
@@ -1190,7 +1189,8 @@ button:not(:disabled), [role="button"]:not([aria-disabled="true"]) { cursor: poi
   font-family: var(--font-display-ar), var(--font-arabic), serif;
   line-height: 1.6;
 }
-.saying-grade { display: flex; align-items: center; gap: .7rem; margin: 1rem 0 2rem; }
+/* No bottom margin: the source block's own margin is the only gap below the ref. */
+.saying-grade { display: flex; align-items: center; gap: .7rem; margin: .6rem 0 0; }
 .saying-ref { font-size: .85rem; color: var(--faint); }
 
 .saying-block { margin: 2rem 0; }
