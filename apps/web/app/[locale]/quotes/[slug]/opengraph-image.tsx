@@ -27,8 +27,11 @@ export default async function Image({
     font("Arabic-Regular.woff"),
   ]);
 
-  const saying = q?.saying ?? "Uswah";
+  const saying = q ? (q[locale].saying ?? q.saying) : "Uswah";
   const grade = q ? GRADES[q.grade][locale] : "";
+  /* The ar locale carries a native Arabic saying; Satori shapes it but does not
+     reorder it, so its words go into a reversed row, same as the strapline below. */
+  const arabicSaying = /[؀-ۿ]/.test(saying);
 
   return new ImageResponse(
     (
@@ -49,17 +52,18 @@ export default async function Image({
       >
         <div style={{ fontSize: 26, color: "#8a919c" }}>{rtl ? "أسوة" : "USWAH"}</div>
 
-        {/* The saying stays LTR whatever the page language: it circulates in English. */}
+        {/* Each locale's own saying: the form that circulates in that language. */}
         <div
           style={{
             display: "flex",
             flexWrap: "wrap",
+            flexDirection: arabicSaying ? "row-reverse" : "row",
             columnGap: 16,
-            rowGap: 6,
+            rowGap: arabicSaying ? 14 : 6,
             fontSize: 58,
-            lineHeight: 1.25,
-            fontWeight: 600,
-            fontFamily: "Inter",
+            lineHeight: arabicSaying ? 1.45 : 1.25,
+            fontWeight: arabicSaying ? 400 : 600,
+            fontFamily: arabicSaying ? "Arabic" : "Inter",
             maxWidth: 980,
           }}
         >
