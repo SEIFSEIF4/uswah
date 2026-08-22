@@ -8,24 +8,17 @@ const LABEL: Record<Locale, string> = {
 };
 
 /**
- * Narrator, grading and takhrij for a cited hadith, with the credit linking to
- * dorar.net's permalink. RTL in every locale because the metadata is Arabic by
- * nature. Shared by the saying and situation pages so the two source blocks
- * cannot drift apart.
- *
- * The grader-and-grade pair is dropped when the grading IS the collection: dorar
- * brackets those ([صحيح] under البخاري or مسلم), and the ref line above already
- * says Sahih al-Bukhari, so the pair would say it twice. An outside grading
- * (الألباني: حسن) is the only place that verdict lives, so it stays.
+ * The dorar.net apparatus for a cited hadith, laid out the way dorar lays it out:
+ * the verdict on its own highlighted strip, then the labelled fields (الراوي،
+ * المحدث، التخريج) with the values carrying the colour, then the topical chips,
+ * then the credit linking to their permalink. المصدر and الرقم are not repeated
+ * here because the ref pill above the apparatus already carries them. RTL in
+ * every locale: the metadata is Arabic by nature. Shared by the saying and
+ * situation pages so the two source blocks cannot drift apart.
  */
 export function DorarSource({ dorar, locale }: { dorar: DorarRef; locale: Locale }) {
-  const gradedByCollection =
-    (dorar.mohdith === "البخاري" || dorar.mohdith === "مسلم") && dorar.grade === "[صحيح]";
-
   /* One chip per top-level theme (the part before the dash): dorar lists several
-     subtopics under the same theme (three سؤال variants on one hadith), and the
-     first carries the theme; the rest were the noise. Plain labels, not links —
-     the credit permalink is the way to the full record. */
+     subtopics under the same theme, and the repeats were the noise. */
   const seen = new Set<string>();
   const cats = dorar.categories.filter((c) => {
     const theme = c.name.split(" - ")[0];
@@ -36,17 +29,23 @@ export function DorarSource({ dorar, locale }: { dorar: DorarRef; locale: Locale
 
   return (
     <>
+      <p className="dorar-verdict" dir="rtl">
+        خلاصة حكم المحدث : <strong>{dorar.grade}</strong>
+      </p>
       <p className="source-dorar" dir="rtl">
-        {dorar.rawi !== "-" && <span>الراوي: {dorar.rawi}</span>}
-        {!gradedByCollection && (
+        {dorar.rawi !== "-" && (
           <span>
-            {dorar.mohdith}: {dorar.grade}
+            الراوي : <strong>{dorar.rawi}</strong>
           </span>
         )}
-        {dorar.takhrij && <span>التخريج: {dorar.takhrij}</span>}
-        <a href={`https://dorar.net/h/${dorar.id}`} target="_blank" rel="noreferrer">
-          {LABEL[locale]}
-        </a>
+        <span>
+          المحدث : <strong>{dorar.mohdith}</strong>
+        </span>
+        {dorar.takhrij && (
+          <span>
+            التخريج : <strong>{dorar.takhrij}</strong>
+          </span>
+        )}
       </p>
       {cats.length > 0 && (
         <p className="source-cats" dir="rtl">
@@ -55,6 +54,11 @@ export function DorarSource({ dorar, locale }: { dorar: DorarRef; locale: Locale
           ))}
         </p>
       )}
+      <p className="source-credit" dir="rtl">
+        <a href={`https://dorar.net/h/${dorar.id}`} target="_blank" rel="noreferrer">
+          {LABEL[locale]}
+        </a>
+      </p>
     </>
   );
 }

@@ -779,7 +779,9 @@ html[data-theme-wipe="active"]::view-transition-new(root) {
   z-index: -1;
   inset: 0;
   background: var(--brand);
-  opacity: .1;
+  /* Barely-there at rest; hovering the block brings the rosettes out in full. */
+  opacity: .06;
+  transition: opacity .5s ease;
   pointer-events: none;
   -webkit-mask-image: url(/ornament.svg), url(/ornament.svg), url(/ornament.svg);
   -webkit-mask-repeat: no-repeat;
@@ -790,6 +792,7 @@ html[data-theme-wipe="active"]::view-transition-new(root) {
   mask-position: left -5rem top -5rem, right -3rem bottom -3.5rem, center;
   mask-size: 16rem, 11rem, 5rem;
 }
+.source:hover::before { opacity: 1; }
 .source-text {
   font-family: var(--font-scripture), serif;
   font-size: 1.32rem;
@@ -821,23 +824,44 @@ html[data-theme-wipe="active"]::view-transition-new(root) {
   border-radius: 999px;
   padding: .15rem .75rem;
 }
-/* Narrator and grading, verbatim from dorar.net, with the credit that links back.
-   Arabic by nature (names of narrators and scholars), so RTL in every locale. */
+/* The dorar apparatus, laid out the way dorar.net lays it out: the verdict on its
+   own highlighted strip, then labelled fields whose values carry the colour, with
+   bars between the fields. Arabic by nature, so RTL in every locale; physical
+   right-anchoring because the whole block reads from the right everywhere. */
+.dorar-verdict {
+  width: fit-content;
+  margin: 1rem 0 0 auto;
+  padding: .2rem .7rem;
+  font-size: .85rem;
+  color: var(--muted-foreground);
+  background: color-mix(in srgb, var(--brand) 7%, transparent);
+  border-radius: 4px;
+}
 .source-dorar {
   display: flex;
   flex-wrap: wrap;
-  gap: .3rem 1.1rem;
-  margin: 1rem 0 0;
+  gap: .35rem 0;
+  margin: .8rem 0 0;
   font-size: .85rem;
-  color: var(--faint);
+  color: var(--muted-foreground);
   direction: rtl;
   text-align: right;
 }
-.source-dorar a {
-  color: var(--brand);
-  text-decoration: none;
+.source-dorar span:not(:first-child)::before {
+  content: "|";
+  margin-inline: 1ch;
+  color: var(--rule);
 }
-.source-dorar a:hover { text-decoration: underline; }
+.source-dorar strong,
+.dorar-verdict strong { font-weight: 500; color: var(--brand); }
+.source-credit {
+  margin: .9rem 0 0;
+  font-size: .8rem;
+  direction: rtl;
+  text-align: right;
+}
+.source-credit a { color: var(--faint); text-decoration: none; }
+.source-credit a:hover { color: var(--brand); text-decoration: underline; }
 
 /* Dorar's topical themes, one chip each: quiet labels, deliberately not links. */
 .source-cats {
