@@ -205,15 +205,18 @@ export function QuoteCard({
       >
         <Eyebrow text={theyLabel} colour={theme.quiet} rule={theme.ornament} k={k} arabic={rtl} />
 
-        {/* The saying circulates in English, so it keeps its own direction. */}
+        {/* The saying keeps its own direction: each locale passes the native form
+            it circulates in, Arabic on the Arabic pages, Latin elsewhere. */}
         <p
-          dir="ltr"
+          dir={/[؀-ۿ]/.test(saying) ? "rtl" : "ltr"}
           style={{
             margin: 0,
             fontSize: sayingSize,
-            lineHeight: 1.4,
+            lineHeight: /[؀-ۿ]/.test(saying) ? 1.7 : 1.4,
             color: theme.muted,
-            fontFamily: "var(--font-latin), system-ui, sans-serif",
+            fontFamily: /[؀-ۿ]/.test(saying)
+              ? "var(--font-arabic), sans-serif"
+              : "var(--font-latin), system-ui, sans-serif",
           }}
         >
           {saying}

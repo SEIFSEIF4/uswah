@@ -169,11 +169,11 @@ export default async function Saying({
       {/* Share the link at the reading start, the card at the far end — the same row the
           situation page uses, so the two pages end the same way. */}
       <div className="share-row">
-        <Share title={q.saying} locale={locale} />
+        <Share title={q[locale].saying ?? q.saying} locale={locale} />
         <ShareCard
           slug={slug}
           locale={locale}
-          saying={q.saying}
+          saying={q[locale].saying ?? q.saying}
           original={q.source.original ?? null}
           grade={GRADES[q.grade][locale]}
           source={q.source.label[locale]}
