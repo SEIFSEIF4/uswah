@@ -828,6 +828,8 @@ html[data-theme-wipe="active"]::view-transition-new(root) {
 /* The dorar apparatus: labelled fields with bars between them, dorar's layout.
    Colour marks exactly what is clickable: linked values take the brand, plain
    values are set apart from their labels by weight alone. */
+/* Direction comes from the dir attribute: RTL on Arabic pages, LTR elsewhere,
+   since the labels and names are localized there. */
 .source-dorar {
   display: flex;
   flex-wrap: wrap;
@@ -835,8 +837,7 @@ html[data-theme-wipe="active"]::view-transition-new(root) {
   margin: .8rem 0 0;
   font-size: .85rem;
   color: var(--muted-foreground);
-  direction: rtl;
-  text-align: right;
+  text-align: start;
 }
 .source-dorar span:not(:first-child)::before {
   content: "|";
@@ -857,13 +858,12 @@ html[data-theme-wipe="active"]::view-transition-new(root) {
   cursor: pointer;
 }
 .book-trigger:hover { text-decoration: underline; }
-/* The card itself is Arabic bibliography whatever the page locale. */
-.book-card { font-family: var(--font-arabic), sans-serif; text-align: right; }
+/* The record inside the card is Arabic bibliography whatever the page locale. */
+.book-card { font-family: var(--font-arabic), sans-serif; }
 .source-credit {
   margin: .9rem 0 0;
   font-size: .8rem;
-  direction: rtl;
-  text-align: right;
+  text-align: start;
 }
 .source-credit a { color: var(--faint); text-decoration: none; }
 .source-credit a:hover { color: var(--brand); text-decoration: underline; }

@@ -1,5 +1,11 @@
 import type { Locale } from "@/lib/i18n";
-import type { BookKey, DorarRef } from "@/lib/dorar";
+import { dirFor } from "@/lib/i18n";
+import {
+  APPARATUS_GRADES,
+  APPARATUS_NAMES,
+  type BookKey,
+  type DorarRef,
+} from "@/lib/dorar";
 import { SourceBook } from "@/components/source-book";
 
 const LABEL: Record<Locale, string> = {
@@ -8,13 +14,22 @@ const LABEL: Record<Locale, string> = {
   tr: "Metin ve derece: Hadis Ansiklopedisi, Dorar.net",
 };
 
+/* The field labels, in the reader's language: they are ours, not dorar's. */
+const FIELDS: Record<Locale, { rawi: string; mohdith: string; source: string; number: string; grade: string }> = {
+  en: { rawi: "Narrator", mohdith: "Graded by", source: "Source", number: "Page or number", grade: "Ruling" },
+  ar: { rawi: "الراوي", mohdith: "المحدث", source: "المصدر", number: "الصفحة أو الرقم", grade: "خلاصة الحكم" },
+  tr: { rawi: "Râvi", mohdith: "Muhaddis", source: "Kaynak", number: "Sayfa veya numara", grade: "Hüküm" },
+};
+
 /**
  * The dorar.net apparatus for a cited hadith, laid out the way dorar lays it out:
- * labelled fields (الراوي، المحدث، الصفحة أو الرقم), then the topical chips, then
- * the credit linking to their permalink. التخريج stays in the data but off the
- * page: the long cross-reference run was the noisiest field for the least read.
- * RTL in every locale: the metadata is Arabic by nature. Shared by the saying
- * and situation pages so the two source blocks cannot drift apart.
+ * labelled fields, then the topical chips, then the credit linking to their
+ * permalink. The hadith text above stays Arabic because it is the source; the
+ * apparatus does not, so English and Turkish pages get translated labels and
+ * transliterated names (Arabic fallback for a name outside the map). The chips
+ * are dorar's Arabic taxonomy with no translation, so only the Arabic page
+ * carries them. التخريج stays in the data but off the page. Shared by the
+ * saying and situation pages so the two source blocks cannot drift apart.
  */
 export function DorarSource({
   dorar,
@@ -29,6 +44,11 @@ export function DorarSource({
   /** The collection, when it is one whose record we hold; opens the book card. */
   book?: BookKey;
 }) {
+  const t = FIELDS[locale];
+  const dir = dirFor(locale);
+  const name = (ar: string) => (locale === "ar" ? ar : (APPARATUS_NAMES[ar]?.[locale] ?? ar));
+  const grade = locale === "ar" ? dorar.grade : (APPARATUS_GRADES[dorar.grade]?.[locale] ?? dorar.grade);
+
   /* One chip per top-level theme (the part before the dash): dorar lists several
      subtopics under the same theme, and the repeats were the noise. */
   const seen = new Set<string>();
@@ -47,18 +67,18 @@ export function DorarSource({
 
   return (
     <>
-      <p className="source-dorar" dir="rtl">
+      <p className="source-dorar" dir={dir}>
         {dorar.rawi !== "-" && (
           <span>
-            الراوي : <strong>{dorar.rawi}</strong>
+            {t.rawi} : <strong dir="auto">{name(dorar.rawi)}</strong>
           </span>
         )}
         <span>
-          المحدث : <strong>{dorar.mohdith}</strong>
+          {t.mohdith} : <strong dir="auto">{name(dorar.mohdith)}</strong>
         </span>
         {book && (
           <span>
-            المصدر : <SourceBook book={book} locale={locale} />
+            {t.source} : <SourceBook book={book} locale={locale} />
           </span>
         )}
         {/* What has a distinct destination is interactive: المصدر opens the book's
@@ -67,16 +87,16 @@ export function DorarSource({
             and the same trip twice is clutter. */}
         {number && (
           <span>
-            الصفحة أو الرقم : <strong>{number}</strong>
+            {t.number} : <strong>{number}</strong>
           </span>
         )}
         {!gradedByCollection && (
           <span>
-            خلاصة الحكم : <strong>{dorar.grade}</strong>
+            {t.grade} : <strong dir="auto">{grade}</strong>
           </span>
         )}
       </p>
-      {cats.length > 0 && (
+      {locale === "ar" && cats.length > 0 && (
         <p className="source-cats" dir="rtl">
           {cats.map((c) => (
             <a
@@ -90,7 +110,7 @@ export function DorarSource({
           ))}
         </p>
       )}
-      <p className="source-credit" dir="rtl">
+      <p className="source-credit" dir={dir}>
         <a href={`https://dorar.net/h/${dorar.id}`} target="_blank" rel="noreferrer">
           {LABEL[locale]}
         </a>
