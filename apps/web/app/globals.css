@@ -826,10 +826,8 @@ html[data-theme-wipe="active"]::view-transition-new(root) {
   padding: .15rem .75rem;
 }
 /* The dorar apparatus: labelled fields with bars between them, dorar's layout.
-   Colour marks exactly what is clickable: linked values take the brand, plain
-   values are set apart from their labels by weight alone. */
-/* Direction comes from the dir attribute: RTL on Arabic pages, LTR elsewhere,
-   since the labels and names are localized there. */
+   Colour marks exactly what is clickable; plain values differ by weight alone.
+   Direction rides the dir attribute: RTL on Arabic pages, LTR elsewhere. */
 .source-dorar {
   display: flex;
   flex-wrap: wrap;
