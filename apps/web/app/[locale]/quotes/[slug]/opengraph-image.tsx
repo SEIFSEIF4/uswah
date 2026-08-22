@@ -21,6 +21,11 @@ export default async function Image({
   const rtl = locale === "ar";
   const q = await quoteBySlug(slug);
 
+  /* The Arabic woff is a pre-flipped hack font: this Satori has no bidi engine
+     and draws glyph runs left-to-right, so a real Arabic font comes out mirrored
+     (tried Noto Naskh and Cairo; both also trip Satori's font parser on a GSUB
+     lookup). The hack font's cost is fat side bearings padding every word's box;
+     the spans below cancel them with negative margins. */
   const [regular, semibold, arabic] = await Promise.all([
     font("Inter-Regular.woff"),
     font("Inter-SemiBold.woff"),
@@ -29,9 +34,11 @@ export default async function Image({
 
   const saying = q ? (q[locale].saying ?? q.saying) : "Uswah";
   const grade = q ? GRADES[q.grade][locale] : "";
-  /* The ar locale carries a native Arabic saying; Satori shapes it but does not
-     reorder it, so its words go into a reversed row, same as the strapline below. */
   const arabicSaying = /[؀-ۿ]/.test(saying);
+
+  /* An invitation, not a caption: preview inspectors are right that a card with a
+     verb gets opened more than one that just states. */
+  const cta = { en: "Read the full comparison", ar: "اقرأ المقارنة كاملة", tr: "Karşılaştırmanın tamamını oku" }[locale];
 
   return new ImageResponse(
     (
@@ -52,13 +59,21 @@ export default async function Image({
       >
         <div style={{ fontSize: 26, color: "#8a919c" }}>{rtl ? "أسوة" : "USWAH"}</div>
 
-        {/* Each locale's own saying: the form that circulates in that language. */}
+        {/* Each locale's own saying: the form that circulates in that language.
+            Arabic words are separate spans in a reversed row (no bidi in Satori),
+            and each span sheds the hack font's ~0.33em side bearings so the gaps
+            read as spaces rather than holes. */}
         <div
           style={{
             display: "flex",
             flexWrap: "wrap",
             flexDirection: arabicSaying ? "row-reverse" : "row",
-            columnGap: 16,
+            /* Always a concrete value: Satori calls .trim() on style strings and
+               dies on undefined. flex-start is the default it stands in for. */
+            justifyContent: "flex-start",
+            /* ponytail: bearings vary per edge glyph (12-19px a side at this size);
+               compensation is tuned to the narrowest so no pair ever touches. */
+            columnGap: arabicSaying ? 12 : 16,
             rowGap: arabicSaying ? 14 : 6,
             fontSize: 58,
             lineHeight: arabicSaying ? 1.45 : 1.25,
@@ -68,7 +83,9 @@ export default async function Image({
           }}
         >
           {saying.split(/\s+/).map((word, i) => (
-            <span key={i}>{word}</span>
+            <span key={i} style={arabicSaying ? { marginLeft: -12, marginRight: -12 } : undefined}>
+              {word}
+            </span>
           ))}
         </div>
 
@@ -91,15 +108,15 @@ export default async function Image({
             style={{
               display: "flex",
               flexDirection: rtl ? "row-reverse" : "row",
-              columnGap: 8,
+              columnGap: rtl ? 7 : 8,
               color: "#59606c",
             }}
           >
-            {(rtl ? "من المصدر الأصلي" : "From the original source")
-              .split(" ")
-              .map((word, i) => (
-                <span key={i}>{word}</span>
-              ))}
+            {cta.split(" ").map((word, i) => (
+              <span key={i} style={rtl ? { marginLeft: -5, marginRight: -5 } : undefined}>
+                {word}
+              </span>
+            ))}
           </div>
         </div>
       </div>

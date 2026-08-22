@@ -47,6 +47,11 @@ export async function generateStaticParams() {
   return (await allQuotes()).flatMap((q) => LOCALES.map((locale) => ({ locale, slug: q.slug })));
 }
 
+/* Social previews show ~125 characters and cut mid-word past that; trimming at a
+   word boundary here keeps the card's sentence whole. */
+const social = (s: string) =>
+  s.length <= 120 ? s : `${s.slice(0, 119).replace(/\s+\S*$/, "")}…`;
+
 export async function generateMetadata({
   params,
 }: {
@@ -61,7 +66,7 @@ export async function generateMetadata({
 
   return {
     title: `${q[locale].saying ?? q.saying} · Uswah`,
-    description: q[locale].closeness,
+    description: social(q[locale].closeness),
     alternates: {
       canonical: `/${locale}/quotes/${slug}`,
       languages: Object.fromEntries(LOCALES.map((l) => [l, `/${l}/quotes/${slug}`])),
