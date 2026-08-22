@@ -826,8 +826,8 @@ html[data-theme-wipe="active"]::view-transition-new(root) {
   padding: .15rem .75rem;
 }
 /* The dorar apparatus: labelled fields with bars between them, dorar's layout.
-   Values are set apart by weight, not colour — coloured text here read as links,
-   and dorar gives us names, not URLs, so nothing in this row may look clickable. */
+   Colour marks exactly what is clickable: linked values take the brand, plain
+   values are set apart from their labels by weight alone. */
 .source-dorar {
   display: flex;
   flex-wrap: wrap;
@@ -844,6 +844,8 @@ html[data-theme-wipe="active"]::view-transition-new(root) {
   color: var(--rule);
 }
 .source-dorar strong { font-weight: 500; color: var(--foreground); }
+.source-dorar a { font-weight: 500; color: var(--brand); text-decoration: none; }
+.source-dorar a:hover { text-decoration: underline; }
 .source-credit {
   margin: .9rem 0 0;
   font-size: .8rem;
@@ -853,7 +855,7 @@ html[data-theme-wipe="active"]::view-transition-new(root) {
 .source-credit a { color: var(--faint); text-decoration: none; }
 .source-credit a:hover { color: var(--brand); text-decoration: underline; }
 
-/* Dorar's topical themes, one chip each: quiet labels, deliberately not links. */
+/* Dorar's topical themes, one chip each, linking to their category pages. */
 .source-cats {
   display: flex;
   flex-wrap: wrap;
@@ -861,13 +863,15 @@ html[data-theme-wipe="active"]::view-transition-new(root) {
   margin: .8rem 0 0;
   direction: rtl;
 }
-.source-cats span {
+.source-cats a {
   font-size: .75rem;
   color: var(--faint);
   border: 1px solid var(--rule);
   border-radius: 999px;
   padding: .1rem .6rem;
+  text-decoration: none;
 }
+.source-cats a:hover { color: var(--brand); border-color: var(--brand); }
 
 /* The site-wide credit at the foot of the sayings index. */
 .dorar-note {

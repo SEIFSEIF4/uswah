@@ -52,9 +52,15 @@ export function DorarSource({
         <span>
           المحدث : <strong>{dorar.mohdith}</strong>
         </span>
+        {/* The two things with a real page behind them link out: the number to the
+            cited row's permalink, each chip to its dorar category. الراوي and المحدث
+            stay text — dorar gives us their names, not their pages. */}
         {number && (
           <span>
-            الصفحة أو الرقم : <strong>{number}</strong>
+            الصفحة أو الرقم :{" "}
+            <a href={`https://dorar.net/h/${dorar.id}`} target="_blank" rel="noreferrer">
+              {number}
+            </a>
           </span>
         )}
         {!gradedByCollection && (
@@ -66,7 +72,14 @@ export function DorarSource({
       {cats.length > 0 && (
         <p className="source-cats" dir="rtl">
           {cats.map((c) => (
-            <span key={c.id}>{c.name}</span>
+            <a
+              key={c.id}
+              href={`https://dorar.net/hadith-category/cat/${c.id}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {c.name}
+            </a>
           ))}
         </p>
       )}
