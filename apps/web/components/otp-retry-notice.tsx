@@ -3,22 +3,23 @@
 import { useEffect, useState } from "react";
 import type { Locale } from "@/lib/i18n";
 
-const copy = {
-  en: {
-    wait: (seconds: number) => `You can request another code in ${seconds}s.`,
-    ready: "You can request a new code now.",
-  },
-  ar: {
-    wait: (seconds: number) => `يمكنك طلب رمز آخر بعد ${seconds} ثوانٍ.`,
-    ready: "يمكنك طلب رمز جديد الآن.",
-  },
-  tr: {
-    wait: (seconds: number) => `${seconds} saniye sonra yeni bir kod isteyebilirsin.`,
-    ready: "Artık yeni bir kod isteyebilirsin.",
-  },
+const suffix = {
+  en: "s",
+  ar: "ث",
+  tr: "sn",
 } as const;
 
-export function OtpRetryNotice({ locale, seconds: initialSeconds }: { locale: Locale; seconds: number }) {
+export function OtpRequestButton({
+  locale,
+  seconds: initialSeconds,
+  label,
+  action,
+}: {
+  locale: Locale;
+  seconds: number;
+  label: string;
+  action: (formData: FormData) => void | Promise<void>;
+}) {
   const [seconds, setSeconds] = useState(Math.max(0, initialSeconds));
 
   useEffect(() => {
@@ -28,8 +29,8 @@ export function OtpRetryNotice({ locale, seconds: initialSeconds }: { locale: Lo
   }, [seconds]);
 
   return (
-    <p role="status" className="auth-notice">
-      {seconds > 0 ? copy[locale].wait(seconds) : copy[locale].ready}
-    </p>
+    <button formAction={action} className="auth-primary" disabled={seconds > 0}>
+      {seconds > 0 ? `${seconds}${suffix[locale]}` : label}
+    </button>
   );
 }

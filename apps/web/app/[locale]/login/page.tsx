@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { cookies } from "next/headers";
 import { isLocale } from "@/lib/i18n";
 import { authErrorMessage } from "@/lib/auth-errors";
-import { OtpRetryNotice } from "@/components/otp-retry-notice";
+import { OtpRequestButton } from "@/components/otp-retry-notice";
 import { requestOtp, restartOtp, verifyOtp } from "./actions";
 
 const copy = {
@@ -75,12 +75,11 @@ export default async function Login({
       </p>
 
       {expired && <p className="auth-notice is-error">{t.expired}</p>}
-      {error && (
+      {error && authErrorMessage(error, locale) && (
         <p role="alert" className="auth-notice is-error">
           {authErrorMessage(error, locale)}
         </p>
       )}
-      {retrySeconds > 0 && <OtpRetryNotice locale={locale} seconds={retrySeconds} />}
 
       <form className="auth-form">
         <input type="hidden" name="locale" value={locale} />
@@ -118,9 +117,7 @@ export default async function Login({
               <input name="email" type="email" required autoComplete="email" dir="ltr" />
             </label>
             <div className="auth-actions">
-              <button formAction={requestOtp} className="auth-primary">
-                {t.send}
-              </button>
+              <OtpRequestButton locale={locale} seconds={retrySeconds} label={t.send} action={requestOtp} />
             </div>
           </>
         )}

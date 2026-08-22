@@ -3,7 +3,7 @@ import { authErrorMessage } from "./auth-errors";
 
 assert.equal(
   authErrorMessage("over_email_send_rate_limit", "ar"),
-  "أُرسل رمز بالفعل. انتظر قليلًا قبل طلب رمز آخر.",
+  null,
 );
 assert.equal(
   authErrorMessage("over_email_send_rate_limit", "en"),

@@ -2,9 +2,9 @@ import type { Locale } from "./i18n";
 
 const messages = {
   over_email_send_rate_limit: {
-    en: "A code was already sent. Wait a little before requesting another.",
-    ar: "أُرسل رمز بالفعل. انتظر قليلًا قبل طلب رمز آخر.",
-    tr: "Bir kod zaten gönderildi. Yeni bir kod istemeden önce biraz bekle.",
+    en: "",
+    ar: "",
+    tr: "",
   },
   over_request_rate_limit: {
     en: "Too many requests. Wait a few minutes and try again.",
@@ -25,7 +25,7 @@ const messages = {
 
 export function authErrorMessage(error: string, locale: Locale) {
   if (error === "email rate limit exceeded" || error.startsWith("For security purposes")) {
-    return messages.over_email_send_rate_limit[locale];
+    return null;
   }
   return messages[error as keyof typeof messages]?.[locale] ?? error;
 }

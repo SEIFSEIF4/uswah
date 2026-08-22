@@ -1615,6 +1615,7 @@ button:not(:disabled), [role="button"]:not([aria-disabled="true"]) { cursor: poi
   color: var(--background);
   font-size: .95rem;
 }
+.auth-primary:disabled { opacity: .55; cursor: wait; }
 .auth-primary:hover { opacity: .9; }
 .auth-secondary {
   font-size: .92rem;
