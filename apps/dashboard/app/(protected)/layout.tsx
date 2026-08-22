@@ -15,6 +15,9 @@ export default async function ProtectedLayout({ children }: { children: React.Re
   if (!email) {
     return (
       <main className="mx-auto max-w-sm px-6 py-24 text-sm">
+        <div className="mb-6 flex justify-end">
+          <ThemeToggle />
+        </div>
         <h1 className="text-xl font-semibold">Not an admin account</h1>
         <p className="mt-2 text-muted-foreground">
           This address is signed in but not listed in ADMIN_EMAILS.

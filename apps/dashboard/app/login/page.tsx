@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { signIn } from "./actions";
 
 export default async function Login({
@@ -11,6 +12,9 @@ export default async function Login({
 
   return (
     <main className="mx-auto max-w-sm px-6 py-24">
+      <div className="mb-6 flex justify-end">
+        <ThemeToggle />
+      </div>
       <h1 className="text-xl font-semibold">
         Uswah <span className="text-muted-foreground">Dashboard</span>
       </h1>
