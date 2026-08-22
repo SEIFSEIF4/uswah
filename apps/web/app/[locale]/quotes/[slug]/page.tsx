@@ -60,7 +60,7 @@ export async function generateMetadata({
   const publishable = GRADES[q.grade].storable;
 
   return {
-    title: `${q.saying} · Uswah`,
+    title: `${q[locale].saying ?? q.saying} · Uswah`,
     description: q[locale].closeness,
     alternates: {
       canonical: `/${locale}/quotes/${slug}`,
@@ -93,10 +93,11 @@ export default async function Saying({
     <article className="saying-page">
       {/* No back link: the masthead's Sayings link is lit on this page and is the way back. */}
       {/* The saying is the smallest thing here on purpose: it is what the reader already
-          has. The source it is measured against gets the weight. It also keeps LTR in
-          Arabic, because it circulates in English and mirroring it would misdescribe it. */}
-      <p className="saying-line" dir="ltr">
-        {q.saying}
+          has. The source it is measured against gets the weight. Each locale shows the
+          native equivalent it actually knows, falling back to the canonical form;
+          dir="auto" lets the text set its own direction either way. */}
+      <p className="saying-line" dir="auto">
+        {q[locale].saying ?? q.saying}
       </p>
 
       <div className="saying-grade">
@@ -156,7 +157,7 @@ export default async function Saying({
         {more.map((r) => (
           <li key={r.slug}>
             <Link href={`/${locale}/quotes/${r.slug}`}>
-              <span className="saying-q">{r.saying}</span>
+              <span className="saying-q" dir="auto">{r[locale].saying ?? r.saying}</span>
               <span className="quote-index-meta">
                 <span className={`grade grade-${r.grade}`}>{GRADES[r.grade][locale]}</span>
               </span>

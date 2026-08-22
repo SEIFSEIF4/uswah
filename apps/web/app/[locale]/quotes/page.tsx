@@ -46,7 +46,7 @@ export default async function Quotes({ params }: { params: Promise<{ locale: str
           <li key={q.slug}>
             <Link href={`/${locale}/quotes/${q.slug}`}>
               <div className="quote-index-text">
-                <span className="saying-q">{q.saying}</span>
+                <span className="saying-q" dir="auto">{q[locale].saying ?? q.saying}</span>
                 <p>{q[locale].closeness}</p>
               </div>
               <span className="quote-index-meta">

@@ -205,9 +205,11 @@ export type Quote = {
   grade: Grade;
   /** Which situation this belongs with, when one exists. */
   situation?: string;
-  en: { angle: string; closeness: string };
-  ar: { angle: string; closeness: string };
-  tr: { angle: string; closeness: string };
+  /** Per-locale `saying` is the native equivalent aphorism, not a translation;
+      absent means the canonical form is what that locale knows too. */
+  en: { saying?: string; angle: string; closeness: string };
+  ar: { saying?: string; angle: string; closeness: string };
+  tr: { saying?: string; angle: string; closeness: string };
   source: {
     label: { en: string; ar: string; tr: string };
     original?: string;
@@ -215,7 +217,7 @@ export type Quote = {
   };
 };
 
-type SayingTr = { locale: string; angle: string; closeness: string; source_label: string };
+type SayingTr = { locale: string; saying: string | null; angle: string; closeness: string; source_label: string };
 
 /**
  * One query for the rows, one for the dorar citations, joined here by slug.
@@ -228,7 +230,7 @@ const loadQuotes = unstable_cache(
       db
         .from("sayings")
         .select(
-          "slug,saying,grade,situation_slug,source_original,created_at,saying_translations(locale,angle,closeness,source_label)",
+          "slug,saying,grade,situation_slug,source_original,created_at,saying_translations(locale,saying,angle,closeness,source_label)",
         )
         .order("created_at"),
       db.from("dorar_hadith").select("slug,cited"),
@@ -249,9 +251,9 @@ const loadQuotes = unstable_cache(
         saying: r.saying,
         grade: r.grade as Grade,
         situation: r.situation_slug ?? undefined,
-        en: { angle: tr.en.angle, closeness: tr.en.closeness },
-        ar: { angle: tr.ar.angle, closeness: tr.ar.closeness },
-        tr: { angle: tr.tr.angle, closeness: tr.tr.closeness },
+        en: { saying: tr.en.saying ?? undefined, angle: tr.en.angle, closeness: tr.en.closeness },
+        ar: { saying: tr.ar.saying ?? undefined, angle: tr.ar.angle, closeness: tr.ar.closeness },
+        tr: { saying: tr.tr.saying ?? undefined, angle: tr.tr.angle, closeness: tr.tr.closeness },
         source: {
           label: { en: tr.en.source_label, ar: tr.ar.source_label, tr: tr.tr.source_label },
           original: r.source_original ?? undefined,
@@ -448,10 +450,9 @@ export async function searchIndex(locale: Locale): Promise<SearchHit[]> {
       kind: "saying" as const,
       slug: q.slug,
       href: `/${locale}/quotes/${q.slug}`,
-      title: q.saying,
+      title: q[locale].saying ?? q.saying,
       summary: q[locale].closeness,
-      // The saying itself circulates in one language, so it is indexed once.
-      match: across([q.saying, ...LOCALES.map((l) => `${q[l].angle} ${q[l].closeness}`)]),
+      match: across([q.saying, ...LOCALES.map((l) => `${q[l].saying ?? ""} ${q[l].angle} ${q[l].closeness}`)]),
     })),
     ...intentions.map((i) => ({
       kind: "intention" as const,

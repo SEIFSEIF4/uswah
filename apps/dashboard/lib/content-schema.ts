@@ -72,7 +72,9 @@ export type SayingDoc = {
   grade: Grade;
   situation_slug?: string;
   source_original?: string;
-  translations: Partial<Record<Locale, { angle: string; closeness: string; source_label: string }>>;
+  /** Per-locale `saying` is the native equivalent aphorism, optional; the reader
+      site falls back to the canonical `saying` above when a locale has none. */
+  translations: Partial<Record<Locale, { saying?: string; angle: string; closeness: string; source_label: string }>>;
 };
 
 export function validateSaying(doc: SayingDoc): string[] {

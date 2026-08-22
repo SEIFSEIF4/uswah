@@ -1129,7 +1129,11 @@ button:not(:disabled), [role="button"]:not([aria-disabled="true"]) { cursor: poi
   line-height: 1.3;
   text-wrap: balance;
 }
-[dir="rtl"] .quote-index .saying-q { direction: ltr; text-align: left; }
+/* The spans carry dir="auto", so each saying sets its own direction: a native Arabic
+   saying reads RTL in its own face, an English fallback stays LTR. Alignment is stated
+   explicitly because inherited `start` resolves against the page, not the span. */
+.saying-q:dir(rtl) { font-family: var(--font-display-ar), var(--font-arabic), serif; text-align: right; }
+.saying-q:dir(ltr) { text-align: left; }
 .quote-index p { margin: .5rem 0 0; color: var(--muted-foreground); font-size: .95rem; max-width: 60ch; }
 .quote-index-meta { display: flex; align-items: center; gap: .6rem; }
 .quote-index a:hover .saying-q { text-decoration: underline; text-underline-offset: 4px; }
@@ -1172,6 +1176,10 @@ button:not(:disabled), [role="button"]:not([aria-disabled="true"]) { cursor: poi
   line-height: 1.35;
   color: var(--muted-foreground);
   text-wrap: balance;
+}
+.saying-line:dir(rtl) {
+  font-family: var(--font-display-ar), var(--font-arabic), serif;
+  line-height: 1.6;
 }
 .saying-grade { display: flex; align-items: center; gap: .7rem; margin: 1rem 0 2rem; }
 .saying-ref { font-size: .85rem; color: var(--faint); }
@@ -1538,8 +1546,8 @@ button:not(:disabled), [role="button"]:not([aria-disabled="true"]) { cursor: poi
   line-height: 1.3;
   text-wrap: balance;
 }
-/* The saying circulates in English; mirroring it would misdescribe where it comes from. */
-[dir="rtl"] .saying-q { direction: ltr; text-align: left; }
+/* No forced LTR here any more: the spans carry dir="auto" and each locale now has a
+   native version of the saying, so the text sets its own direction. */
 
 /* Equal rows, and the link out under them. The lead-plus-stubs split that used to live
    here implied a ranking the grades do not support, and left a trench down the middle. */

@@ -237,6 +237,7 @@ export type Database = {
           angle: string
           closeness: string
           locale: string
+          saying: string | null
           saying_id: string
           source_label: string
         }
@@ -244,6 +245,7 @@ export type Database = {
           angle: string
           closeness: string
           locale: string
+          saying?: string | null
           saying_id: string
           source_label: string
         }
@@ -251,6 +253,7 @@ export type Database = {
           angle?: string
           closeness?: string
           locale?: string
+          saying?: string | null
           saying_id?: string
           source_label?: string
         }
