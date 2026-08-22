@@ -783,14 +783,14 @@ html[data-theme-wipe="active"]::view-transition-new(root) {
   opacity: .06;
   transition: opacity .5s ease;
   pointer-events: none;
-  -webkit-mask-image: url(/ornament.svg), url(/ornament.svg), url(/ornament.svg);
+  -webkit-mask-image: url(/ornament.svg), url(/ornament.svg);
   -webkit-mask-repeat: no-repeat;
-  -webkit-mask-position: left -5rem top -5rem, right -3rem bottom -3.5rem, center;
-  -webkit-mask-size: 16rem, 11rem, 5rem;
-  mask-image: url(/ornament.svg), url(/ornament.svg), url(/ornament.svg);
+  -webkit-mask-position: left -5rem top -5rem, right -3rem bottom -3.5rem;
+  -webkit-mask-size: 16rem, 11rem;
+  mask-image: url(/ornament.svg), url(/ornament.svg);
   mask-repeat: no-repeat;
-  mask-position: left -5rem top -5rem, right -3rem bottom -3.5rem, center;
-  mask-size: 16rem, 11rem, 5rem;
+  mask-position: left -5rem top -5rem, right -3rem bottom -3.5rem;
+  mask-size: 16rem, 11rem;
 }
 /* Full opacity crossed over the words; the bloom stops at a shade that stays behind them. */
 .source:hover::before { opacity: .22; }
@@ -825,19 +825,9 @@ html[data-theme-wipe="active"]::view-transition-new(root) {
   border-radius: 999px;
   padding: .15rem .75rem;
 }
-/* The dorar apparatus, laid out the way dorar.net lays it out: the verdict on its
-   own highlighted strip, then labelled fields whose values carry the colour, with
-   bars between the fields. Arabic by nature, so RTL in every locale; physical
-   right-anchoring because the whole block reads from the right everywhere. */
-.dorar-verdict {
-  width: fit-content;
-  margin: 1rem 0 0 auto;
-  padding: .2rem .7rem;
-  font-size: .85rem;
-  color: var(--muted-foreground);
-  background: color-mix(in srgb, var(--brand) 7%, transparent);
-  border-radius: 4px;
-}
+/* The dorar apparatus: labelled fields with bars between them, dorar's layout.
+   Values are set apart by weight, not colour — coloured text here read as links,
+   and dorar gives us names, not URLs, so nothing in this row may look clickable. */
 .source-dorar {
   display: flex;
   flex-wrap: wrap;
@@ -853,8 +843,7 @@ html[data-theme-wipe="active"]::view-transition-new(root) {
   margin-inline: 1ch;
   color: var(--rule);
 }
-.source-dorar strong,
-.dorar-verdict strong { font-weight: 500; color: var(--brand); }
+.source-dorar strong { font-weight: 500; color: var(--foreground); }
 .source-credit {
   margin: .9rem 0 0;
   font-size: .8rem;

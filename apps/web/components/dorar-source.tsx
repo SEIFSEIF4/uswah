@@ -27,11 +27,14 @@ export function DorarSource({ dorar, locale }: { dorar: DorarRef; locale: Locale
     return true;
   });
 
+  /* A bracketed [صحيح] under البخاري or مسلم is dorar marking the grading as the
+     collection's own; the ref pill above already says Sahih al-Bukhari, so only an
+     outside verdict (الألباني : حسن) earns its own field. */
+  const gradedByCollection =
+    (dorar.mohdith === "البخاري" || dorar.mohdith === "مسلم") && dorar.grade === "[صحيح]";
+
   return (
     <>
-      <p className="dorar-verdict" dir="rtl">
-        خلاصة حكم المحدث : <strong>{dorar.grade}</strong>
-      </p>
       <p className="source-dorar" dir="rtl">
         {dorar.rawi !== "-" && (
           <span>
@@ -41,6 +44,11 @@ export function DorarSource({ dorar, locale }: { dorar: DorarRef; locale: Locale
         <span>
           المحدث : <strong>{dorar.mohdith}</strong>
         </span>
+        {!gradedByCollection && (
+          <span>
+            خلاصة الحكم : <strong>{dorar.grade}</strong>
+          </span>
+        )}
         {dorar.takhrij && (
           <span>
             التخريج : <strong>{dorar.takhrij}</strong>
