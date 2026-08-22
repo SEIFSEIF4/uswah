@@ -48,6 +48,8 @@ export type Situation = {
   image: { url: string; credit: string; sourceUrl: string; license: string };
   source: {
     label: { en: string; ar: string; tr: string };
+    /** The bare page-or-number within the collection, e.g. "1471". */
+    ref: string;
     original: string;
     translation?: Partial<Record<Locale, { text: string; translator: string }>>;
     dorar?: DorarRef;
@@ -143,6 +145,7 @@ const loadSituations = unstable_cache(
         },
         source: {
           label: sourceLabel(entry.source.kind, entry.source.collection, entry.source.ref),
+          ref: entry.source.ref,
           original: entry.source.text_original,
           translation: Object.keys(translation).length ? translation : undefined,
           dorar: cited.get(r.slug) ?? undefined,

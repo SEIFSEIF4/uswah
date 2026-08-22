@@ -106,7 +106,15 @@ export default async function Saying({
       <section className="source">
         {q.source.original && <p className="source-text">{q.source.original}</p>}
         <p className="source-ref">{q.source.label[locale]}</p>
-        {q.source.dorar && <DorarSource dorar={q.source.dorar} locale={locale} />}
+        {q.source.dorar && (
+          <DorarSource
+            dorar={q.source.dorar}
+            locale={locale}
+            /* Sayings store the ref only inside the label; its Latin-digit tail is
+               the number ("Sahih al-Bukhari 1471" -> "1471"). */
+            number={q.source.label.en.match(/[\d/]+$/)?.[0]}
+          />
+        )}
       </section>
 
       <section className="saying-block">

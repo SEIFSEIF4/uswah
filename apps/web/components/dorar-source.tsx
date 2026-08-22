@@ -9,14 +9,22 @@ const LABEL: Record<Locale, string> = {
 
 /**
  * The dorar.net apparatus for a cited hadith, laid out the way dorar lays it out:
- * the verdict on its own highlighted strip, then the labelled fields (الراوي،
- * المحدث، التخريج) with the values carrying the colour, then the topical chips,
- * then the credit linking to their permalink. المصدر and الرقم are not repeated
- * here because the ref pill above the apparatus already carries them. RTL in
- * every locale: the metadata is Arabic by nature. Shared by the saying and
- * situation pages so the two source blocks cannot drift apart.
+ * labelled fields (الراوي، المحدث، الصفحة أو الرقم), then the topical chips, then
+ * the credit linking to their permalink. التخريج stays in the data but off the
+ * page: the long cross-reference run was the noisiest field for the least read.
+ * RTL in every locale: the metadata is Arabic by nature. Shared by the saying
+ * and situation pages so the two source blocks cannot drift apart.
  */
-export function DorarSource({ dorar, locale }: { dorar: DorarRef; locale: Locale }) {
+export function DorarSource({
+  dorar,
+  locale,
+  number,
+}: {
+  dorar: DorarRef;
+  locale: Locale;
+  /** The cited row's page-or-number, dorar's الصفحة أو الرقم. */
+  number?: string;
+}) {
   /* One chip per top-level theme (the part before the dash): dorar lists several
      subtopics under the same theme, and the repeats were the noise. */
   const seen = new Set<string>();
@@ -44,14 +52,14 @@ export function DorarSource({ dorar, locale }: { dorar: DorarRef; locale: Locale
         <span>
           المحدث : <strong>{dorar.mohdith}</strong>
         </span>
+        {number && (
+          <span>
+            الصفحة أو الرقم : <strong>{number}</strong>
+          </span>
+        )}
         {!gradedByCollection && (
           <span>
             خلاصة الحكم : <strong>{dorar.grade}</strong>
-          </span>
-        )}
-        {dorar.takhrij && (
-          <span>
-            التخريج : <strong>{dorar.takhrij}</strong>
           </span>
         )}
       </p>

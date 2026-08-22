@@ -113,7 +113,9 @@ export default async function Situation({
           </p>
         )}
         <p className="source-ref">{s.source.label[locale]}</p>
-        {s.source.dorar && <DorarSource dorar={s.source.dorar} locale={locale} />}
+        {s.source.dorar && (
+          <DorarSource dorar={s.source.dorar} locale={locale} number={s.source.ref} />
+        )}
       </section>
 
       <div className="prose" id="why">
