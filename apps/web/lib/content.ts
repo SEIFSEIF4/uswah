@@ -48,8 +48,6 @@ export type Situation = {
   image: { url: string; credit: string; sourceUrl: string; license: string };
   source: {
     label: { en: string; ar: string; tr: string };
-    /** The bare page-or-number within the collection, e.g. "1471". */
-    ref: string;
     /** Set for hadith sources; the DB admits only these two collections. */
     collection?: BookKey;
     original: string;
@@ -147,7 +145,6 @@ const loadSituations = unstable_cache(
         },
         source: {
           label: sourceLabel(entry.source.kind, entry.source.collection, entry.source.ref),
-          ref: entry.source.ref,
           collection: (entry.source.collection as BookKey | null) ?? undefined,
           original: entry.source.text_original,
           translation: Object.keys(translation).length ? translation : undefined,
@@ -220,11 +217,21 @@ export type Quote = {
   source: {
     label: { en: string; ar: string; tr: string };
     original?: string;
+    /** House-draft translations of the source, with the credit that says so. */
+    translation?: Partial<Record<Locale, { text: string; translator: string }>>;
     dorar?: DorarRef;
   };
 };
 
-type SayingTr = { locale: string; saying: string | null; angle: string; closeness: string; source_label: string };
+type SayingTr = {
+  locale: string;
+  saying: string | null;
+  angle: string;
+  closeness: string;
+  source_label: string;
+  source_text: string | null;
+  source_translator: string | null;
+};
 
 /**
  * One query for the rows, one for the dorar citations, joined here by slug.
@@ -237,7 +244,7 @@ const loadQuotes = unstable_cache(
       db
         .from("sayings")
         .select(
-          "slug,saying,grade,situation_slug,source_original,created_at,saying_translations(locale,saying,angle,closeness,source_label)",
+          "slug,saying,grade,situation_slug,source_original,created_at,saying_translations(locale,saying,angle,closeness,source_label,source_text,source_translator)",
         )
         .order("created_at"),
       db.from("dorar_hadith").select("slug,cited"),
@@ -253,6 +260,12 @@ const loadQuotes = unstable_cache(
         (r.saying_translations as SayingTr[]).map((t) => [t.locale, t]),
       ) as Record<Locale, SayingTr>;
       if (!tr.en || !tr.ar || !tr.tr) continue;
+      const translation = Object.fromEntries(
+        LOCALES.filter((l) => tr[l].source_text && tr[l].source_translator).map((l) => [
+          l,
+          { text: tr[l].source_text!, translator: tr[l].source_translator! },
+        ]),
+      );
       quotes.push({
         slug: r.slug,
         saying: r.saying,
@@ -264,6 +277,7 @@ const loadQuotes = unstable_cache(
         source: {
           label: { en: tr.en.source_label, ar: tr.ar.source_label, tr: tr.tr.source_label },
           original: r.source_original ?? undefined,
+          translation: Object.keys(translation).length ? translation : undefined,
           dorar: cited.get(r.slug) ?? undefined,
         },
       });

@@ -240,6 +240,8 @@ export type Database = {
           saying: string | null
           saying_id: string
           source_label: string
+          source_text: string | null
+          source_translator: string | null
         }
         Insert: {
           angle: string
@@ -248,6 +250,8 @@ export type Database = {
           saying?: string | null
           saying_id: string
           source_label: string
+          source_text?: string | null
+          source_translator?: string | null
         }
         Update: {
           angle?: string
@@ -256,6 +260,8 @@ export type Database = {
           saying?: string | null
           saying_id?: string
           source_label?: string
+          source_text?: string | null
+          source_translator?: string | null
         }
         Relationships: [
           {

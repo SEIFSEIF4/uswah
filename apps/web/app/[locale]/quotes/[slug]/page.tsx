@@ -22,6 +22,7 @@ const copy = {
     pendingWhy:
       "Below the current publishing threshold. Until a scholarly reviewer joins the project, only the Quran and the two Sahih collections are published, so this comparison is shown but not relied on.",
     next: "More sayings",
+    translated: "Translated by",
   },
   ar: {
     parallel: "الزاوية",
@@ -31,6 +32,7 @@ const copy = {
     pendingWhy:
       "دون عتبة النشر الحالية. وإلى أن ينضم مراجع شرعي إلى المشروع، لا يُنشر إلا القرآن والصحيحان، فهذه المقارنة معروضة لا معتمدة.",
     next: "مقولات أخرى",
+    translated: "ترجمة",
   },
   tr: {
     parallel: "Karşılığı",
@@ -40,6 +42,7 @@ const copy = {
     pendingWhy:
       "Şu anki yayın eşiğinin altında. Projeye ilim ehli bir denetçi katılana kadar yalnızca Kur'an ve iki Sahih yayımlanıyor; bu karşılaştırma gösteriliyor ama dayanak alınmıyor.",
     next: "Başka sözler",
+    translated: "Çeviren",
   },
 } as const;
 
@@ -110,15 +113,23 @@ export default async function Saying({
           ground made the Quran pages look unlike the hadith ones. */}
       <section className="source">
         {q.source.original && <p className="source-text">{q.source.original}</p>}
+        {/* No translation on the Arabic page: the original is the text. Same rule
+            and same markup as the situation pages. */}
+        {locale !== "ar" && q.source.translation?.[locale] && (
+          <p className="source-translation">
+            “{q.source.translation[locale]!.text}”
+            <span>
+              {t.translated} {q.source.translation[locale]!.translator}
+            </span>
+          </p>
+        )}
         <p className="source-ref">{q.source.label[locale]}</p>
         {q.source.dorar && (
           <DorarSource
             dorar={q.source.dorar}
             locale={locale}
-            /* Sayings store the ref only inside the label; its Latin-digit tail is
-               the number ("Sahih al-Bukhari 1471" -> "1471"), and its prefix names
-               the collection when it is one whose book record we hold. */
-            number={q.source.label.en.match(/[\d/]+$/)?.[0]}
+            /* Sayings have no structured collection column; the English label's
+               prefix names it when it is one whose book record we hold. */
             book={
               q.source.label.en.startsWith("Sahih al-Bukhari")
                 ? "bukhari"

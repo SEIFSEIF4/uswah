@@ -15,10 +15,10 @@ const LABEL: Record<Locale, string> = {
 };
 
 /* The field labels, in the reader's language: they are ours, not dorar's. */
-const FIELDS: Record<Locale, { rawi: string; mohdith: string; source: string; number: string; grade: string }> = {
-  en: { rawi: "Narrator", mohdith: "Graded by", source: "Source", number: "Page or number", grade: "Ruling" },
-  ar: { rawi: "الراوي", mohdith: "المحدث", source: "المصدر", number: "الصفحة أو الرقم", grade: "خلاصة الحكم" },
-  tr: { rawi: "Râvi", mohdith: "Muhaddis", source: "Kaynak", number: "Sayfa veya numara", grade: "Hüküm" },
+const FIELDS: Record<Locale, { rawi: string; mohdith: string; source: string; grade: string }> = {
+  en: { rawi: "Narrator", mohdith: "Graded by", source: "Source", grade: "Ruling" },
+  ar: { rawi: "الراوي", mohdith: "المحدث", source: "المصدر", grade: "خلاصة الحكم" },
+  tr: { rawi: "Râvi", mohdith: "Muhaddis", source: "Kaynak", grade: "Hüküm" },
 };
 
 /**
@@ -34,13 +34,10 @@ const FIELDS: Record<Locale, { rawi: string; mohdith: string; source: string; nu
 export function DorarSource({
   dorar,
   locale,
-  number,
   book,
 }: {
   dorar: DorarRef;
   locale: Locale;
-  /** The cited row's page-or-number, dorar's الصفحة أو الرقم. */
-  number?: string;
   /** The collection, when it is one whose record we hold; opens the book card. */
   book?: BookKey;
 }) {
@@ -82,14 +79,8 @@ export function DorarSource({
           </span>
         )}
         {/* What has a distinct destination is interactive: المصدر opens the book's
-            record, each chip its dorar category. The number stays plain text; its
-            only destination would be the permalink the credit line already links,
-            and the same trip twice is clutter. */}
-        {number && (
-          <span>
-            {t.number} : <strong>{number}</strong>
-          </span>
-        )}
+            record, each chip its dorar category. No page-or-number field: the ref
+            pill above already carries the number. */}
         {!gradedByCollection && (
           <span>
             {t.grade} : <strong dir="auto">{grade}</strong>
