@@ -12,6 +12,9 @@ import {
 import { Share } from "@/components/article-parts";
 import { ShareCard } from "@/components/share-card";
 import { DorarSource } from "@/components/dorar-source";
+import { SayingSaveButton } from "@/components/saying-save-button";
+import { createClient } from "@/lib/supabase/server";
+import { toggleSaveSaying } from "../actions";
 
 const copy = {
   en: {
@@ -23,6 +26,9 @@ const copy = {
       "Below the current publishing threshold. Until a scholarly reviewer joins the project, only the Quran and the two Sahih collections are published, so this comparison is shown but not relied on.",
     next: "More sayings",
     translated: "Translated by",
+    save: "Save",
+    saved: "Saved",
+    saving: "Saving…",
   },
   ar: {
     parallel: "الزاوية",
@@ -33,6 +39,9 @@ const copy = {
       "دون عتبة النشر الحالية. وإلى أن ينضم مراجع شرعي إلى المشروع، لا يُنشر إلا القرآن والصحيحان، فهذه المقارنة معروضة لا معتمدة.",
     next: "مقولات أخرى",
     translated: "ترجمة",
+    save: "احفظ",
+    saved: "محفوظ",
+    saving: "جارٍ الحفظ…",
   },
   tr: {
     parallel: "Karşılığı",
@@ -43,6 +52,9 @@ const copy = {
       "Şu anki yayın eşiğinin altında. Projeye ilim ehli bir denetçi katılana kadar yalnızca Kur'an ve iki Sahih yayımlanıyor; bu karşılaştırma gösteriliyor ama dayanak alınmıyor.",
     next: "Başka sözler",
     translated: "Çeviren",
+    save: "Kaydet",
+    saved: "Kaydedildi",
+    saving: "Kaydediliyor…",
   },
 } as const;
 
@@ -96,6 +108,24 @@ export default async function Saying({
   const grade = GRADES[q.grade];
   const situation = q.situation ? await situationBySlug(q.situation) : undefined;
   const more = await relatedQuotes(slug);
+  const supabase = await createClient();
+  const { data: claims } = await supabase.auth.getClaims();
+  let saved = false;
+  if (claims?.claims?.sub) {
+    const { data: saying } = await supabase
+      .from("sayings")
+      .select("id")
+      .eq("slug", slug)
+      .maybeSingle();
+    if (saying) {
+      const { data: savedRow } = await supabase
+        .from("saved_sayings")
+        .select("saying_id")
+        .eq("saying_id", saying.id)
+        .maybeSingle();
+      saved = Boolean(savedRow);
+    }
+  }
 
   return (
     <article className="saying-page">
@@ -170,14 +200,26 @@ export default async function Saying({
           situation page uses, so the two pages end the same way. */}
       <div className="share-row">
         <Share title={q[locale].saying ?? q.saying} locale={locale} />
-        <ShareCard
-          slug={slug}
-          locale={locale}
-          saying={q[locale].saying ?? q.saying}
-          original={q.source.original ?? null}
-          grade={GRADES[q.grade][locale]}
-          source={q.source.label[locale]}
-        />
+        <div className="quote-actions">
+          <ShareCard
+            slug={slug}
+            locale={locale}
+            saying={q[locale].saying ?? q.saying}
+            original={q.source.original ?? null}
+            grade={GRADES[q.grade][locale]}
+            source={q.source.label[locale]}
+          />
+          <form action={toggleSaveSaying}>
+            <input type="hidden" name="locale" value={locale} />
+            <input type="hidden" name="slug" value={slug} />
+            <SayingSaveButton
+              label={t.save}
+              savedLabel={t.saved}
+              pendingLabel={t.saving}
+              saved={saved}
+            />
+          </form>
+        </div>
       </div>
 
       <h2 className="section-title">{t.next}</h2>
