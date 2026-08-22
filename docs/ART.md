@@ -194,3 +194,84 @@ Extra bans: no bent or suffering posture, the weight is real but carried
 well; no children or family visible at the door.
 Check: the two baskets must hang level; uneven arms are the anatomy risk.
 ```
+
+## Topic tiles
+
+The six home-page topic tiles stop borrowing artwork from their newest
+situation and get emblems of their own. Topics live in code, not the
+database, so wiring is a code change only: the files go to
+`apps/web/public/art/topics/`, the paths go onto the `TOPICS` entries in
+`apps/web/lib/content.ts`, and the borrow-from-newest lookup in the home
+page comes out. The tiles are decorative (the label names the topic), so
+no alt text is needed. Compositions are single centered emblems with
+generous margin, safe for the 4:3 tile crop. Use the shared block above
+with every prompt.
+
+- [ ] `money` — the tied purse
+- [ ] `work` — the ladder before the day
+- [ ] `family` — two pairs of slippers at the threshold
+- [ ] `self` — the ewer and basin, washing not yet begun
+- [ ] `friendship` — two chairs angled toward each other
+- [ ] `hardship` — the worn stair climbing out of shadow
+
+### `money` — المال
+
+```
+Save to apps/web/public/art/topics/money-v1.jpg.
+Subject: a small drawstring cloth purse, tied shut, resting alone on a
+stone ledge in morning light, centered, generous space around it. Plain
+undyed cloth, worn cord. Nothing else in frame.
+Extra bans: no coins visible, no embroidery on the purse.
+```
+
+### `work` — العمل
+
+```
+Save to apps/web/public/art/topics/work-v1.jpg.
+Subject: a plain wooden ladder leaning against a warm ochre wall in early
+morning light, centered, its top out of frame, long clean shadow. The day
+has not started yet; the ladder is ready. Nothing else in frame.
+Extra bans: no tools at its foot, no bucket, no paint.
+```
+
+### `family` — الأهل
+
+```
+Save to apps/web/public/art/topics/family-v1.jpg.
+Subject: a home threshold with a worn stone step, and on it two pairs of
+simple slippers side by side, one large, one small, toes pointing inward
+toward the open door's shadow. Centered, close, warm light.
+Extra bans: no feet, no people, no more than two pairs.
+```
+
+### `self` — النفس
+
+```
+Save to apps/web/public/art/topics/self-v1.jpg.
+Subject: a plain metal ewer standing in a shallow basin on a low wooden
+stool, water still, set against a quiet plaster wall, centered. The
+washing not yet begun. Nothing else in frame.
+Extra bans: no ornament on the ewer, no reflections detailed in the
+water, no towel.
+```
+
+### `friendship` — الناس
+
+```
+Save to apps/web/public/art/topics/friendship-v1.jpg.
+Subject: two simple wooden chairs in courtyard shade, angled gently
+toward each other as if a conversation just ended or is about to begin,
+centered as a pair, dappled light on the ground.
+Extra bans: no table between them, no cups, no cushions.
+```
+
+### `hardship` — الشدّة
+
+```
+Save to apps/web/public/art/topics/hardship-v1.jpg.
+Subject: a narrow stone stairway between high walls, climbing out of
+blue-grey shadow toward warm light at the top edge of frame, centered,
+steps worn hollow in the middle from long use. Nothing and no one on
+the stairs.
+Extra bans: no doors along the stair, no lamps, no railing.
+```
