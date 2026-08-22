@@ -238,3 +238,98 @@ patient. The wait was working the whole time.
 Detail crops for the meaning slides are cut from the original files on
 request (name the region: the knot, the flame, the steam, the stain) —
 never regenerated, so the detail is pixel-identical to the hook slide.
+
+### After-image prompts, second wave
+
+Same rules: attach the named reference, same scene, same light, only
+time has passed. Detail regions listed for each are cut from the
+original on request.
+
+**`my-boss-wronged-me`** — ref `my-boss-wronged-me-v1.jpg`; detail: the knotted curtain cord
+```
+Save to content/posts/my-boss-wronged-me/after-v1.jpg.
+The same window, curtain and sill as the reference at full morning:
+the sky beyond bright and blue, the room no longer dark, the curtain
+still knotted back. The dawn the window waited for arrived.
+```
+
+**`i-was-passed-over`** — ref `i-was-passed-over-v1.jpg`; detail: the smaller lamp's steady flame
+```
+Save to content/posts/i-was-passed-over/after-v1.jpg.
+The same niche and two lamps hours deeper into night: both flames
+exactly as steady, the oil visibly lower in both, the shared glow
+unchanged. Neither light cost the other anything, and both lasted.
+```
+
+**`i-keep-putting-it-off`** — ref `i-keep-putting-it-off-v1.jpg`; detail: the water rings
+```
+Save to content/posts/i-keep-putting-it-off/after-v1.jpg.
+The same ledge, pot and watering can weeks later: the plant taller by
+a few leaves, one more fresh dark ring on the stone among the faded
+ones. The habit kept, the growth quiet.
+```
+
+**`someone-spoke-badly-of-me`** — ref `someone-spoke-badly-of-me-v1.jpg`; detail: the lit slats
+```
+Save to content/posts/someone-spoke-badly-of-me/after-v1.jpg.
+The same wall and window the next morning: shutters open, sill in
+plain warm daylight, the room quiet beyond. The night passed, nothing
+was said, and the house opens as it always does.
+```
+
+**`i-lost-someone`** — ref `i-lost-someone-v1.jpg`; detail: the folded shawl
+```
+Save to content/posts/i-lost-someone/after-v1.jpg.
+The same chair, shawl and window after the rain: drops still on the
+glass but the sky lightening, a first patch of sun on the sill. The
+shawl stays folded where it is. Grief remains; the sky clears anyway.
+```
+
+**`i-cannot-forgive-myself`** — ref `i-cannot-forgive-myself-v1.jpg`; detail: the open latch in the door gap
+```
+Save to content/posts/i-cannot-forgive-myself/after-v1.jpg.
+The same room with the door now fully open: morning filling the whole
+floor, no dark corners left, the doorway plain and unguarded. The way
+back was walked.
+```
+
+**`i-am-far-from-home`** — ref `i-am-far-from-home-v1.jpg`; detail: the bag and staff at the threshold
+```
+Save to content/posts/i-am-far-from-home/after-v1.jpg.
+The same doorway and road, the bag and staff gone: the swept room
+empty, the road bright in morning haze. The traveler traveled.
+```
+
+**`i-said-something-i-regret`** — covered in the first wave.
+
+**`i-cannot-afford-to-be-generous`** — ref `i-cannot-afford-to-be-generous-v1.jpg`; detail: the cup on the lid
+```
+Save to content/posts/i-cannot-afford-to-be-generous/after-v1.jpg.
+The same jar and stand: the cup now resting beside the lid, wet, a few
+small splashes of water drying on the swept stone. Someone drank. The
+gift with no money in it was received.
+```
+
+**`my-work-feels-pointless`** — ref `my-work-feels-pointless-v1.jpg`; detail: the tool row in the lamp pool
+```
+Save to content/posts/my-work-feels-pointless/after-v1.jpg.
+The same bench at morning: the lamp out, daylight from beyond the
+frame, the cloth folded and the tools gone to their work, fresh
+shavings just beginning to gather. The care resumed.
+```
+
+**`i-avoid-someone-i-wronged`** — ref `i-avoid-someone-i-wronged-v1.jpg`; detail: the gate ajar with warm light
+```
+Save to content/posts/i-avoid-someone-i-wronged/after-v1.jpg.
+The same lane, empty now, the gate standing wide open with warm light
+spilling into the lane. He went in. The walk was shorter than the
+avoiding was.
+```
+
+**`i-am-carrying-my-family-alone`** — ref `i-am-carrying-my-family-alone-v1.jpg`; detail: the two baskets in his hands
+```
+Save to content/posts/i-am-carrying-my-family-alone/after-v1.jpg.
+The same climbing street, empty: the two covered baskets set down side
+by side on the doorstep, the door open. Delivered home, again, like
+every dawn.
+```
