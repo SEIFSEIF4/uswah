@@ -152,3 +152,89 @@ gradient bands, no gloss.
 Everything else is Canva: the wordmark and Arabic from real fonts, text
 shadows only if a busy area of art demands one, and the closing slide
 built once as a saved template.
+
+## Chunk images: one scene, three moments
+
+Every situation post is split into chunks, each chunk a slide with an
+image and a couple of lines. The images all come from ONE scene so the
+carousel reads as a story, not a mood board:
+
+1. **Hook** — the situation's artwork, the 4:5 crop.
+2. **Source + translation** — the painted paper ground (`paper-v1`);
+   scripture always sits on the quiet ground, never on artwork.
+3. **Meaning** — a DETAIL crop from the same artwork (the rope's knot,
+   the steam, the lamp flame), cut from the original file, not
+   regenerated. Two lines of the body text beside it.
+4. **Takeaway — the after image** — a newly generated companion: the
+   same scene, moments after the takeaway was acted on. Two lines: the
+   takeaway itself.
+5. **Closing slide** — the house template.
+
+The after images are generated with the original artwork attached as a
+scene reference, and the instruction is always: same scene, same light,
+do not restyle — only time has passed.
+
+### After-image prompts, first wave
+
+Attach the named reference file. SERIES STYLE from docs/ART.md applies
+to all. Output 1080x1350 portrait, saved under `content/posts/<slug>/`.
+
+**`i-cannot-stop-being-angry`** — ref `apps/web/public/art/i-cannot-stop-being-angry-v2.jpg`
+```
+Save to content/posts/i-cannot-stop-being-angry/after-v1.jpg.
+The same rooftop, parapet and city as the reference, minutes later:
+the parapet is empty, the figure has gone back down. Dusk one shade
+deeper, the single amber window still lit. The minute was taken.
+```
+
+**`asked-for-money-again`** — ref `apps/web/public/art/asked-for-money.jpg`
+```
+Save to content/posts/asked-for-money-again/after-v1.jpg.
+The same courtyard corner, wall and doorway as the reference, later:
+the rope and the firewood are gone. Faint dust marks and a few bark
+chips where they lay. The light unchanged. The need ended.
+```
+
+**`a-friend-let-me-down`** — ref `apps/web/public/art/a-friend-let-me-down-v2.jpg`
+```
+Save to content/posts/a-friend-let-me-down/after-v1.jpg.
+The same wall, hole and curving path as the reference, but the walker
+is far along it now, small near the top of the frame, still walking.
+The hole unchanged, unfeared. Distance kept, journey continued.
+```
+
+**`i-am-in-debt`** — ref `apps/web/public/art/i-am-in-debt-v1.jpg`
+```
+Save to content/posts/i-am-in-debt/after-v1.jpg.
+The same desk and window as the reference in full morning: the lamp
+out and cold, the coins and envelope gone, sunlight across the empty
+wood. The city awake beyond the window. It was delivered.
+```
+
+**`my-parents-ask-too-much`** — ref `apps/web/public/art/my-parents-ask-too-much-v1.jpg`
+```
+Save to content/posts/my-parents-ask-too-much/after-v1.jpg.
+The same bench, table and tray as the reference, after the visit:
+both glasses empty, one cushion straightened, the other still dented,
+the afternoon light a little longer. The visit happened.
+```
+
+**`i-said-something-i-regret`** — ref `apps/web/public/art/i-said-something-i-regret-v1.jpg`
+```
+Save to content/posts/i-said-something-i-regret/after-v1.jpg.
+The same courtyard corner and cracked earth as the reference: the jug
+now stands upright again, whole, but the dark stain remains in the
+earth beside it. You can right the jug; the stain stays.
+```
+
+**`i-am-waiting-and-nothing-changes`** — ref `apps/web/public/art/i-am-waiting-and-nothing-changes-v1.jpg`
+```
+Save to content/posts/i-am-waiting-and-nothing-changes/after-v1.jpg.
+The same table, bowl and oven as the reference: the cloth folded
+beside the bowl, the dough risen high above the rim, the embers still
+patient. The wait was working the whole time.
+```
+
+Detail crops for the meaning slides are cut from the original files on
+request (name the region: the knot, the flame, the steam, the stain) —
+never regenerated, so the detail is pixel-identical to the hook slide.
