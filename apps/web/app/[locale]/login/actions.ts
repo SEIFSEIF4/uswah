@@ -29,6 +29,11 @@ function read(formData: FormData) {
 const loginUrl = (locale: string, params: Record<string, string>) =>
   `/${locale}${DEFAULT_LOGIN_ROUTE}?${new URLSearchParams(params)}`;
 
+function retryAfterSeconds(message: string) {
+  const match = message.match(/after (\d+) seconds?/i);
+  return match ? Number(match[1]) : null;
+}
+
 export async function requestOtp(formData: FormData) {
   const { locale, email, redirectTo } = read(formData);
   const supabase = await createClient();
@@ -42,7 +47,14 @@ export async function requestOtp(formData: FormData) {
     options: { shouldCreateUser: true, data: { locale } },
   });
   if (error) {
-    redirect(loginUrl(locale, { error: error.message, ...(redirectTo ? { redirect: redirectTo } : {}) }));
+    const retry = retryAfterSeconds(error.message);
+    redirect(
+      loginUrl(locale, {
+        error: error.code ?? error.message,
+        ...(retry !== null ? { retry: String(retry), sent: "1" } : {}),
+        ...(redirectTo ? { redirect: redirectTo } : {}),
+      }),
+    );
   }
 
   // The address rides in an httpOnly cookie rather than the query string: it is personal
@@ -68,10 +80,14 @@ export async function verifyOtp(formData: FormData) {
     redirect(loginUrl(locale, { expired: "1" }));
   }
 
+  if (!/^\d{6}$/.test(token)) {
+    redirect(loginUrl(locale, { error: "otp_invalid", sent: "1", ...(redirectTo ? { redirect: redirectTo } : {}) }));
+  }
+
   const supabase = await createClient();
   const { error } = await supabase.auth.verifyOtp({ email, token, type: "email" });
   if (error) {
-    redirect(loginUrl(locale, { error: error.message, sent: "1", ...(redirectTo ? { redirect: redirectTo } : {}) }));
+    redirect(loginUrl(locale, { error: error.code ?? error.message, sent: "1", ...(redirectTo ? { redirect: redirectTo } : {}) }));
   }
 
   jar.delete(PENDING_EMAIL);

@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation";
 import { cookies } from "next/headers";
 import { isLocale } from "@/lib/i18n";
+import { authErrorMessage } from "@/lib/auth-errors";
+import { OtpRetryNotice } from "@/components/otp-retry-notice";
 import { requestOtp, restartOtp, verifyOtp } from "./actions";
 
 const copy = {
@@ -47,16 +49,17 @@ export default async function Login({
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ error?: string; sent?: string; expired?: string; redirect?: string }>;
+  searchParams: Promise<{ error?: string; sent?: string; retry?: string; expired?: string; redirect?: string }>;
 }) {
   const { locale } = await params;
-  const { error, sent, expired, redirect } = await searchParams;
+  const { error, sent, retry, expired, redirect } = await searchParams;
   if (!isLocale(locale)) notFound();
 
   const t = copy[locale];
   const pending = (await cookies()).get("uswah_otp_email")?.value;
   // The code step needs an address to verify against; without one, ask for it again.
-  const onCodeStep = Boolean(sent) && Boolean(pending);
+  const retrySeconds = retry ? Number.parseInt(retry, 10) : 0;
+  const onCodeStep = Boolean((sent || retrySeconds > 0) && pending);
 
   return (
     <div className="auth">
@@ -74,9 +77,10 @@ export default async function Login({
       {expired && <p className="auth-notice is-error">{t.expired}</p>}
       {error && (
         <p role="alert" className="auth-notice is-error">
-          {error}
+          {authErrorMessage(error, locale)}
         </p>
       )}
+      {retrySeconds > 0 && <OtpRetryNotice locale={locale} seconds={retrySeconds} />}
 
       <form className="auth-form">
         <input type="hidden" name="locale" value={locale} />
@@ -90,7 +94,8 @@ export default async function Login({
                 name="token"
                 inputMode="numeric"
                 autoComplete="one-time-code"
-                pattern="[0-9]*"
+                pattern="[0-9]{6}"
+                minLength={6}
                 maxLength={6}
                 required
                 autoFocus

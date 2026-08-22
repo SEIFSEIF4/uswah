@@ -438,12 +438,9 @@ html[data-theme-wipe="active"]::view-transition-new(root) {
 }
 .topics-menu-panel a:hover .count { color: var(--brand); }
 
-/* Sits under the six on its own rule: it leaves the menu rather than filtering by one of
-   its rows, so it should not look like a seventh topic. */
+/* Leaves the menu rather than filtering by one of its rows, so it should not look like a
+   seventh topic. */
 .topics-menu-panel .topics-menu-all {
-  margin-top: .25rem;
-  padding-top: .6rem;
-  border-top: 1px solid var(--rule);
   color: var(--brand);
   font-size: .88rem;
   justify-content: flex-start;

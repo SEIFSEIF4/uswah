@@ -4,103 +4,53 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- Tells Apple Mail and Outlook the message has a dark rendering, so they stop
-     auto-inverting it and producing muddy greys. Gmail ignores this and shows the
-     light palette, which is why light has to stand on its own. -->
-<meta name="color-scheme" content="light dark">
-<meta name="supported-color-schemes" content="light dark">
+<meta name="color-scheme" content="light">
 <title>Uswah</title>
-<style>
-  /* Only Apple Mail, iOS Mail and Outlook.com honour this. Gmail strips <style>
-     entirely, so every rule here is a refinement and never load-bearing: the inline
-     styles below carry the whole design on their own. */
-  @media (prefers-color-scheme: dark) {
-    .u-page   { background: #15171c !important; }
-    .u-card   { background: #1d2027 !important; border-color: #2b303a !important; }
-    .u-ink    { color: #e3dfd8 !important; }
-    .u-muted  { color: #a8afba !important; }
-    .u-faint  { color: #868e9a !important; }
-    .u-brand  { color: #ec7a5c !important; }
-    .u-code   { background: #15171c !important; border-color: #2b303a !important; color: #e3dfd8 !important; }
-    .u-rule   { border-color: #2b303a !important; }
-  }
-</style>
 </head>
 
-<body class="u-page" style="margin:0; padding:0; background:#faf8f4;">
+<body style="margin:0; padding:0; background:#faf8f4;">
 
-<!-- Preview line in the inbox list. Hidden in the body, then padded so the client does
-     not pull the next sentence in after it. -->
 <div style="display:none; font-size:1px; color:#faf8f4; line-height:1px; max-height:0; max-width:0; opacity:0; overflow:hidden;">
   {{ if eq (print .Data.locale) "ar" }}رمز الدخول: {{ .Token }}{{ else if eq (print .Data.locale) "tr" }}Giriş kodun: {{ .Token }}{{ else }}Your sign-in code: {{ .Token }}{{ end }}
-  &#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;
 </div>
 
-<table role="presentation" class="u-page" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#faf8f4;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#faf8f4;">
   <tr>
-    <td align="center" style="padding:40px 16px;">
-
-      <table role="presentation" width="480" cellpadding="0" cellspacing="0" border="0" style="width:480px; max-width:100%;">
-
-        <!-- Wordmark. Set as type, not an image: Gmail strips SVG, and a remote PNG is
-             blocked by default in most clients, so a logo that must load is a logo that
-             is usually missing. Georgia is on effectively every mail client and is the
-             nearest thing to the site's Newsreader. -->
+    <td align="center" style="padding:48px 16px;">
+      <table role="presentation" width="440" cellpadding="0" cellspacing="0" border="0" style="width:440px; max-width:100%;">
         <tr>
-          <td align="center" style="padding:0 0 28px;">
-            <span class="u-ink" style="font-family:Georgia,'Times New Roman',serif; font-size:26px; line-height:1; color:#14181f;{{ if eq (print .Data.locale) "ar" }}{{ else }} letter-spacing:0.14em; text-transform:uppercase;{{ end }}">
+          <td align="center" style="padding:0 0 24px;">
+            <span style="font-family:Georgia,'Times New Roman',serif; font-size:25px; line-height:1; color:#7d2b1d;{{ if eq (print .Data.locale) "ar" }}{{ else }} letter-spacing:0.12em; text-transform:uppercase;{{ end }}">
               {{ if eq (print .Data.locale) "ar" }}أسوة{{ else }}Uswah{{ end }}
             </span>
           </td>
         </tr>
-
         <tr>
-          <td class="u-card" style="background:#ffffff; border:1px solid #e3ded4; border-radius:10px; padding:36px 32px;">
-
-            <h1 class="u-ink" style="margin:0; font-family:Georgia,'Times New Roman',serif; font-weight:normal; font-size:22px; line-height:1.3; color:#14181f;">
+          <td style="background:#ffffff; border:1px solid #e3ded4; border-radius:12px; padding:32px;">
+            <h1 style="margin:0; font-family:Georgia,'Times New Roman',serif; font-weight:normal; font-size:23px; line-height:1.3; color:#14181f;">
               {{ if eq (print .Data.locale) "ar" }}رمز الدخول{{ else if eq (print .Data.locale) "tr" }}Giriş kodun{{ else }}Your sign-in code{{ end }}
             </h1>
-
-            <p class="u-muted" style="margin:10px 0 0; font-family:Georgia,'Times New Roman',serif; font-size:15px; line-height:1.6; color:#59606c;">
-              {{ if eq (print .Data.locale) "ar" }}أدخل هذا الرمز في الصفحة التي طلبته منها.{{ else if eq (print .Data.locale) "tr" }}Bu kodu istediğin sayfaya gir.{{ else }}Enter this code on the page you asked for it from.{{ end }}
+            <p style="margin:10px 0 0; font-family:Georgia,'Times New Roman',serif; font-size:15px; line-height:1.6; color:#59606c;">
+              {{ if eq (print .Data.locale) "ar" }}أدخل هذا الرمز للمتابعة.{{ else if eq (print .Data.locale) "tr" }}Devam etmek için bu kodu gir.{{ else }}Enter this code to continue.{{ end }}
             </p>
-
-            <!-- The code is live text, never an image: it has to be selectable, and it
-                 has to survive images being switched off. dir=ltr because digits do not
-                 mirror, even inside an Arabic message. -->
             <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:24px 0 0;">
               <tr>
-                <td class="u-code" align="center" dir="ltr" style="background:#faf8f4; border:1px solid #e3ded4; border-radius:8px; padding:20px 12px; font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,'Courier New',monospace; font-size:32px; letter-spacing:0.32em; line-height:1.2; color:#14181f; text-indent:0.32em;">
+                <td align="center" dir="ltr" style="background:#faf8f4; border:1px solid #e3ded4; border-radius:8px; padding:18px 12px; font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,'Courier New',monospace; font-size:30px; letter-spacing:0.28em; line-height:1.2; color:#14181f; text-indent:0.28em;">
                   {{ .Token }}
                 </td>
               </tr>
             </table>
-
-            <p class="u-faint" style="margin:18px 0 0; font-family:Georgia,'Times New Roman',serif; font-size:13px; line-height:1.6; color:#8a919c;">
-              {{ if eq (print .Data.locale) "ar" }}الرمز صالح لمدة قصيرة ويُستعمل مرة واحدة.{{ else if eq (print .Data.locale) "tr" }}Kod kısa süre geçerlidir ve yalnızca bir kez kullanılır.{{ else }}The code is good for a short time and works once.{{ end }}
+            <p style="margin:18px 0 0; font-family:Georgia,'Times New Roman',serif; font-size:13px; line-height:1.6; color:#8a919c;">
+              {{ if eq (print .Data.locale) "ar" }}إذا لم تطلب هذا الرمز، فتجاهل الرسالة.{{ else if eq (print .Data.locale) "tr" }}Bu kodu istemediysen bu iletiyi yok say.{{ else }}If you didn’t request this, ignore this email.{{ end }}
             </p>
-
-            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:24px 0 0;">
-              <tr><td class="u-rule" style="border-top:1px solid #e3ded4; font-size:0; line-height:0;">&nbsp;</td></tr>
-            </table>
-
-            <p class="u-faint" style="margin:16px 0 0; font-family:Georgia,'Times New Roman',serif; font-size:13px; line-height:1.6; color:#8a919c;">
-              {{ if eq (print .Data.locale) "ar" }}إن لم تطلب هذا الرمز فلا حاجة لأي إجراء. تجاهل الرسالة ولن يحدث شيء.{{ else if eq (print .Data.locale) "tr" }}Bu kodu sen istemediysen yapman gereken bir şey yok. Bu iletiyi yok say.{{ else }}If you did not ask for this code, there is nothing to do. Ignore this message and nothing happens.{{ end }}
-            </p>
-
           </td>
         </tr>
-
         <tr>
-          <td align="center" style="padding:24px 8px 0;">
-            <p class="u-faint" style="margin:0; font-family:Georgia,'Times New Roman',serif; font-size:12px; line-height:1.6; color:#8a919c;">
-              {{ if eq (print .Data.locale) "ar" }}أسوة · إرشاد عملي لمواقف حقيقية، من المصدر{{ else if eq (print .Data.locale) "tr" }}Uswah · Gerçek durumlar için kaynağından pratik rehberlik{{ else }}Uswah · Practical guidance for real situations, from the source{{ end }}
-            </p>
+          <td align="center" style="padding:20px 8px 0; font-family:Georgia,'Times New Roman',serif; font-size:12px; line-height:1.5; color:#8a919c;">
+            Uswah
           </td>
         </tr>
-
       </table>
-
     </td>
   </tr>
 </table>
