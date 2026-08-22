@@ -22,18 +22,39 @@ export function DorarSource({ dorar, locale }: { dorar: DorarRef; locale: Locale
   const gradedByCollection =
     (dorar.mohdith === "البخاري" || dorar.mohdith === "مسلم") && dorar.grade === "[صحيح]";
 
+  /* One chip per top-level theme (the part before the dash): dorar lists several
+     subtopics under the same theme (three سؤال variants on one hadith), and the
+     first carries the theme; the rest were the noise. Plain labels, not links —
+     the credit permalink is the way to the full record. */
+  const seen = new Set<string>();
+  const cats = dorar.categories.filter((c) => {
+    const theme = c.name.split(" - ")[0];
+    if (seen.has(theme)) return false;
+    seen.add(theme);
+    return true;
+  });
+
   return (
-    <p className="source-dorar" dir="rtl">
-      {dorar.rawi !== "-" && <span>الراوي: {dorar.rawi}</span>}
-      {!gradedByCollection && (
-        <span>
-          {dorar.mohdith}: {dorar.grade}
-        </span>
+    <>
+      <p className="source-dorar" dir="rtl">
+        {dorar.rawi !== "-" && <span>الراوي: {dorar.rawi}</span>}
+        {!gradedByCollection && (
+          <span>
+            {dorar.mohdith}: {dorar.grade}
+          </span>
+        )}
+        {dorar.takhrij && <span>التخريج: {dorar.takhrij}</span>}
+        <a href={`https://dorar.net/h/${dorar.id}`} target="_blank" rel="noreferrer">
+          {LABEL[locale]}
+        </a>
+      </p>
+      {cats.length > 0 && (
+        <p className="source-cats" dir="rtl">
+          {cats.map((c) => (
+            <span key={c.id}>{c.name}</span>
+          ))}
+        </p>
       )}
-      {dorar.takhrij && <span>التخريج: {dorar.takhrij}</span>}
-      <a href={`https://dorar.net/h/${dorar.id}`} target="_blank" rel="noreferrer">
-        {LABEL[locale]}
-      </a>
-    </p>
+    </>
   );
 }

@@ -809,11 +809,17 @@ html[data-theme-wipe="active"]::view-transition-new(root) {
   font-size: .8rem;
   color: var(--faint);
 }
+/* The ref as the block's lead tag: same pill shape as the theme chips below it,
+   but in the brand colour, so the citation reads first. */
 .source-ref {
-  margin: .9rem 0 0;
+  display: inline-block;
+  margin: 1rem 0 0;
   font-size: .8rem;
   letter-spacing: .06em;
   color: var(--brand);
+  border: 1px solid color-mix(in srgb, var(--brand) 45%, transparent);
+  border-radius: 999px;
+  padding: .15rem .75rem;
 }
 /* Narrator and grading, verbatim from dorar.net, with the credit that links back.
    Arabic by nature (names of narrators and scholars), so RTL in every locale. */
@@ -833,9 +839,21 @@ html[data-theme-wipe="active"]::view-transition-new(root) {
 }
 .source-dorar a:hover { text-decoration: underline; }
 
-/* No category chips: dorar's taxonomy navigated nowhere on this site, and the
-   permalink in the credit line reaches the full record. They return as on-site
-   navigation or not at all. */
+/* Dorar's topical themes, one chip each: quiet labels, deliberately not links. */
+.source-cats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+  margin: .8rem 0 0;
+  direction: rtl;
+}
+.source-cats span {
+  font-size: .75rem;
+  color: var(--faint);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  padding: .1rem .6rem;
+}
 
 /* The site-wide credit at the foot of the sayings index. */
 .dorar-note {
