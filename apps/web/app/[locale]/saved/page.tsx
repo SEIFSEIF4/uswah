@@ -83,9 +83,9 @@ export default async function Saved({ params }: { params: Promise<{ locale: stri
                 {savedSituations.map(({ situations: s }) => (
                   <li key={s.slug} className="border-b border-rule py-5 first:border-t">
                     <Link href={`/${locale}/${s.slug}`} className="group block">
-                      <h2 className="text-xl font-medium group-hover:underline">
+                      <h3 className="text-xl font-medium group-hover:underline">
                         {s.situation_translations[0].title}
-                      </h2>
+                      </h3>
                       <p className="mt-1 text-muted-foreground">
                         {s.situation_translations[0].summary}
                       </p>
