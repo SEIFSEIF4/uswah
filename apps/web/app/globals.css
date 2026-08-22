@@ -1490,6 +1490,10 @@ button:not(:disabled), [role="button"]:not([aria-disabled="true"]) { cursor: poi
   transition: opacity .18s ease, transform .18s ease;
 }
 .share-toast.is-visible { opacity: 1; transform: translate(-50%, 0); }
+.share-toast.is-error {
+  border-color: color-mix(in srgb, var(--destructive) 42%, var(--rule));
+  color: var(--destructive);
+}
 
 /* ── install prompt (PWA) ─────────────────────────────────────────────────── */
 
