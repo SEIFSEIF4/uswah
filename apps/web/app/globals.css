@@ -305,6 +305,25 @@ h1, h2, h3, .display {
   justify-content: flex-end;
   gap: 1rem;
 }
+/* The three-column grid cannot fit a phone; the bar wraps to two rows instead:
+   topics and tools share the first, the section links take the second, full width
+   and centred, so every tap target keeps its size. */
+@media (max-width: 40rem) {
+  .masthead-bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    row-gap: .8rem;
+    padding: 1rem 0;
+  }
+  .masthead-bar .masthead-nav {
+    order: 3;
+    flex-basis: 100%;
+    justify-content: center;
+    gap: 2.25rem;
+  }
+  .masthead-tools { gap: .8rem; }
+}
 
 .theme-toggle {
   display: inline-flex;
@@ -1681,8 +1700,21 @@ button:not(:disabled), [role="button"]:not([aria-disabled="true"]) { cursor: poi
   gap: 1.75rem;
   align-items: start;
 }
+/* On a phone the dialog becomes a bottom sheet: full width, capped height, its own
+   scroll — centred-and-fixed left half the controls unreachable below the fold. */
 @media (max-width: 46rem) {
-  .sheet-body { grid-template-columns: 1fr; }
+  .sheet {
+    top: auto;
+    bottom: 0;
+    left: 0;
+    transform: none;
+    width: 100vw;
+    max-height: calc(100dvh - 2.5rem);
+    overflow-y: auto;
+    border-radius: 18px 18px 0 0;
+    padding: 1.25rem 1.25rem calc(1.75rem + env(safe-area-inset-bottom));
+  }
+  .sheet-body { grid-template-columns: 1fr; gap: 1.25rem; }
 }
 
 .sheet-side { display: flex; flex-direction: column; gap: .5rem; }
@@ -1719,6 +1751,11 @@ button:not(:disabled), [role="button"]:not([aria-disabled="true"]) { cursor: poi
 .sheet-preview.is-story { aspect-ratio: 9 / 16; max-width: min(100%, 17rem); }
 .sheet-preview.is-square { aspect-ratio: 1; max-width: min(100%, 26rem); }
 .sheet-preview.is-wide { aspect-ratio: 16 / 9; max-width: min(100%, 28rem); }
+/* Smaller on a phone, so the first scroll already reaches the controls. After the
+   base rules: same specificity, and the later one is the one that wins. */
+@media (max-width: 46rem) {
+  .sheet-preview.is-story { max-width: 12rem; }
+}
 
 
 .sheet-controls { display: flex; flex-direction: column; gap: 1rem; }
