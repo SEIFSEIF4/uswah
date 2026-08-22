@@ -18,7 +18,7 @@ import type { Database } from "./database.types";
 // Returns both the (possibly cookie-mutated) response AND the claims so the root
 // proxy can branch on authed/unauthed cleanly.
 //
-// IMPORTANT: do not insert any logic between createServerClient and getClaims() —
+// IMPORTANT: do not insert any logic between createServerClient and getClaims() -
 // tokens that expired mid-handler will desync.
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({ request });

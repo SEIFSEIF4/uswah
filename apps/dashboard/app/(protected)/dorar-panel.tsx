@@ -11,7 +11,7 @@ type DorarResult = {
 };
 
 /**
- * What dorar.net returned for this slug — the checking aid, next to the fields
+ * What dorar.net returned for this slug - the checking aid, next to the fields
  * being checked. Verbatim and read-only; the review still means opening the
  * printed collection.
  */
@@ -25,7 +25,7 @@ export function DorarPanel({ row }: { row: DorarRow }) {
       <summary className="cursor-pointer font-semibold">
         dorar.net record{" "}
         <span className="font-normal text-muted-foreground">
-          — fetched {row.fetched_at.slice(0, 10)}
+          - fetched {row.fetched_at.slice(0, 10)}
           {row.hadith_id && (
             <>
               {" · "}

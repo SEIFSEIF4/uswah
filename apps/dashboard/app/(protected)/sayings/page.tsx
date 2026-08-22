@@ -54,7 +54,7 @@ export default async function Sayings() {
                     <Badge variant="destructive">{s.grade}</Badge>
                   )}
                 </td>
-                <td className="py-2.5 pe-3 text-muted-foreground">{s.locales.join(", ") || "—"}</td>
+                <td className="py-2.5 pe-3 text-muted-foreground">{s.locales.join(", ") || "-"}</td>
                 <td className="py-2.5 pe-3">
                   {s.published_at ? <Badge>live</Badge> : <Badge variant="outline">draft</Badge>}
                 </td>

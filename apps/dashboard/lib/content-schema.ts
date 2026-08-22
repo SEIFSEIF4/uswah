@@ -102,7 +102,7 @@ export function validateSaying(doc: SayingDoc): string[] {
   }
 
   if (doc.published && !PUBLISHABLE_GRADES.includes(doc.grade))
-    e.push(`grade "${doc.grade}" cannot be published until a scholarly reviewer joins — keep it a draft`);
+    e.push(`grade "${doc.grade}" cannot be published until a scholarly reviewer joins - keep it a draft`);
   return e;
 }
 
@@ -175,14 +175,14 @@ export function validate(doc: unknown, file: string): string[] {
   if (d.image) {
     const i = d.image;
     if (!isFilled(i.url)) at("image: missing url");
-    if (!isFilled(i.credit)) at("image: missing credit — what it is, where and when");
+    if (!isFilled(i.credit)) at("image: missing credit - what it is, where and when");
     if (!isFilled(i.source_url)) at("image: missing source_url, so nobody can check it");
     if (!IMAGE_LICENCES.includes(i.license))
       at(`image: licence "${i.license ?? "none"}" not in ${IMAGE_LICENCES.join(", ")}`);
     // The clearance gate. Mirrors reviewed_by on entries, for the same reason: the
     // rule that must never be broken is the one that cannot be skipped.
     if (!isFilled(i.cleared_by))
-      at("image: missing cleared_by — name who confirmed it depicts neither the Prophet ﷺ, another prophet, nor a companion");
+      at("image: missing cleared_by - name who confirmed it depicts neither the Prophet ﷺ, another prophet, nor a companion");
     if (!isFilled(i.cleared_at)) at("image: missing cleared_at");
     else if (Number.isNaN(Date.parse(i.cleared_at))) at(`image: cleared_at "${i.cleared_at}" is not a date`);
 
@@ -212,7 +212,7 @@ export function validate(doc: unknown, file: string): string[] {
     } else if (s.kind === "hadith") {
       if (!COLLECTIONS.includes(s.collection as (typeof COLLECTIONS)[number]))
         at(
-          `${where}: collection "${s.collection ?? "none"}" is not allowed — ` +
+          `${where}: collection "${s.collection ?? "none"}" is not allowed - ` +
             `only ${COLLECTIONS.join(" and ")} until a reviewer joins the project`,
         );
     } else {
@@ -239,7 +239,7 @@ export function validate(doc: unknown, file: string): string[] {
         (en) => !isFilled(en.translations?.[loc]?.body),
       );
       if (missing)
-        at(`published, but ${loc} is incomplete — finish it or set published: false`);
+        at(`published, but ${loc} is incomplete - finish it or set published: false`);
     }
   }
 

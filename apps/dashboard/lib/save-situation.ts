@@ -1,7 +1,7 @@
 // Writes one validated SituationDoc to Supabase. Shared by the YAML pipeline
 // (scripts/push-content.ts) and the admin dashboard's server actions, so both
 // converge on identical rows. Callers validate first (lib/content-schema.ts)
-// and pass a service-role client — RLS blocks content writes for everyone else.
+// and pass a service-role client - RLS blocks content writes for everyone else.
 
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "./supabase/database.types";
@@ -9,7 +9,7 @@ import type { Locale, SituationDoc } from "./content-schema";
 
 type Db = SupabaseClient<Database>;
 
-// ponytail: idempotent upserts rather than one transaction — supabase-js has no
+// ponytail: idempotent upserts rather than one transaction - supabase-js has no
 // multi-statement transaction. A failed run leaves a partial situation; re-running
 // converges. Move to a single plpgsql RPC if partial states ever reach readers.
 export async function saveSituation(db: Db, doc: SituationDoc) {
@@ -134,7 +134,7 @@ export async function saveSituation(db: Db, doc: SituationDoc) {
   }
 
   // Entries deleted from the doc disappear from the site too; cascade takes their
-  // translations. Orphaned sources stay — they are a library, not per-situation rows.
+  // translations. Orphaned sources stay - they are a library, not per-situation rows.
   await must(
     db
       .from("entries")

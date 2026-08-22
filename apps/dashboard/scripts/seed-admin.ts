@@ -3,7 +3,7 @@
 //   pnpm admin:seed you@example.com
 //
 // Run it yourself and type the password when asked. It is read with terminal
-// echo off, so it lands in neither shell history nor the screen — a password
+// echo off, so it lands in neither shell history nor the screen - a password
 // must never travel through chat, argv, or a committed file.
 
 import { createClient } from "@supabase/supabase-js";
@@ -100,7 +100,7 @@ async function main() {
   }
 
   if (!(env.ADMIN_EMAILS ?? "").toLowerCase().includes(email)) {
-    console.warn(`Note: ${email} is not in ADMIN_EMAILS in .env.local — the dashboard will refuse it until it is.`);
+    console.warn(`Note: ${email} is not in ADMIN_EMAILS in .env.local - the dashboard will refuse it until it is.`);
   }
 }
 

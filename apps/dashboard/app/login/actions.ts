@@ -2,7 +2,7 @@
 
 /**
  * Email and password. Accounts are seeded with `pnpm admin:seed`, never from
- * this screen — a dashboard has no self-serve signup. Whether the account is
+ * this screen - a dashboard has no self-serve signup. Whether the account is
  * an admin is checked after, against ADMIN_EMAILS.
  */
 

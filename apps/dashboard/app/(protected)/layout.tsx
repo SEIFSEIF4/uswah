@@ -6,7 +6,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 
 /**
  * The proxy guarantees a session; this layer decides whether it is an admin's.
- * Every server action re-checks on its own — layout checks are UX, not the
+ * Every server action re-checks on its own - layout checks are UX, not the
  * trust boundary.
  */
 export default async function ProtectedLayout({ children }: { children: React.ReactNode }) {

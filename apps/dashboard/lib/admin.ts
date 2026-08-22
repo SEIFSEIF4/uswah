@@ -3,7 +3,7 @@
  * client content writes go through, and the reads that turn database rows back
  * into the SituationDoc shape the validator and the form both work on.
  *
- * Server-only by construction — ./supabase/server imports next/headers, and the
+ * Server-only by construction - ./supabase/server imports next/headers, and the
  * service key does not exist in the client bundle's env.
  */
 
@@ -29,7 +29,7 @@ export async function adminEmail(): Promise<string | null> {
 
 let service: SupabaseClient<Database> | undefined;
 
-/** Service-role client. Bypasses RLS — only call after adminEmail() passed. */
+/** Service-role client. Bypasses RLS - only call after adminEmail() passed. */
 export function adminDb() {
   service ??= createServiceClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,

@@ -47,7 +47,7 @@ export default async function Situations() {
                     {s.slug}
                   </Link>
                 </td>
-                <td className="py-2.5 pe-3 text-muted-foreground">{s.locales.join(", ") || "—"}</td>
+                <td className="py-2.5 pe-3 text-muted-foreground">{s.locales.join(", ") || "-"}</td>
                 <td className="py-2.5 pe-3 text-muted-foreground">{s.entryCount}</td>
                 <td className="py-2.5 pe-3">
                   {s.unreviewed > 0 ? (
@@ -56,7 +56,7 @@ export default async function Situations() {
                     <span className="text-muted-foreground">reviewed</span>
                   )}
                 </td>
-                <td className="py-2.5 pe-3 text-muted-foreground">{s.image_url ? "yes" : "—"}</td>
+                <td className="py-2.5 pe-3 text-muted-foreground">{s.image_url ? "yes" : "-"}</td>
                 <td className="py-2.5 pe-3">
                   {s.published_at ? <Badge>live</Badge> : <Badge variant="outline">draft</Badge>}
                 </td>

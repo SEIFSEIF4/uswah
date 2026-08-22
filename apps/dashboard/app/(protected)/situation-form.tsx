@@ -201,7 +201,7 @@ export function SituationForm({
               placeholder="someone-keeps-asking-me-for-money"
             />
             {mode === "edit" && (
-              <span className="font-normal">Stable — deep links from social depend on it.</span>
+              <span className="font-normal">Stable - deep links from social depend on it.</span>
             )}
           </label>
           <div className={label}>
@@ -230,7 +230,7 @@ export function SituationForm({
                 patch({ topic: (e.target.value || undefined) as SituationDoc["topic"] })
               }
             >
-              <option value="">—</option>
+              <option value="">-</option>
               {TOPICS.map((t) => (
                 <option key={t} value={t}>
                   {t}
@@ -239,7 +239,7 @@ export function SituationForm({
             </select>
           </label>
           <label className={label}>
-            Minutes — the reading estimate on every card
+            Minutes - the reading estimate on every card
             <Input
               type="number"
               min={1}
@@ -250,7 +250,7 @@ export function SituationForm({
             />
           </label>
           <label className={label}>
-            Home-page slot — one hero and one band, site-wide
+            Home-page slot - one hero and one band, site-wide
             <select
               className={select}
               value={doc.feature ?? ""}
@@ -273,7 +273,7 @@ export function SituationForm({
             checked={doc.published}
             onChange={(e) => patch({ published: e.target.checked })}
           />
-          Published — visible to readers once saved
+          Published - visible to readers once saved
         </label>
       </section>
 
@@ -282,7 +282,7 @@ export function SituationForm({
         <section key={loc} className={`${card} grid gap-3`} dir={dirFor(loc)} lang={loc}>
           <h2 className="text-sm font-semibold">{LOCALE_NAMES[loc]}</h2>
           <label className={label}>
-            Title — the reader&apos;s own words, not a topic label
+            Title - the reader&apos;s own words, not a topic label
             <Input
               value={doc.translations[loc]?.title ?? ""}
               onChange={(e) => patchTr(loc, { title: e.target.value })}
@@ -321,7 +321,7 @@ export function SituationForm({
           <>
             <p className="text-xs text-muted-foreground">
               Public-domain archives only. It must depict neither the Prophet ﷺ, another
-              prophet, nor a companion — naming who cleared it is what the database requires.
+              prophet, nor a companion - naming who cleared it is what the database requires.
             </p>
             <label className={label}>
               URL
@@ -337,7 +337,7 @@ export function SituationForm({
             )}
             <div className="grid gap-3 sm:grid-cols-2">
               <label className={label}>
-                Credit — what it is, where and when
+                Credit - what it is, where and when
                 <Input
                   value={doc.image.credit}
                   onChange={(e) => patchImage({ credit: e.target.value })}
@@ -438,7 +438,7 @@ export function SituationForm({
               </label>
             )}
             <label className={label}>
-              {entry.source.kind === "quran" ? "Ref — surah:ayah" : "Ref — hadith number"}
+              {entry.source.kind === "quran" ? "Ref - surah:ayah" : "Ref - hadith number"}
               <Input
                 value={entry.source.ref}
                 onChange={(e) => patchSource(i, { ref: e.target.value })}
@@ -447,7 +447,7 @@ export function SituationForm({
           </div>
 
           <label className={label}>
-            Original Arabic — transcribed from the collection, never from memory
+            Original Arabic - transcribed from the collection, never from memory
             <Textarea
               dir="rtl"
               lang="ar"
@@ -481,7 +481,7 @@ export function SituationForm({
           {locales.map((loc) => (
             <div key={loc} className="grid gap-3" dir={dirFor(loc)} lang={loc}>
               <label className={label}>
-                Body ({LOCALE_NAMES[loc]}) — one to three minutes, plain words
+                Body ({LOCALE_NAMES[loc]}) - one to three minutes, plain words
                 <Textarea
                   className="min-h-24"
                   value={entry.translations[loc]?.body ?? ""}
@@ -489,7 +489,7 @@ export function SituationForm({
                 />
               </label>
               <label className={label}>
-                Takeaway ({LOCALE_NAMES[loc]}) — one concrete action
+                Takeaway ({LOCALE_NAMES[loc]}) - one concrete action
                 <Textarea
                   value={entry.translations[loc]?.takeaway ?? ""}
                   onChange={(e) => patchEntryTr(i, loc, { takeaway: e.target.value })}
@@ -521,7 +521,7 @@ export function SituationForm({
                 patchEntry(i, (en) => ({ ...en, reviewed_by: reviewer, reviewed_at: today() }))
               }
             >
-              Checked against the collection — sign as {reviewer}
+              Checked against the collection - sign as {reviewer}
             </Button>
             {entry.reviewed_by === "UNVERIFIED" && (
               <span className="text-xs text-destructive">

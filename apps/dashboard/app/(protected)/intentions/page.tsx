@@ -46,9 +46,9 @@ export default async function Intentions() {
                     {i.slug}
                   </Link>
                 </td>
-                <td className="py-2.5 pe-3 text-muted-foreground">{i.act || "—"}</td>
+                <td className="py-2.5 pe-3 text-muted-foreground">{i.act || "-"}</td>
                 <td className="py-2.5 pe-3 text-muted-foreground">{i.act_group}</td>
-                <td className="py-2.5 pe-3 text-muted-foreground">{i.locales.join(", ") || "—"}</td>
+                <td className="py-2.5 pe-3 text-muted-foreground">{i.locales.join(", ") || "-"}</td>
                 <td className="py-2.5 pe-3">
                   {i.published_at ? <Badge>live</Badge> : <Badge variant="outline">draft</Badge>}
                 </td>

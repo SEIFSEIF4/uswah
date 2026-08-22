@@ -1,7 +1,7 @@
 "use server";
 
 /**
- * The only paths that write content. Every action re-checks the admin gate —
+ * The only paths that write content. Every action re-checks the admin gate -
  * the proxy and layout checks are UX; this one is the trust boundary.
  */
 
@@ -89,7 +89,7 @@ export async function setPublishedAction(slug: string, published: boolean): Prom
 export async function deleteSituationAction(slug: string): Promise<ActionResult> {
   const no = await denied();
   if (no) return no;
-  // Cascades take translations, entries and saves. Sources stay — they are a library.
+  // Cascades take translations, entries and saves. Sources stay - they are a library.
   const { error } = await adminDb().from("situations").delete().eq("slug", slug);
   if (error) return { errors: [error.message] };
   return done();

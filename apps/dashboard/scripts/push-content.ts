@@ -55,7 +55,7 @@ for (const { doc } of docs) {
 }
 
 if (!apply) {
-  console.log(`\n${docs.length} file(s) valid. Nothing written — pass --apply to push.`);
+  console.log(`\n${docs.length} file(s) valid. Nothing written - pass --apply to push.`);
 } else {
   push(docs)
     .then(() => console.log(`\nPushed ${docs.length} situation(s).`))

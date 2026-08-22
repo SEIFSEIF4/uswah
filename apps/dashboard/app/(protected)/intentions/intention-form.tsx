@@ -171,7 +171,7 @@ export function IntentionForm({ initial, mode }: { initial?: IntentionDoc; mode:
             checked={doc.published}
             onChange={(e) => patch({ published: e.target.checked })}
           />
-          Published — visible to readers once saved
+          Published - visible to readers once saved
         </label>
       </section>
 
@@ -180,7 +180,7 @@ export function IntentionForm({ initial, mode }: { initial?: IntentionDoc; mode:
           <h2 className="text-sm font-semibold">{LOCALE_NAMES[loc]}</h2>
           <div className="grid gap-3 sm:grid-cols-2">
             <label className={label}>
-              Act — the ordinary act, before any reframing
+              Act - the ordinary act, before any reframing
               <Input
                 value={doc.translations[loc]?.act ?? ""}
                 onChange={(e) => patchTr(loc, { act: e.target.value })}
@@ -196,7 +196,7 @@ export function IntentionForm({ initial, mode }: { initial?: IntentionDoc; mode:
             </label>
           </div>
           <label className={label}>
-            Intention — what the act becomes once the intention is corrected
+            Intention - what the act becomes once the intention is corrected
             <Textarea
               value={doc.translations[loc]?.intention ?? ""}
               onChange={(e) => patchTr(loc, { intention: e.target.value })}

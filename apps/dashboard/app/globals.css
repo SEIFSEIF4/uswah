@@ -6,7 +6,7 @@
 
 /* The site's token layer, verbatim (web/app/globals.css), so the shared ui
    components render with the same identity here. The editorial styles below it
-   stay in the site — this app is a tool, not a publication. */
+   stay in the site - this app is a tool, not a publication. */
 :root {
   color-scheme: light;
   --background: #faf8f4;

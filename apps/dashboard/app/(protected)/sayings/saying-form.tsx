@@ -135,7 +135,7 @@ export function SayingForm({
         </div>
 
         <label className={label}>
-          The saying — the quote as it circulates, in its own language
+          The saying - the quote as it circulates, in its own language
           <Textarea
             value={doc.saying}
             onChange={(e) => patch({ saying: e.target.value })}
@@ -192,7 +192,7 @@ export function SayingForm({
             checked={doc.published}
             onChange={(e) => patch({ published: e.target.checked })}
           />
-          Published — visible to readers once saved
+          Published - visible to readers once saved
         </label>
       </section>
 
@@ -200,14 +200,14 @@ export function SayingForm({
         <section key={loc} className={`${card} grid gap-3`} dir={dirFor(loc)} lang={loc}>
           <h2 className="text-sm font-semibold">{LOCALE_NAMES[loc]}</h2>
           <label className={label}>
-            Angle — what the Islamic source actually says
+            Angle - what the Islamic source actually says
             <Textarea
               value={doc.translations[loc]?.angle ?? ""}
               onChange={(e) => patchTr(loc, { angle: e.target.value })}
             />
           </label>
           <label className={label}>
-            Closeness — an honest note on how close the two are
+            Closeness - an honest note on how close the two are
             <Textarea
               value={doc.translations[loc]?.closeness ?? ""}
               onChange={(e) => patchTr(loc, { closeness: e.target.value })}

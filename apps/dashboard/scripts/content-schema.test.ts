@@ -1,4 +1,4 @@
-// pnpm content:test — fails if the validator stops catching the things that matter.
+// pnpm content:test - fails if the validator stops catching the things that matter.
 import assert from "node:assert/strict";
 import { validate } from "../lib/content-schema";
 
