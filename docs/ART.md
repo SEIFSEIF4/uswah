@@ -22,16 +22,16 @@ then flush the `content:situations` cache tag.
 - [x] `i-am-in-debt` — the debt counted out before dawn (`/art/i-am-in-debt-v1.jpg`)
 - [x] `i-was-passed-over` — two lamps, one shelf, nothing taken (`/art/i-was-passed-over-v1.jpg`)
 - [x] `i-keep-putting-it-off` — the daily watering, recorded in rings (`/art/i-keep-putting-it-off-v1.jpg`)
-- [ ] `someone-spoke-badly-of-me` — light through closed shutters (prompt below, generation in flight)
-- [ ] `i-lost-someone` — rain on the window, the folded shawl
-- [ ] `i-cannot-forgive-myself` — the door ajar, morning light entering
-- [ ] `i-am-far-from-home` — the traveler's door
-- [ ] `i-said-something-i-regret` — the tipped jug, what cannot be unsaid
-- [ ] `i-cannot-afford-to-be-generous` — the sabeel water jar
-- [ ] `my-work-feels-pointless` — the workbench honored at day's end
-- [ ] `i-avoid-someone-i-wronged` — the walk you owe (figure)
-- [ ] `i-am-waiting-and-nothing-changes` — the dough rising unseen
-- [ ] `i-am-carrying-my-family-alone` — the carrier dignified (figure)
+- [x] `someone-spoke-badly-of-me` — light through closed shutters (`/art/someone-spoke-badly-of-me-v1.jpg`)
+- [x] `i-lost-someone` — rain on the window, the folded shawl (`/art/i-lost-someone-v1.jpg`)
+- [x] `i-cannot-forgive-myself` — the door ajar, morning light entering (`/art/i-cannot-forgive-myself-v1.jpg`)
+- [x] `i-am-far-from-home` — the traveler's door (`/art/i-am-far-from-home-v1.jpg`)
+- [x] `i-said-something-i-regret` — the tipped jug, what cannot be unsaid (`/art/i-said-something-i-regret-v1.jpg`)
+- [x] `i-cannot-afford-to-be-generous` — the sabeel water jar (`/art/i-cannot-afford-to-be-generous-v1.jpg`)
+- [x] `my-work-feels-pointless` — the workbench honored at day's end (`/art/my-work-feels-pointless-v1.jpg`)
+- [x] `i-avoid-someone-i-wronged` — the walk you owe (figure) (`/art/i-avoid-someone-i-wronged-v1.jpg`)
+- [x] `i-am-waiting-and-nothing-changes` — the dough rising unseen (`/art/i-am-waiting-and-nothing-changes-v1.jpg`)
+- [x] `i-am-carrying-my-family-alone` — the carrier dignified (figure) (`/art/i-am-carrying-my-family-alone-v1.jpg`)
 
 ## Shared block
 
