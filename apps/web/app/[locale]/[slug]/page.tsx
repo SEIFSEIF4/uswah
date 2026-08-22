@@ -16,6 +16,7 @@ const copy = {
     translated: "Translated by",
     save: "Save this",
     saved: "Saved",
+    saving: "Saving…",
     related: "Next",
   },
   ar: {
@@ -23,6 +24,7 @@ const copy = {
     translated: "ترجمة",
     save: "احفظ",
     saved: "محفوظ",
+    saving: "جارٍ الحفظ…",
     related: "التالي",
   },
   tr: {
@@ -30,6 +32,7 @@ const copy = {
     translated: "Çeviren",
     save: "Bunu kaydet",
     saved: "Kaydedildi",
+    saving: "Kaydediliyor…",
     related: "Sonraki",
   },
 } as const;
@@ -158,7 +161,12 @@ export default async function Situation({
         <form action={toggleSave} className="save">
           <input type="hidden" name="locale" value={locale} />
           <input type="hidden" name="slug" value={slug} />
-          <SaveButton label={saved ? t.saved : t.save} saved={saved} />
+          <SaveButton
+            label={t.save}
+            savedLabel={t.saved}
+            pendingLabel={t.saving}
+            saved={saved}
+          />
         </form>
       </div>
 

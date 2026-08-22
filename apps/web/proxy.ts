@@ -57,6 +57,7 @@ export const config = {
   // without naming them here they get locale-redirected and a crawler follows a 307
   // to a page that does not exist.
   matcher: [
-    "/((?!api|_next|favicon.ico|robots.txt|sitemap.xml|apple-icon|opengraph-image|avatar|.*\\..*).*)",
+    // icons/ is the PWA mark (192/512); without this the locale hop 307s installers away.
+    "/((?!api|_next|favicon.ico|robots.txt|sitemap.xml|apple-icon|opengraph-image|avatar|icons|.*\\..*).*)",
   ],
 };
