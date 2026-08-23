@@ -68,6 +68,16 @@ export function InstallPrompt({ locale }: { locale: Locale }) {
     };
     window.addEventListener("beforeinstallprompt", onPrompt);
 
+    // Fires on every install path, not only the button above: the browser's own
+    // omnibox icon or menu item never resolves our captured prompt, so this is the
+    // one place that reliably sees an install actually complete.
+    const onInstalled = () => {
+      localStorage.setItem(STORAGE_KEY, "1");
+      setVisible(false);
+      setDeferred(null);
+    };
+    window.addEventListener("appinstalled", onInstalled);
+
     // iOS never fires beforeinstallprompt; surface the Share path after a short pause.
     const ios = isIos();
     setIosHint(ios);
@@ -77,6 +87,7 @@ export function InstallPrompt({ locale }: { locale: Locale }) {
 
     return () => {
       window.removeEventListener("beforeinstallprompt", onPrompt);
+      window.removeEventListener("appinstalled", onInstalled);
       if (timer) window.clearTimeout(timer);
     };
   }, []);
