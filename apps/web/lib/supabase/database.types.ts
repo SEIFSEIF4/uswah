@@ -232,6 +232,32 @@ export type Database = {
           },
         ]
       }
+      saved_sayings: {
+        Row: {
+          created_at: string
+          saying_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          saying_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          saying_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "saved_sayings_saying_id_fkey"
+            columns: ["saying_id"]
+            isOneToOne: false
+            referencedRelation: "sayings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       push_subscriptions: {
         Row: {
           auth: string
@@ -641,4 +667,3 @@ export const Constants = {
     },
   },
 } as const
-

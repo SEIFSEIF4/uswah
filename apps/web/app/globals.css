@@ -1483,6 +1483,42 @@ button:not(:disabled), [role="button"]:not([aria-disabled="true"]) { cursor: poi
 .share-row .share { margin-top: 0; padding-top: 0; border-top: none; }
 .share-row .save { margin-top: 0; }
 
+.quote-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+}
+.saying-save {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.5rem;
+  gap: .55rem;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  padding: .5rem 1.15rem;
+  font-family: inherit;
+  font-size: .9rem;
+  color: var(--muted-foreground);
+  background: transparent;
+  transition: color .18s ease, border-color .18s ease, background-color .18s ease;
+}
+.saying-save svg { width: 1.05em; height: 1.05em; }
+.saying-save:hover {
+  border-color: color-mix(in srgb, var(--brand) 55%, transparent);
+  background: color-mix(in srgb, var(--brand) 9%, transparent);
+  color: var(--brand);
+}
+.saying-save.is-saved {
+  border-color: color-mix(in srgb, var(--brand) 55%, transparent);
+  background: color-mix(in srgb, var(--brand) 9%, transparent);
+  color: var(--brand);
+}
+.saying-save:disabled { opacity: .6; }
+
+@media (prefers-reduced-motion: reduce) {
+  .saying-save { transition: none; }
+}
+
 /* Same pill as Save: they sit at the same end of the same rule on their own pages, so
    they should not read as two different kinds of control. */
 .share-card {
@@ -1549,6 +1585,10 @@ button:not(:disabled), [role="button"]:not([aria-disabled="true"]) { cursor: poi
   transition: opacity .18s ease, transform .18s ease;
 }
 .share-toast.is-visible { opacity: 1; transform: translate(-50%, 0); }
+.share-toast.is-error {
+  border-color: color-mix(in srgb, var(--destructive) 42%, var(--rule));
+  color: var(--destructive);
+}
 
 /* ── install prompt (PWA) ─────────────────────────────────────────────────── */
 

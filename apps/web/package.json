@@ -9,6 +9,9 @@
     "lint": "eslint",
     "routes:test": "tsx scripts/routes.test.ts",
     "feedback:test": "tsx scripts/feedback-flow.test.ts",
+    "saved-sayings:test": "tsx scripts/saved-sayings-flow.test.ts",
+    "saved-page:test": "tsx scripts/saved-page-sections.test.ts",
+    "clipboard:test": "tsx lib/clipboard.test.ts",
     "image:find": "tsx scripts/find-image.ts",
     "image:test": "tsx scripts/image-screen.test.ts"
   },

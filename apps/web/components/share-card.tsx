@@ -27,6 +27,7 @@ import {
   type CardTheme,
 } from "@/components/quote-card";
 import type { Locale } from "@/lib/i18n";
+import { copyText } from "@/lib/clipboard";
 
 const copy = {
   en: {
@@ -48,6 +49,7 @@ const copy = {
     send: "Share",
     copy: "Copy link",
     copied: "Link copied",
+    copyFailed: "Could not copy the link",
     close: "Close",
     naskh: "Naskh",
     serif: "Serif",
@@ -80,6 +82,7 @@ const copy = {
     send: "مشاركة",
     copy: "نسخ الرابط",
     copied: "نُسخ الرابط",
+    copyFailed: "تعذّر نسخ الرابط",
     close: "إغلاق",
     naskh: "نسخ",
     serif: "مشرقي",
@@ -112,6 +115,7 @@ const copy = {
     send: "Paylaş",
     copy: "Bağlantıyı kopyala",
     copied: "Bağlantı kopyalandı",
+    copyFailed: "Bağlantı kopyalanamadı",
     close: "Kapat",
     naskh: "Nesih",
     serif: "Serif",
@@ -176,13 +180,15 @@ export function ShareCard({
   const [align, setAlign] = useState<CardAlign>("center");
   const [qr, setQr] = useState(true);
   const [mark, setMark] = useState(true);
-  const [copied, setCopied] = useState(false);
+  const [copyStatus, setCopyStatus] = useState<"copied" | "failed" | null>(null);
   const [busy, setBusy] = useState(false);
   const [qrUrl, setQrUrl] = useState<string | null>(null);
   const [scale, setScale] = useState(0.25);
 
   const frameRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
+  const copyTimeoutRef = useRef<number | null>(null);
+  const isMountedRef = useRef(false);
 
   const page = `/${locale}/quotes/${slug}`;
   const { w, h } = CARD_SIZES[ratio];
@@ -195,16 +201,28 @@ export function ShareCard({
 
   // QR is generated in the browser; the qrcode package is isomorphic.
   useEffect(() => {
-    if (!qr) {
-      setQrUrl(null);
-      return;
-    }
+    if (!qr) return;
+    let cancelled = false;
     QRCode.toDataURL(new URL(page, window.location.href).toString(), {
       margin: 0,
       errorCorrectionLevel: "M",
       color: { dark: CARD_THEMES[theme].ink, light: "#00000000" },
-    }).then(setQrUrl);
+    }).then((url) => {
+      if (!cancelled) setQrUrl(url);
+    });
+    return () => {
+      cancelled = true;
+    };
   }, [qr, page, theme]);
+
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+      if (copyTimeoutRef.current !== null) window.clearTimeout(copyTimeoutRef.current);
+      copyTimeoutRef.current = null;
+    };
+  }, []);
 
   // The card lays out at export size; the frame decides how far down it scales.
   useLayoutEffect(() => {
@@ -276,9 +294,15 @@ export function ShareCard({
   }, [snapshot, download, slug]);
 
   const copyLink = useCallback(async () => {
-    await navigator.clipboard.writeText(new URL(page, window.location.href).toString());
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    const copied = await copyText(new URL(page, window.location.href).toString());
+    if (!isMountedRef.current) return;
+    if (copyTimeoutRef.current !== null) window.clearTimeout(copyTimeoutRef.current);
+    setCopyStatus(copied ? "copied" : "failed");
+    copyTimeoutRef.current = window.setTimeout(() => {
+      if (!isMountedRef.current) return;
+      setCopyStatus(null);
+      copyTimeoutRef.current = null;
+    }, 2000);
   }, [page]);
 
   return (
@@ -330,7 +354,7 @@ export function ShareCard({
                     ratio={ratio}
                     font={font}
                     align={align}
-                    qrUrl={qrUrl}
+                    qrUrl={qr ? qrUrl : null}
                     showMark={mark}
                   />
                 </div>
@@ -433,7 +457,7 @@ export function ShareCard({
                 </button>
               </div>
               <button type="button" className="sheet-copy" onClick={copyLink}>
-                {copied ? t.copied : t.copy}
+                {copyStatus === "copied" ? t.copied : copyStatus === "failed" ? t.copyFailed : t.copy}
               </button>
             </div>
           </div>

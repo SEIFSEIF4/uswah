@@ -1,13 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import type { Locale } from "@/lib/i18n";
+import { copyText } from "@/lib/clipboard";
 
 const copy = {
-  en: { share: "Share", copy: "Copy link", copied: "Link copied" },
-  ar: { share: "شارك", copy: "نسخ الرابط", copied: "نُسخ الرابط" },
-  tr: { share: "Paylaş", copy: "Bağlantıyı kopyala", copied: "Bağlantı kopyalandı" },
+  en: { share: "Share", copy: "Copy link", copied: "Link copied", copyFailed: "Could not copy the link" },
+  ar: { share: "شارك", copy: "نسخ الرابط", copied: "نُسخ الرابط", copyFailed: "تعذّر نسخ الرابط" },
+  tr: { share: "Paylaş", copy: "Bağlantıyı kopyala", copied: "Bağlantı kopyalandı", copyFailed: "Bağlantı kopyalanamadı" },
 } as const;
+
+const subscribeToUrl = () => () => {};
+const getUrlSnapshot = () => window.location.href;
+const getUrlServerSnapshot = () => "";
 
 const icons = {
   WhatsApp: (
@@ -18,11 +23,20 @@ const icons = {
 };
 
 export function Share({ title, locale }: { title: string; locale: Locale }) {
-  const [copied, setCopied] = useState(false);
-  const [url, setUrl] = useState("");
+  const [copyStatus, setCopyStatus] = useState<"copied" | "failed" | null>(null);
+  const url = useSyncExternalStore(subscribeToUrl, getUrlSnapshot, getUrlServerSnapshot);
+  const copyTimeoutRef = useRef<number | null>(null);
+  const isMountedRef = useRef(false);
   const t = copy[locale];
 
-  useEffect(() => setUrl(window.location.href), []);
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+      if (copyTimeoutRef.current !== null) window.clearTimeout(copyTimeoutRef.current);
+      copyTimeoutRef.current = null;
+    };
+  }, []);
 
   const targets = [
     { name: "WhatsApp", href: `https://wa.me/?text=${encodeURIComponent(`${title} ${url}`)}` },
@@ -31,9 +45,15 @@ export function Share({ title, locale }: { title: string; locale: Locale }) {
   ];
 
   async function copyLink() {
-    await navigator.clipboard.writeText(url);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    const copied = await copyText(window.location.href);
+    if (!isMountedRef.current) return;
+    if (copyTimeoutRef.current !== null) window.clearTimeout(copyTimeoutRef.current);
+    setCopyStatus(copied ? "copied" : "failed");
+    copyTimeoutRef.current = window.setTimeout(() => {
+      if (!isMountedRef.current) return;
+      setCopyStatus(null);
+      copyTimeoutRef.current = null;
+    }, 2000);
   }
 
   return (
@@ -52,9 +72,11 @@ export function Share({ title, locale }: { title: string; locale: Locale }) {
           </svg>
         </button>
       </div>
-      <div className={`share-toast${copied ? " is-visible" : ""}`} role="status" aria-live="polite">
-        {t.copied}
-      </div>
+      {copyStatus && (
+        <div className={`share-toast is-visible${copyStatus === "failed" ? " is-error" : ""}`} role="status" aria-live="polite">
+          {copyStatus === "copied" ? t.copied : t.copyFailed}
+        </div>
+      )}
     </div>
   );
 }
