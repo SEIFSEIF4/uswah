@@ -63,6 +63,9 @@ export function InstallPrompt({ locale }: { locale: Locale }) {
 
     const onPrompt = (e: Event) => {
       e.preventDefault();
+      // Chrome can re-fire this later in the same page session; without the check a
+      // stale listener would bring the banner back right after the reader dismissed it.
+      if (localStorage.getItem(STORAGE_KEY) === "1") return;
       setDeferred(e as BeforeInstallPromptEvent);
       setVisible(true);
     };
