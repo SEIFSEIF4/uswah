@@ -28,6 +28,9 @@ type Img = NonNullable<SituationDoc["image"]>;
 
 const LOCALE_NAMES: Record<Locale, string> = { en: "English", ar: "العربية", tr: "Türkçe" };
 const dirFor = (l: Locale) => (l === "ar" ? "rtl" : "ltr");
+/** Image URLs are relative to the public site, which the dashboard doesn't serve. */
+const previewSrc = (url: string) =>
+  /^https?:\/\//.test(url) ? url : `${process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"}${url}`;
 const today = () => new Date().toISOString().slice(0, 10);
 
 const blankImage: Img = {
@@ -330,7 +333,7 @@ export function SituationForm({
             {doc.image.url && (
               // eslint-disable-next-line @next/next/no-img-element -- external, admin-only preview
               <img
-                src={doc.image.url}
+                src={previewSrc(doc.image.url)}
                 alt="Preview"
                 className="max-h-48 w-fit rounded-lg border object-contain"
               />
