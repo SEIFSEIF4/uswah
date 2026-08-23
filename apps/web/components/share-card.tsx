@@ -457,7 +457,7 @@ export function ShareCard({
                 </button>
               </div>
               <button type="button" className="sheet-copy" onClick={copyLink}>
-                {copyStatus === "copied" ? t.copied : copyStatus === "failed" ? t.copyFailed : t.copy}
+                {t.copy}
               </button>
             </div>
           </div>
@@ -466,6 +466,16 @@ export function ShareCard({
             <X className="size-4" aria-hidden="true" />
           </Dialog.Close>
         </Dialog.Popup>
+
+        {/* Outside .sheet on purpose: that box has its own transform for the open/close
+            animation, which would anchor a fixed-position toast to the dialog instead of
+            the viewport. Same toast Share uses on the plain link row, for one copy-link
+            feeling across the site rather than a second one that just swaps a label. */}
+        {copyStatus && (
+          <div className={`share-toast is-visible${copyStatus === "failed" ? " is-error" : ""}`} role="status" aria-live="polite">
+            {copyStatus === "copied" ? t.copied : t.copyFailed}
+          </div>
+        )}
       </Dialog.Portal>
     </Dialog.Root>
   );
