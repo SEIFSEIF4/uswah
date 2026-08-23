@@ -439,7 +439,8 @@ h1, h2, h3, .display {
   }
 }
 
-.theme-toggle {
+.theme-toggle,
+.saved-link {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -448,7 +449,8 @@ h1, h2, h3, .display {
   border-radius: 999px;
   color: var(--muted-foreground);
 }
-.theme-toggle:hover { color: var(--foreground); background: var(--secondary); }
+.theme-toggle:hover,
+.saved-link:hover { color: var(--foreground); background: var(--secondary); }
 
 /* The wipe is scoped to a theme toggle: the attribute and the duration exist only while
    one is in flight, so route transitions elsewhere are untouched. */
