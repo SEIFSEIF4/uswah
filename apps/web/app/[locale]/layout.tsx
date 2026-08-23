@@ -9,6 +9,8 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { ThemeProvider } from "@/components/theme-provider";
 import { LocaleSwitch } from "@/components/locale-switch";
 import { SiteSearch } from "@/components/site-search";
+import { SavedLink } from "@/components/saved-link";
+import { MobileTools } from "@/components/mobile-tools";
 import { TopicsMenu } from "@/components/topics-menu";
 import { MastheadNav } from "@/components/masthead-nav";
 import { InstallPrompt } from "@/components/install-prompt";
@@ -121,27 +123,21 @@ export function generateStaticParams() {
 const copy = {
   en: {
     home: "Uswah",
+    situations: "Situations",
     intentions: "Intentions",
     quotes: "Sayings",
-    search: "Search",
-    saved: "Saved",
-    sample: "Preview build. Sources are quoted verbatim from Dorar.net; the commentary is not yet scholar-reviewed.",
   },
   ar: {
     home: "أسوة",
+    situations: "مواقف",
     intentions: "النيّات",
     quotes: "مقولات",
-    search: "بحث",
-    saved: "المحفوظات",
-    sample: "نسخة معاينة. المصادر منقولة حرفيًا من الدرر السنية، والشرح لم يُراجَع علميًا بعد.",
   },
   tr: {
     home: "Uswah",
+    situations: "Durumlar",
     intentions: "Niyetler",
     quotes: "Sözler",
-    search: "Ara",
-    saved: "Kaydedilenler",
-    sample: "Önizleme sürümü. Kaynaklar Dorar.net'ten olduğu gibi alınmıştır; yorumlar henüz ilmî incelemeden geçmedi.",
   },
 } as const;
 
@@ -180,55 +176,26 @@ export default async function LocaleLayout({
                 own parent's box, so the bar has to be a child of the tall page column. */}
             <div className="masthead-bar">
               <TopicsMenu locale={locale} topics={await topicMenu(locale)} />
-              {/* Saved is not here on purpose: it is empty for anyone not signed in, and
-                  the way in is the save itself. It stays in the footer for the return trip. */}
               <MastheadNav
                 items={[
+                  { href: `/${locale}/situations`, label: t.situations },
                   { href: `/${locale}/quotes`, label: t.quotes },
                   { href: `/${locale}/intentions`, label: t.intentions },
                 ]}
               />
               <div className="masthead-tools">
-                <LocaleSwitch locale={locale} />
-                <SiteSearch
-                  locale={locale}
-                  index={await searchIndex(locale)}
-                />
-                <ThemeToggle locale={locale} />
+                <MobileTools locale={locale}>
+                  <LocaleSwitch locale={locale} />
+                  <SiteSearch
+                    locale={locale}
+                    index={await searchIndex(locale)}
+                  />
+                  <SavedLink locale={locale} />
+                  <ThemeToggle locale={locale} />
+                </MobileTools>
               </div>
             </div>
             <main className="flex-1 pb-16">{children}</main>
-            {/* Reference: qalam.global — oversized wordmark left, link row and fine print
-                right. The wave is the seam: the footer ground is a different tone from the
-                page in both themes, and a straight rule would read as a border instead of
-                a change of ground. */}
-            <footer className="site-footer">
-              <svg className="footer-wave" viewBox="0 0 1200 60" preserveAspectRatio="none" aria-hidden="true">
-                <path d="M0 38C200 2 380 66 600 40 820 14 1000 68 1200 32V60H0z" />
-              </svg>
-              <div className="footer-inner">
-                <nav className="footer-nav">
-                  <Link href={`/${locale}/quotes`}>{t.quotes}</Link>
-                  <Link href={`/${locale}/intentions`}>{t.intentions}</Link>
-                  <Link href={`/${locale}/saved`}>{t.saved}</Link>
-                  <Link href={`/${locale}/search`}>{t.search}</Link>
-                </nav>
-                <div className="footer-id">
-                  <span className="footer-mark">
-                    {locale === "ar" ? <Wordmark className="wordmark-ar" /> : t.home}
-                  </span>
-                  <p className="footer-fine">{t.sample}</p>
-                </div>
-              </div>
-              {/* The copyright is a colophon line, not a sibling of the navigation: it sits
-                  on its own rule at the foot, with the accounts opposite. */}
-              {/* No social row: the accounts do not exist yet, and a link that goes
-                  nowhere is a promise the footer cannot keep. It returns with real
-                  handles. */}
-              <div className="footer-legal">
-                <p className="footer-fine">© {new Date().getFullYear()} {t.home}</p>
-              </div>
-            </footer>
           </div>
           <InstallPrompt locale={locale} />
           <PushPrompt locale={locale} />

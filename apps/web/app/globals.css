@@ -263,7 +263,6 @@ h1, h2, h3, .display {
    crops it off. */
 /* The drawn wordmark is a letterform, so it is sized by height like one. */
 .wordmark-ar { height: 1.15em; width: auto; }
-.footer-mark .wordmark-ar { height: 1em; }
 
 [dir="rtl"] .wordmark {
   font-family: var(--font-display-ar), var(--font-arabic), serif;
@@ -319,10 +318,125 @@ h1, h2, h3, .display {
   .masthead-bar .masthead-nav {
     order: 3;
     flex-basis: 100%;
+    flex-wrap: wrap;
     justify-content: center;
-    gap: 2.25rem;
+    row-gap: .5rem;
+    gap: 1.5rem;
   }
   .masthead-tools { gap: .8rem; }
+  /* Against a single hamburger icon rather than four controls, the pill is now the
+     only thing on the row with any real width. Trimmed so it stops setting the row's
+     height and reads as a peer of the icon beside it, not a wider first tier. */
+  .topics-menu-open { padding: .35rem .7rem; font-size: .68rem; gap: .4rem; }
+  [dir="rtl"] .topics-menu-open { font-size: .82rem; }
+}
+
+/* ── mobile tools menu ────────────────────────────────────────────────────── */
+
+/* Language row, search, saved link and theme toggle read fine spread across a desktop
+   tools column; on a phone they crowd the same line as the topics pill. Folded behind a
+   toggle here, unfolded back to plain inline flow above the breakpoint via
+   display: contents, so nothing about the wrapped controls has to know it is wrapped.
+
+   Below the breakpoint the panel is a side sheet, not a dropdown: SiteSearch's own
+   results panel is width: 78vw and anchored to its own icon by inset-inline-end: 0,
+   which only reads correctly when that icon owns a whole toolbar. Anchored instead to a
+   ~150px-wide dropdown it renders most of a phone's width, hanging off the far edge. A
+   full-width sheet gives every wrapped control room to become a plain labelled row
+   instead, search included — see the overrides below the sheet itself. */
+.mobile-tools { display: contents; }
+.mobile-tools-open { display: none; }
+.mobile-tools-scrim { display: none; }
+.mobile-tools-panel { display: contents; }
+
+@media (max-width: 40rem) {
+  .mobile-tools { display: block; position: relative; }
+  .mobile-tools-open {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 999px;
+    color: var(--muted-foreground);
+  }
+  .mobile-tools-open:hover,
+  .mobile-tools-open[aria-expanded="true"] { color: var(--foreground); background: var(--secondary); }
+
+  .mobile-tools-scrim {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 45;
+    border: none;
+    padding: 0;
+    background: rgb(0 0 0 / .35);
+  }
+
+  .mobile-tools-panel {
+    display: flex;
+    position: fixed;
+    inset-block: 0;
+    inset-inline-end: 0;
+    z-index: 50;
+    width: min(20rem, 86vw);
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.75rem;
+    padding: 5rem 1.75rem 2rem;
+    background: var(--surface);
+    border-inline-start: 1px solid var(--rule);
+    box-shadow: -12px 0 32px rgb(0 0 0 / .18);
+    overflow-y: auto;
+    visibility: hidden;
+    translate: 100% 0;
+    transition: translate .25s ease, visibility .25s;
+  }
+  [dir="rtl"] .mobile-tools-panel { translate: -100% 0; }
+  .mobile-tools-panel.open { visibility: visible; translate: 0 0; }
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-tools-panel { transition: none; }
+  }
+
+  /* Every wrapped control becomes a full-width labelled row instead of a compact icon:
+     there is a whole sheet to spend now, not a toolbar slot. */
+  .mobile-tools-panel .locale-switch { gap: 1.5rem; font-size: 1rem; }
+
+  .mobile-tools-panel .site-search { position: static; width: 100%; }
+  .mobile-tools-panel .site-search-open,
+  .mobile-tools-panel .saved-link,
+  .mobile-tools-panel .theme-toggle {
+    width: 100%;
+    height: auto;
+    justify-content: flex-start;
+    gap: .75rem;
+    padding: .6rem 0;
+    border-radius: 0;
+    color: var(--foreground);
+  }
+  .mobile-tools-panel .saved-link:hover,
+  .mobile-tools-panel .theme-toggle:hover { background: none; color: var(--brand); }
+  .mobile-tools-panel .site-search-open .sr-only,
+  .mobile-tools-panel .saved-link .sr-only,
+  .mobile-tools-panel .theme-toggle .sr-only {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip-path: none;
+    white-space: nowrap;
+  }
+  /* No longer a floating popover anchored to the icon: it follows the row in normal
+     flow, full width, so opening it cannot push content off the edge of the sheet. */
+  .mobile-tools-panel .site-search-panel {
+    position: static;
+    width: 100%;
+    margin-top: .6rem;
+    padding: 0;
+    background: none;
+    border: none;
+    box-shadow: none;
+  }
 }
 
 .theme-toggle {
@@ -2196,118 +2310,4 @@ button:not(:disabled), [role="button"]:not([aria-disabled="true"]) { cursor: poi
   html {
     @apply font-sans;
   }
-}
-/* ── site footer ──────────────────────────────────────────────────────────── */
-
-/* Full-bleed ground, content back on the column — same cancel-out as .band-section. */
-.site-footer {
-  position: relative;
-  /* No margin: main's own bottom padding is the gap, and the wave is exactly that tall,
-     so the sand starts where the last band ends instead of leaving a cream stripe
-     between two grounds. */
-  margin-inline: calc(50% - 50vw);
-  padding-inline: calc(50vw - 50%);
-  padding-block: 3rem 1.75rem;
-  background: var(--footer-bg);
-  color: var(--footer-fg);
-}
-/* Light keeps the page in paper: a warm sand deep enough to clear .tone-warm, which is
-   what the home page ends on — a step above it and the wave separated two identical
-   beiges. No ink slab under a light page.
-   Dark goes deeper than the page rather than above it, in the same warm family. */
-:root {
-  --footer-bg: #e4d9c6;
-  --footer-fg: #1b1f27;
-  --footer-muted: #6b7280;
-  --footer-line: rgb(0 0 0 / .16);
-}
-.dark {
-  /* Cool, matching the page rather than the artwork: same family as the ground, one step
-     below it. #0e1218 puts the 76px serif wordmark at 13.2:1, in line with body, instead
-     of the 14:1 that the near-black was reaching. */
-  --footer-bg: #0e1218;
-  --footer-fg: #dcd8d1;
-  --footer-muted: #868e9a;
-  --footer-line: rgb(255 255 255 / .16);
-}
-
-/* The seam. preserveAspectRatio: none lets one path stretch to any viewport; sitting a
-   pixel low avoids a hairline of page background between wave and footer. */
-.footer-wave {
-  position: absolute;
-  inset-inline: 0;
-  bottom: 100%;
-  margin-bottom: -1px;
-  width: 100%;
-  height: clamp(36px, 5vw, 64px);
-  display: block;
-  fill: var(--footer-bg);
-}
-
-/* qalam's arrangement: the links run across the top on a rule, and the mark sits on the
-   baseline beneath with the fine print opposite it. Two full-width rows, so nothing gets
-   pushed to the far edges with a hole between them. */
-.footer-inner { display: grid; gap: 2.25rem; }
-.footer-id {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: end;
-  gap: 1rem 3rem;
-}
-.footer-id .footer-fine { justify-self: end; text-align: end; }
-
-.footer-mark {
-  font-family: var(--font-display), Georgia, serif;
-  font-size: clamp(2.6rem, 7vw, 4.5rem);
-  line-height: 1;
-  letter-spacing: .04em;
-  text-transform: uppercase;
-}
-[dir="rtl"] .footer-mark {
-  font-family: var(--font-display-ar), var(--font-arabic), serif;
-  text-transform: none;
-  letter-spacing: 0;
-  line-height: 1.3;
-}
-
-/* A row at the reading edge, not four links pinned to the corners of a 60rem rule.
-   space-between made the gaps grow with the viewport until they stopped reading as one
-   group, and left the last one stranded opposite the wordmark below it. */
-.footer-nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: .9rem 2.25rem;
-  padding-bottom: 1.1rem;
-  border-bottom: 1px solid var(--footer-line);
-  font-family: var(--font-latin), system-ui, sans-serif;
-  font-size: .75rem;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-}
-[dir="rtl"] .footer-nav { letter-spacing: 0; text-transform: none; font-size: .95rem; font-family: inherit; }
-.footer-nav a { color: var(--footer-fg); opacity: .8; }
-.footer-nav a:hover { opacity: 1; text-decoration: underline; text-underline-offset: 4px; }
-
-.footer-fine {
-  margin: 0;
-  max-width: 44ch;
-  font-family: var(--font-latin), system-ui, sans-serif;
-  font-size: .78rem;
-  line-height: 1.5;
-  color: var(--footer-muted);
-}
-[dir="rtl"] .footer-fine { font-family: inherit; font-size: .85rem; }
-
-.footer-legal {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-top: 2.25rem;
-}
-
-@media (max-width: 40rem) {
-  .footer-id { grid-template-columns: 1fr; }
-  .footer-id .footer-fine { justify-self: start; text-align: start; }
 }
