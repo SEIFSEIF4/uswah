@@ -196,6 +196,7 @@ export default async function LocaleLayout({
               </div>
             </div>
             <main className="flex-1 pb-16">{children}</main>
+            <p className="site-footer">© {new Date().getFullYear()} {t.home}</p>
           </div>
           <InstallPrompt locale={locale} />
           <PushPrompt locale={locale} />

@@ -2300,6 +2300,15 @@ button:not(:disabled), [role="button"]:not([aria-disabled="true"]) { cursor: poi
 }
 
 
+.site-footer {
+  margin: 0;
+  padding: 1.5rem 0 2rem;
+  border-top: 1px solid var(--rule);
+  text-align: center;
+  font-size: .78rem;
+  color: var(--muted-foreground);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
