@@ -2,14 +2,15 @@
 
 import { useFormStatus } from "react-dom";
 
-function Heart({ saved }: { saved: boolean }) {
+/** Same mark as the situation save button and the header's Saved link, at this
+    button's own size: one save action, one icon, regardless of content type. */
+function Bookmark({ saved }: { saved: boolean }) {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill={saved ? "currentColor" : "none"} aria-hidden="true">
       <path
-        d="M20.8 8.7c0 5.4-8.8 10.3-8.8 10.3S3.2 14.1 3.2 8.7A4.7 4.7 0 0 1 12 6.4a4.7 4.7 0 0 1 8.8 2.3Z"
+        d="M6 4.8A1.8 1.8 0 0 1 7.8 3h8.4A1.8 1.8 0 0 1 18 4.8V21l-6-3.6L6 21V4.8Z"
         stroke="currentColor"
         strokeWidth="1.7"
-        strokeLinecap="round"
         strokeLinejoin="round"
       />
     </svg>
@@ -36,7 +37,7 @@ export function SayingSaveButton({
       aria-busy={pending}
       disabled={pending}
     >
-      <Heart saved={saved} />
+      <Bookmark saved={saved} />
       {pending ? pendingLabel : saved ? savedLabel : label}
     </button>
   );

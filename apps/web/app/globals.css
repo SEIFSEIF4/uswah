@@ -471,7 +471,9 @@ html[data-theme-wipe="active"]::view-transition-new(root) {
 .locale-switch {
   display: flex;
   align-items: baseline;
-  gap: .6rem;
+  /* Same 1rem as the icons beside it in .masthead-tools, so EN/AR/TR reads as three
+     more stops on the same row instead of a tighter cluster of its own. */
+  gap: 1rem;
   font-family: var(--font-latin), system-ui, sans-serif;
   font-size: .75rem;
   letter-spacing: .08em;

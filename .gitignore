@@ -28,3 +28,5 @@ supabase/.temp/
 .impeccable/live/server.json
 .impeccable/live/roots.json
 .impeccable/live/inject-journal.json
+.vercel
+.env*
