@@ -232,10 +232,6 @@ export function hasAllLocales(
   return Boolean(translations.ar && translations.en && translations.tr);
 }
 
-export function isUnpublishedDraft(published: boolean): boolean {
-  return published === false;
-}
-
 export function actLabels(subcategory: string): { ar: string; en: string; tr: string } {
   const mapped = ACT_LABELS[subcategory.trim()];
   return {
@@ -270,11 +266,15 @@ export function draftNotes(kind: "exact" | "topic"): Record<"ar" | "en" | "tr", 
   };
 }
 
-/** Prefer sahih/hasan wordings when ranking Dorar hits. */
-export function gradeRank(grade: string | undefined): number {
-  const g = (grade ?? "").toLowerCase();
-  if (g.includes("صحيح") || g.includes("sahih")) return 3;
-  if (g.includes("حسن") || g.includes("hasan")) return 2;
-  if (g.includes("ضعيف") || g.includes("daif") || g.includes("weak")) return 0;
-  return 1;
+/** Lightweight English/Turkish intention lines — act kept as the ordinary verb phrase. */
+export function translateIntention(row: CsvIntention, locale: "en" | "tr", topic: boolean): string {
+  const act = actLabels(row.subcategory);
+  if (locale === "en") {
+    return topic
+      ? `I intend to practice ${act.en.toLowerCase()}, guided by a related prophetic teaching on this theme.`
+      : `I intend to practice ${act.en.toLowerCase()}, following the prophetic teaching cited for this act.`;
+  }
+  return topic
+    ? `${act.tr} konusunda, bu temayla ilişkili nebevî öğretiye uyarak niyet ediyorum.`
+    : `${act.tr} konusunda, bu amel için zikredilen nebevî öğretiye uyarak niyet ediyorum.`;
 }

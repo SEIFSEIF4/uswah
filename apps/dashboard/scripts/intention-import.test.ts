@@ -7,11 +7,11 @@ import {
   draftNotes,
   hasAllLocales,
   isRelatedToDorar,
-  isUnpublishedDraft,
   mapActGroup,
   parseIntentionsCsv,
   slugifyIntention,
   sourceLabel,
+  translateIntention,
 } from "../lib/intention-import";
 
 const csv = `ID,مقبولة؟,التاريخ,مصدر النية,الكاتب,النية,القسم الفرعي,القسم الرئيسي
@@ -59,14 +59,14 @@ assert.equal(bestTopicMatch("نويت شراء سيارة", [{ id: "b", text: "�
 
 assert.equal(hasAllLocales({ ar: 1, en: 1, tr: 1 }), true);
 assert.equal(hasAllLocales({ ar: 1, en: 1 }), false);
-assert.equal(isUnpublishedDraft(false), true);
-assert.equal(isUnpublishedDraft(true), false);
 
 assert.equal(actLabels("الصلاة").en, "Prayer");
 assert.equal(actLabels("الصلاة").tr, "Namaz");
 assert.match(sourceLabel("صحيح مسلم", "2664", "en"), /Sahih Muslim/);
 assert.match(draftNotes("topic").en, /Topic-related/);
 assert.match(draftNotes("exact").ar, /مسودة/);
+assert.match(translateIntention(rows[0], "en", false), /following the prophetic teaching/);
+assert.match(translateIntention(rows[0], "en", true), /guided by a related prophetic teaching/);
 assert.equal(slugifyIntention("221"), slugifyIntention("221"));
 
 console.log("intention-import tests passed");

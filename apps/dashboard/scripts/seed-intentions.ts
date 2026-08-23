@@ -14,6 +14,7 @@ import {
   parseIntentionsCsv,
   slugifyIntention,
   sourceLabel,
+  translateIntention,
   type CsvIntention,
   type DorarResult,
 } from "../lib/intention-import";
@@ -146,19 +147,13 @@ async function main() {
         },
         en: {
           act: acts.en,
-          intention:
-            kind === "topic"
-              ? `I intend to practice ${acts.en.toLowerCase()}, guided by a related prophetic teaching on this theme.`
-              : `I intend to practice ${acts.en.toLowerCase()}, following the prophetic teaching cited for this act.`,
+          intention: translateIntention(row, "en", kind === "topic"),
           note: notes.en,
           source_label: sourceLabel(result.book, result.ref, "en"),
         },
         tr: {
           act: acts.tr,
-          intention:
-            kind === "topic"
-              ? `${acts.tr} konusunda, bu temayla ilişkili nebevî öğretiye uyarak niyet ediyorum.`
-              : `${acts.tr} konusunda, bu amel için zikredilen nebevî öğretiye uyarak niyet ediyorum.`,
+          intention: translateIntention(row, "tr", kind === "topic"),
           note: notes.tr,
           source_label: sourceLabel(result.book, result.ref, "tr"),
         },

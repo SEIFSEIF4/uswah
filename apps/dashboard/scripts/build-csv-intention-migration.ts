@@ -16,11 +16,11 @@ import {
   classifySource,
   draftNotes,
   hasAllLocales,
-  isUnpublishedDraft,
   mapActGroup,
   parseIntentionsCsv,
   slugifyIntention,
   sourceLabel,
+  translateIntention,
   type CsvIntention,
   type DorarResult,
 } from "../lib/intention-import";
@@ -83,19 +83,6 @@ function sqlJson(value: unknown): string {
   return `$j$${JSON.stringify(value)}$j$::jsonb`;
 }
 
-/** Lightweight English/Turkish intention lines — act kept as the ordinary verb phrase. */
-function translateIntention(row: CsvIntention, locale: "en" | "tr", topic: boolean): string {
-  const act = actLabels(row.subcategory);
-  if (locale === "en") {
-    return topic
-      ? `I intend to practice ${act.en.toLowerCase()}, guided by a related prophetic teaching on this theme.`
-      : `I intend to practice ${act.en.toLowerCase()}, following the prophetic teaching cited for this act.`;
-  }
-  return topic
-    ? `${act.tr} konusunda, bu temayla ilişkili nebevî öğretiye uyarak niyet ediyorum.`
-    : `${act.tr} konusunda, bu amel için zikredilen nebevî öğretiye uyarak niyet ediyorum.`;
-}
-
 function buildTranslations(row: CsvIntention, result: DorarResult, kind: Built["kind"]) {
   const acts = actLabels(row.subcategory);
   const topic = kind === "ai-topic";
@@ -121,7 +108,6 @@ function buildTranslations(row: CsvIntention, result: DorarResult, kind: Built["
     },
   };
   if (!hasAllLocales(translations)) throw new Error(`missing locales for csv-${row.id}`);
-  if (!isUnpublishedDraft(false)) throw new Error("drafts must stay unpublished");
   return translations;
 }
 
