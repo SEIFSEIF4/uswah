@@ -56,26 +56,43 @@ export const APPARATUS_GRADES: Record<string, { en: string; tr: string }> = {
  */
 export const BOOK_RECORDS: Record<
   BookKey,
-  { name: { en: string; ar: string; tr: string }; no: string; title: string; author: string; editor: string; publisher: string; edition: string; year: string }
+  {
+    name: { en: string; ar: string; tr: string };
+    no: string;
+    title: { en: string; ar: string; tr: string };
+    author: { en: string; ar: string; tr: string };
+    editor: { en: string; ar: string; tr: string };
+    publisher: { en: string; ar: string; tr: string };
+    edition: { en: string; ar: string; tr: string };
+    year: { en: string; ar: string; tr: string };
+  }
 > = {
   bukhari: {
     name: { en: "Sahih al-Bukhari", ar: "صحيح البخاري", tr: "Sahîh-i Buhârî" },
     no: "6216",
-    title: "الجامع الصحيح المسند من حديث رسول الله وسننه وأيامه",
-    author: "محمد بن إسماعيل البخاري",
-    editor: "محب الدين الخطيب",
-    publisher: "المكتبة السلفية - القاهرة",
-    edition: "الأولى",
-    year: "1400هـ",
+    title: {
+      en: "The Authentic Musnad Collection of the Prophetic Hadith, Sunnah and History",
+      ar: "الجامع الصحيح المسند من حديث رسول الله وسننه وأيامه",
+      tr: "Resûlullah'ın Hadisleri, Sünneti ve Günleri Hakkındaki el-Câmiu's-Sahîh el-Müsned",
+    },
+    author: { en: "Muhammad ibn Isma'il al-Bukhari", ar: "محمد بن إسماعيل البخاري", tr: "Muhammed b. İsmâil el-Buhârî" },
+    editor: { en: "Muhibb al-Din al-Khatib", ar: "محب الدين الخطيب", tr: "Muhibbüddin el-Hatîb" },
+    publisher: { en: "The Salafiyyah Library — Cairo", ar: "المكتبة السلفية - القاهرة", tr: "Selefiyye Kütüphanesi — Kahire" },
+    edition: { en: "First edition", ar: "الأولى", tr: "Birinci baskı" },
+    year: { en: "1400 AH", ar: "1400هـ", tr: "1400 H." },
   },
   muslim: {
     name: { en: "Sahih Muslim", ar: "صحيح مسلم", tr: "Sahîh-i Müslim" },
     no: "3088",
-    title: "صحيح مسلم (المسند الصحيح المختصر من السنن بنقل العدل عن العدل عن رسول الله صلى الله عليه وسلم)",
-    author: "مسلم بن الحجاج القشيري النيسابوري",
-    editor: "محمد فؤاد عبدالباقي",
-    publisher: "دار إحياء الكتب العربية - عيسى البابي الحلبي وشركاه",
-    edition: "الأولى",
-    year: "1374هـ",
+    title: {
+      en: "Sahih Muslim (The Abridged Authentic Musnad Collection Transmitted by Reliable Narrators from the Messenger of Allah ﷺ)",
+      ar: "صحيح مسلم (المسند الصحيح المختصر من السنن بنقل العدل عن العدل عن رسول الله صلى الله عليه وسلم)",
+      tr: "Sahîh-i Müslim (Adil ravilerin Resûlullah ﷺ'den naklettiği muhtasar sahih hadisler)",
+    },
+    author: { en: "Muslim ibn al-Hajjaj al-Qushayri al-Naysaburi", ar: "مسلم بن الحجاج القشيري النيسابوري", tr: "Müslim b. Haccâc el-Kuşeyrî en-Nîsâbûrî" },
+    editor: { en: "Muhammad Fu'ad 'Abd al-Baqi", ar: "محمد فؤاد عبدالباقي", tr: "Muhammed Fuâd Abdülbâkî" },
+    publisher: { en: "Dar Ihya al-Kutub al-'Arabiyyah — Isa al-Babi al-Halabi and Partners", ar: "دار إحياء الكتب العربية - عيسى البابي الحلبي وشركاه", tr: "Dâr İhyâi'l-Kütübi'l-Arabiyye — Îsâ el-Bâbî el-Halebî ve Ortakları" },
+    edition: { en: "First edition", ar: "الأولى", tr: "Birinci baskı" },
+    year: { en: "1374 AH", ar: "1374هـ", tr: "1374 H." },
   },
 };

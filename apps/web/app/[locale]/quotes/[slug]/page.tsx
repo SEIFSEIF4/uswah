@@ -175,6 +175,9 @@ export default async function Saying({
           locale={locale}
           saying={q[locale].saying ?? q.saying}
           original={q.source.original ?? null}
+          /* Same rule as the source block above: on the Arabic page the original is
+             the text, so there is no translation to offer the card either. */
+          translation={locale === "ar" ? null : (q.source.translation?.[locale] ?? null)}
           grade={GRADES[q.grade][locale]}
           source={q.source.label[locale]}
         />

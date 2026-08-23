@@ -39,6 +39,16 @@ export type CardRatio = keyof typeof CARD_SIZES;
 export type CardFont = "naskh" | "serif";
 export type CardAlign = "start" | "center" | "end" | "justify";
 
+/**
+ * Which forms of the source the card carries. A card posted from the English or Turkish
+ * page used to show the Arabic alone: a picture of a sentence, to a reader who cannot
+ * read it. Both is the default there, and the Arabic page keeps the original by itself
+ * because on that page the original is the text.
+ */
+export type CardText = "both" | "original" | "translation";
+
+const ARABIC = /[؀-ۿ]/;
+
 const PETALS = [
   "M366.952 364.857C549.954 192.357 544.454 169.357 366.952 1.35712C185.455 162.857 183.454 197.357 366.952 364.857Z",
   "M366.952 728.857C549.954 556.357 544.454 533.357 366.952 365.357C185.455 526.857 183.454 561.357 366.952 728.857Z",
@@ -114,6 +124,8 @@ export function QuoteCard({
   weLabel,
   saying,
   original,
+  translation,
+  text,
   grade,
   source,
   theme: themeName,
@@ -128,6 +140,8 @@ export function QuoteCard({
   weLabel: string;
   saying: string;
   original: string | null;
+  translation: { text: string; credit: string } | null;
+  text: CardText;
   grade: string | null;
   source: string;
   theme: CardTheme;
@@ -143,9 +157,19 @@ export function QuoteCard({
   // One composition; the shorter canvases run the same design smaller.
   const k = ratio === "story" ? 1 : ratio === "square" ? 0.62 : 0.68;
 
+  const sayingRtl = ARABIC.test(saying);
+  const verse = text === "translation" ? null : original;
+  const gloss = text === "original" ? null : translation;
+  const paired = !!verse && !!gloss;
+
   // The browser breaks lines itself now, so sizing is the only length decision left.
-  const len = original ? original.replace(/[ً-ْٰ]/g, "").length : 0;
-  const verseSize = (len > 180 ? 46 : len > 110 ? 56 : len > 60 ? 66 : 78) * k;
+  const len = verse ? verse.replace(/[ً-ْٰ]/g, "").length : 0;
+  // Two blocks in the space of one: the verse gives up a step so the pair still breathes.
+  const verseSize = (len > 180 ? 46 : len > 110 ? 56 : len > 60 ? 66 : 78) * k * (paired ? 0.82 : 1);
+  const glossLen = gloss?.text.length ?? 0;
+  const glossOwn = (glossLen > 240 ? 40 : glossLen > 150 ? 46 : glossLen > 80 ? 52 : 60) * k;
+  // Under the verse the translation follows it; alone it is the text and carries the card.
+  const glossSize = paired ? Math.min(verseSize * 0.72, glossOwn) : glossOwn;
   const sayingSize = (saying.length > 70 ? 34 : saying.length > 45 ? 40 : 46) * k;
 
   const alignItems =
@@ -208,13 +232,13 @@ export function QuoteCard({
         {/* The saying keeps its own direction: each locale passes the native form
             it circulates in, Arabic on the Arabic pages, Latin elsewhere. */}
         <p
-          dir={/[؀-ۿ]/.test(saying) ? "rtl" : "ltr"}
+          dir={sayingRtl ? "rtl" : "ltr"}
           style={{
             margin: 0,
             fontSize: sayingSize,
-            lineHeight: /[؀-ۿ]/.test(saying) ? 1.7 : 1.4,
+            lineHeight: sayingRtl ? 1.7 : 1.4,
             color: theme.muted,
-            fontFamily: /[؀-ۿ]/.test(saying)
+            fontFamily: sayingRtl
               ? "var(--font-arabic), sans-serif"
               : "var(--font-latin), system-ui, sans-serif",
           }}
@@ -222,27 +246,61 @@ export function QuoteCard({
           {saying}
         </p>
 
-        {original && (
+        {(verse || gloss) && (
           <>
             <Rosette colour={theme.ornament} size={54 * k} style={{ alignSelf: "center", margin: `${10 * k}px 0` }} />
             <Eyebrow text={weLabel} colour={theme.brand} rule={theme.brand} k={k} arabic={rtl} />
             {/* Full harakat, real shaping, natural spacing: the browser's text engine. */}
-            <p
-              dir="rtl"
-              style={{
-                margin: 0,
-                fontSize: verseSize,
-                lineHeight: font === "naskh" ? 2 : 1.85,
-                fontWeight: 500,
-                color: theme.ink,
-                fontFamily:
-                  font === "naskh"
-                    ? "var(--font-scripture), serif"
-                    : "var(--font-arabic), serif",
-              }}
-            >
-              {original}
-            </p>
+            {verse && (
+              <p
+                dir="rtl"
+                style={{
+                  margin: 0,
+                  fontSize: verseSize,
+                  lineHeight: font === "naskh" ? 2 : 1.85,
+                  fontWeight: 500,
+                  color: theme.ink,
+                  fontFamily:
+                    font === "naskh"
+                      ? "var(--font-scripture), serif"
+                      : "var(--font-arabic), serif",
+                }}
+              >
+                {verse}
+              </p>
+            )}
+            {/* Quoted and credited, the way the page sets it: a house draft is not the
+                source, and an image travels further than the page it came from. */}
+            {gloss && (
+              <p
+                dir={ARABIC.test(gloss.text) ? "rtl" : "ltr"}
+                style={{
+                  margin: 0,
+                  fontSize: glossSize,
+                  lineHeight: 1.55,
+                  color: paired ? theme.muted : theme.ink,
+                  fontFamily: ARABIC.test(gloss.text)
+                    ? "var(--font-arabic), serif"
+                    : "var(--font-display), Georgia, serif",
+                }}
+              >
+                “{gloss.text}”
+                <span
+                  style={{
+                    display: "block",
+                    marginTop: 14 * k,
+                    fontSize: Math.max(glossSize * 0.52, 22 * k),
+                    lineHeight: 1.4,
+                    color: theme.quiet,
+                    fontFamily: rtl
+                      ? "var(--font-arabic), sans-serif"
+                      : "var(--font-latin), system-ui, sans-serif",
+                  }}
+                >
+                  {gloss.credit}
+                </span>
+              </p>
+            )}
           </>
         )}
       </div>

@@ -1,6 +1,5 @@
 "use client";
 
-import { Fragment } from "react";
 import type { Locale } from "@/lib/i18n";
 import { BOOK_RECORDS, type BookKey } from "@/lib/dorar";
 import {
@@ -19,6 +18,12 @@ const CARD_TITLE: Record<Locale, string> = {
   tr: "Hadis Ansiklopedisi · Hadis Kaynakları",
 };
 
+const FIELD_LABELS: Record<Locale, string[]> = {
+  en: ["Author / supervisor", "Editor / translator", "Publisher", "Edition", "Publication year"],
+  ar: ["المؤلف / المشرف", "المحقق / المترجم", "الناشر", "الطبعة", "سنة الطبع"],
+  tr: ["Müellif / sorumlu", "Tahkik eden / çevirmen", "Yayınevi", "Baskı", "Yayın yılı"],
+};
+
 /**
  * The المصدر value as a trigger: clicking the book's name opens its
  * bibliographic record, the same card dorar's own المصدر field opens,
@@ -26,40 +31,30 @@ const CARD_TITLE: Record<Locale, string> = {
  */
 export function SourceBook({ book, locale }: { book: BookKey; locale: Locale }) {
   const b = BOOK_RECORDS[book];
+  const fields = [b.author, b.editor, b.publisher, b.edition, b.year];
   return (
     <Dialog>
       <DialogTrigger className="book-trigger">{b.name[locale]}</DialogTrigger>
-      {/* The frame follows the reader's language; the record inside stays Arabic,
-          because it is dorar's library card quoted verbatim. */}
       <DialogContent
         closeLabel={CLOSE[locale]}
         dir={locale === "ar" ? "rtl" : "ltr"}
-        className="book-card gap-3"
+        className="book-card gap-5"
       >
         <DialogHeader>
           <DialogTitle className="text-muted-foreground text-[.8rem] font-normal">
             {CARD_TITLE[locale]}
           </DialogTitle>
         </DialogHeader>
-        <p dir="rtl" className="m-0 border-b border-border pb-3 text-right text-[.98rem] leading-7 font-medium">
-          {b.no} - {b.title}
+        <p className="book-card-title" dir={locale === "ar" ? "rtl" : "ltr"}>
+          <span className="book-card-number">{b.no}</span>
+          <span>{b.title[locale]}</span>
         </p>
-        {/* A two-column record: labels down one edge, values aligned beside them,
-            the way a library card reads. */}
-        <dl dir="rtl" className="m-0 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1.5 text-right text-[.85rem] leading-6">
-          {(
-            [
-              ["المؤلف / المشرف", b.author],
-              ["المحقق / المترجم", b.editor],
-              ["الناشر", b.publisher],
-              ["الطبعة", b.edition],
-              ["سنة الطبع", b.year],
-            ] as const
-          ).map(([label, value]) => (
-            <Fragment key={label}>
-              <dt className="text-muted-foreground whitespace-nowrap">{label}</dt>
-              <dd className="m-0 font-medium">{value}</dd>
-            </Fragment>
+        <dl className="book-card-fields" dir={locale === "ar" ? "rtl" : "ltr"}>
+          {fields.map((value, index) => (
+            <div className="book-card-field" key={FIELD_LABELS[locale][index]}>
+              <dt>{FIELD_LABELS[locale][index]}</dt>
+              <dd>{value[locale]}</dd>
+            </div>
           ))}
         </dl>
       </DialogContent>

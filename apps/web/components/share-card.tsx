@@ -23,6 +23,7 @@ import {
   type CardAlign,
   type CardFont,
   type CardRatio,
+  type CardText,
   type CardTheme,
 } from "@/components/quote-card";
 import type { Locale } from "@/lib/i18n";
@@ -31,6 +32,10 @@ const copy = {
   en: {
     open: "Share as image",
     title: "Share this saying",
+    text: "Text",
+    both: "Both",
+    original: "Arabic",
+    translation: "English",
     theme: "Ground",
     ratio: "Dimensions",
     align: "Alignment",
@@ -46,6 +51,7 @@ const copy = {
     close: "Close",
     naskh: "Naskh",
     serif: "Serif",
+    translated: "Translated by",
     warm: "Warm",
     paper: "Paper",
     ink: "Ink",
@@ -58,6 +64,10 @@ const copy = {
   ar: {
     open: "شارك كصورة",
     title: "شارك هذه المقولة",
+    text: "النص",
+    both: "الاثنان",
+    original: "العربية",
+    translation: "الترجمة",
     theme: "الأرضية",
     ratio: "الأبعاد",
     align: "محاذاة النص",
@@ -73,6 +83,7 @@ const copy = {
     close: "إغلاق",
     naskh: "نسخ",
     serif: "مشرقي",
+    translated: "ترجمة",
     warm: "دافئة",
     paper: "بيضاء",
     ink: "داكنة",
@@ -85,6 +96,10 @@ const copy = {
   tr: {
     open: "Görsel olarak paylaş",
     title: "Bu sözü paylaş",
+    text: "Metin",
+    both: "İkisi",
+    original: "Arapça",
+    translation: "Türkçe",
     theme: "Zemin",
     ratio: "Boyut",
     align: "Hizalama",
@@ -100,6 +115,7 @@ const copy = {
     close: "Kapat",
     naskh: "Nesih",
     serif: "Serif",
+    translated: "Çeviren",
     warm: "Sıcak",
     paper: "Beyaz",
     ink: "Koyu",
@@ -125,6 +141,7 @@ const ALIGNS = [
   { id: "end", Icon: AlignLeft },
   { id: "justify", Icon: AlignJustify },
 ] as const;
+const TEXTS = ["both", "original", "translation"] as const;
 
 /**
  * The preview IS the card: one DOM node, laid out by the browser's own text engine,
@@ -137,6 +154,7 @@ export function ShareCard({
   locale,
   saying,
   original,
+  translation,
   grade,
   source,
 }: {
@@ -144,11 +162,15 @@ export function ShareCard({
   locale: Locale;
   saying: string;
   original: string | null;
+  translation: { text: string; translator: string } | null;
   grade: string;
   source: string;
 }) {
   const t = copy[locale];
   const [theme, setTheme] = useState<CardTheme>("warm");
+  // Both by default wherever there is a translation to show, so the card the reader
+  // posts says the same thing to their audience as the page said to them.
+  const [text, setText] = useState<CardText>("both");
   const [font, setFont] = useState<CardFont>("naskh");
   const [ratio, setRatio] = useState<CardRatio>("story");
   const [align, setAlign] = useState<CardAlign>("center");
@@ -164,6 +186,12 @@ export function ShareCard({
 
   const page = `/${locale}/quotes/${slug}`;
   const { w, h } = CARD_SIZES[ratio];
+  const gloss = translation
+    ? { text: translation.text, credit: `${t.translated} ${translation.translator}` }
+    : null;
+  // The face toggle only ever changed the Arabic verse, so it has nothing to say
+  // about a card that is carrying the translation alone.
+  const verseOnCard = !!original && text !== "translation";
 
   // QR is generated in the browser; the qrcode package is isomorphic.
   useEffect(() => {
@@ -292,6 +320,8 @@ export function ShareCard({
                     weLabel={t.we}
                     saying={saying}
                     original={original}
+                    translation={gloss}
+                    text={text}
                     // The reference often names the grade already; repeating it reads
                     // as a stutter, not as rigour.
                     grade={source.includes(grade) ? null : grade}
@@ -308,6 +338,23 @@ export function ShareCard({
             </div>
 
             <div className="sheet-controls">
+              {/* First, above the styling: it decides what the card says, not how it
+                  looks. Absent when there is nothing to choose between — the Arabic
+                  page carries no translation, and some sources have none yet. */}
+              {gloss && original && (
+                <div className="sheet-field">
+                  <span>{t.text}</span>
+                  <div className="sheet-choices">
+                    {TEXTS.map((id) => (
+                      <button key={id} type="button" aria-pressed={text === id}
+                              onClick={() => setText(id)}>
+                        {t[id]}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               <div className="sheet-field">
                 <span>{t.theme}</span>
                 <div className="sheet-swatches">
@@ -343,17 +390,19 @@ export function ShareCard({
                 </div>
               </div>
 
-              <div className="sheet-field">
-                <span>{t.font}</span>
-                <div className="sheet-choices">
-                  {(["naskh", "serif"] as const).map((id) => (
-                    <button key={id} type="button" aria-pressed={font === id}
-                            onClick={() => setFont(id)}>
-                      {t[id]}
-                    </button>
-                  ))}
+              {verseOnCard && (
+                <div className="sheet-field">
+                  <span>{t.font}</span>
+                  <div className="sheet-choices">
+                    {(["naskh", "serif"] as const).map((id) => (
+                      <button key={id} type="button" aria-pressed={font === id}
+                              onClick={() => setFont(id)}>
+                        {t[id]}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
               <div className="sheet-toggle">
                 <span>
