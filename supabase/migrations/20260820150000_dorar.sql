@@ -4,7 +4,7 @@
 -- (dorar_api.json, described at dorar.net/article/389) plus their site search
 -- (dorar.net/hadith/search), which adds what the JSON API lacks. One row per
 -- saying. `results` holds every grading the API search returned, parsed into
--- {text, rawi, mohdith, book, ref, grade} — not only the one the page cites.
+-- {text, rawi, mohdith, book, ref, grade}, not only the one the page cites.
 -- The verbatim spread is the point: it lets a future reviewer see the
 -- disagreements without refetching. For the citation the page does rely on,
 -- `hadith_id` is dorar's permalink (dorar.net/h/{id}), `takhrij` its

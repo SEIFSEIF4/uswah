@@ -266,7 +266,7 @@ export function draftNotes(kind: "exact" | "topic"): Record<"ar" | "en" | "tr", 
   };
 }
 
-/** Lightweight English/Turkish intention lines — act kept as the ordinary verb phrase. */
+/** Lightweight English/Turkish intention lines, act kept as the ordinary verb phrase. */
 export function translateIntention(row: CsvIntention, locale: "en" | "tr", topic: boolean): string {
   const act = actLabels(row.subcategory);
   if (locale === "en") {

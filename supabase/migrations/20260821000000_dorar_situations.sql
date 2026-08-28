@@ -2,7 +2,7 @@
 --
 -- Fetched 2026-08-21 from dorar.net's site search (dorar.net/hadith/search).
 -- Unlike the quote rows (which keep the full grading spread from dorar_api.json),
--- `results` here holds just the cited hadith as dorar's search returned it — every
+-- `results` here holds just the cited hadith as dorar's search returned it, every
 -- citation sits in Sahih al-Bukhari or Sahih Muslim, so there is no grading dispute
 -- worth archiving. Shape: [{id, text, rawi, book, ref, grade, takhrij, categories}].
 -- hadith_id/takhrij/categories mirror the cited row, same as the quote rows.

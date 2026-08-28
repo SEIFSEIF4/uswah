@@ -12,7 +12,7 @@ export const contentType = "image/png";
 // anyone sees of this project, and it must not depend on a network call at render
 // time. Arabic needs its own face or every glyph renders as a box.
 //
-// Static instances, not variable fonts — Satori cannot parse an `fvar` table and
+// Static instances, not variable fonts, Satori cannot parse an `fvar` table and
 // fails with an unhelpful "cannot read properties of undefined".
 const font = (name: string) => readFile(join(process.cwd(), "assets", name));
 

@@ -115,7 +115,7 @@ async function main() {
     const screen = screenTitle(c.title);
     if (screen.blocked) {
       blocked++;
-      console.log(`  ✗ screened out — ${screen.reason}: ${c.title.slice(0, 60)}`);
+      console.log(`  ✗ screened out, ${screen.reason}: ${c.title.slice(0, 60)}`);
       continue;
     }
     const licence = normaliseLicence(c.licence);

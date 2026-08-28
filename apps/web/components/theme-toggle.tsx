@@ -17,7 +17,7 @@ const DURATION = 420;
 /**
  * Light/dark toggle that reveals the new theme with a circular wipe from the button,
  * via the View Transitions API. Adapted from MagicUI's AnimatedThemeToggler, cut down
- * to the one shape we use — the square/star/hexagon variants were dead weight.
+ * to the one shape we use, the square/star/hexagon variants were dead weight.
  *
  * Two details from that implementation are load-bearing and kept verbatim in spirit:
  * clip-path coordinates are percentages, because Chrome renders absolute px unscaled on

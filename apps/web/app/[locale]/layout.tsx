@@ -11,17 +11,16 @@ import { LocaleSwitch } from "@/components/locale-switch";
 import { SiteSearch } from "@/components/site-search";
 import { SavedLink } from "@/components/saved-link";
 import { MobileTools } from "@/components/mobile-tools";
-import { TopicsMenu } from "@/components/topics-menu";
 import { MastheadNav } from "@/components/masthead-nav";
 import { InstallPrompt } from "@/components/install-prompt";
 import { PushPrompt } from "@/components/push-prompt";
 import { Wordmark } from "@/components/logo";
-import { searchIndex, topicMenu } from "@/lib/content";
+import { searchIndex } from "@/lib/content";
 import "../globals.css";
 
 const latin = Inter({ subsets: ["latin", "latin-ext"], variable: "--font-latin" });
 
-// Editorial serif for Latin headings — the register Qalam works in, and a deliberate
+// Editorial serif for Latin headings, the register Qalam works in, and a deliberate
 // counterweight to Inter carrying the small type.
 const display = Newsreader({ subsets: ["latin", "latin-ext"], variable: "--font-display" });
 
@@ -90,7 +89,7 @@ export const metadata: Metadata = {
   title: "Uswah",
   description:
     "Practical guidance for real situations, from the original source.",
-  // og:site_name — link previews (Discord above the title, others below) name the
+  // og:site_name, link previews (Discord above the title, others below) name the
   // site from this; without it every shared card reads as anonymous.
   openGraph: {
     siteName: "Uswah",
@@ -123,18 +122,21 @@ export function generateStaticParams() {
 const copy = {
   en: {
     home: "Uswah",
+    homeLabel: "Uswah, home",
     situations: "Situations",
     intentions: "Intentions",
     quotes: "Sayings",
   },
   ar: {
     home: "أسوة",
+    homeLabel: "أسوة، الصفحة الرئيسية",
     situations: "مواقف",
     intentions: "النيّات",
     quotes: "مقولات",
   },
   tr: {
     home: "Uswah",
+    homeLabel: "Uswah, ana sayfa",
     situations: "Durumlar",
     intentions: "Niyetler",
     quotes: "Sözler",
@@ -152,6 +154,11 @@ export default async function LocaleLayout({
   if (!isLocale(locale)) notFound();
 
   const t = copy[locale];
+  const navItems = [
+    { href: `/${locale}/situations`, label: t.situations },
+    { href: `/${locale}/quotes`, label: t.quotes },
+    { href: `/${locale}/intentions`, label: t.intentions },
+  ];
 
   return (
     <html
@@ -165,26 +172,35 @@ export default async function LocaleLayout({
         <ThemeProvider>
           <div className="mx-auto flex min-h-screen max-w-[76rem] flex-col px-6">
             {/* Masthead: the wordmark owns its own line, the way a masthead does, and the
-                bar under it carries navigation. No signed-in state here on purpose —
+                bar under it carries navigation. No signed-in state here on purpose,
                 reading cookies in the layout would make every page dynamic. */}
             <header className="masthead">
-              <Link href={`/${locale}`} className="wordmark">
+              <Link href={`/${locale}`} className="wordmark" aria-label={t.homeLabel}>
                 {locale === "ar" ? <Wordmark className="wordmark-ar" /> : t.home}
               </Link>
             </header>
             {/* Outside <header> on purpose: a sticky element can only travel inside its
                 own parent's box, so the bar has to be a child of the tall page column. */}
             <div className="masthead-bar">
-              <TopicsMenu locale={locale} topics={await topicMenu(locale)} />
-              <MastheadNav
-                items={[
-                  { href: `/${locale}/situations`, label: t.situations },
-                  { href: `/${locale}/quotes`, label: t.quotes },
-                  { href: `/${locale}/intentions`, label: t.intentions },
-                ]}
-              />
+              {/* Balances .masthead-tools on the other side so .masthead-nav lands in
+                  the centre column instead of the layout collapsing to two. */}
+              <span className="masthead-spacer" aria-hidden="true" />
+              <MastheadNav items={navItems} />
               <div className="masthead-tools">
                 <MobileTools locale={locale}>
+                  {/* The sheet sits over the full viewport height, including where the
+                      masthead wordmark lives, so opening it leaves the brand hidden
+                      behind an otherwise unbranded panel. Repeated here at the top. */}
+                  <Link href={`/${locale}`} className="mobile-tools-brand" aria-label={t.homeLabel}>
+                    {locale === "ar" ? <Wordmark className="wordmark-ar" /> : t.home}
+                  </Link>
+                  {/* On a phone the link row above is hidden (see
+                      .masthead-bar > .masthead-nav in globals.css) so a first-timer
+                      meets one disclosure control, not two. Repeated here as a plain
+                      row inside the sheet rather than left stranded outside it. */}
+                  <div className="mobile-tools-nav">
+                    <MastheadNav items={navItems} />
+                  </div>
                   <LocaleSwitch locale={locale} />
                   <SiteSearch
                     locale={locale}

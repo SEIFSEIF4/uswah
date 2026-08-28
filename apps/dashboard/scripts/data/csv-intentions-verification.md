@@ -255,23 +255,23 @@ Every imported row has `ar` / `en` / `tr` and `published_at = null`.
 | CSV | Reason |
 | --- | --- |
 | 3 | CSV marked rejected |
-| 207 | Quran-only source; schema stores Dorar hadith citations — excluded rather than mis-attributed |
-| 214 | Quran-only source; schema stores Dorar hadith citations — excluded rather than mis-attributed |
-| 216 | Quran-only source; schema stores Dorar hadith citations — excluded rather than mis-attributed |
-| 218 | Quran-only source; schema stores Dorar hadith citations — excluded rather than mis-attributed |
-| 220 | Quran-only source; schema stores Dorar hadith citations — excluded rather than mis-attributed |
-| 222 | Quran-only source; schema stores Dorar hadith citations — excluded rather than mis-attributed |
-| 224 | Quran-only source; schema stores Dorar hadith citations — excluded rather than mis-attributed |
-| 226 | Quran-only source; schema stores Dorar hadith citations — excluded rather than mis-attributed |
-| 227 | Quran-only source; schema stores Dorar hadith citations — excluded rather than mis-attributed |
-| 229 | Quran-only source; schema stores Dorar hadith citations — excluded rather than mis-attributed |
-| 231 | Quran-only source; schema stores Dorar hadith citations — excluded rather than mis-attributed |
-| 233 | Quran-only source; schema stores Dorar hadith citations — excluded rather than mis-attributed |
-| 235 | Quran-only source; schema stores Dorar hadith citations — excluded rather than mis-attributed |
-| 237 | Quran-only source; schema stores Dorar hadith citations — excluded rather than mis-attributed |
-| 239 | Quran-only source; schema stores Dorar hadith citations — excluded rather than mis-attributed |
-| 241 | Quran-only source; schema stores Dorar hadith citations — excluded rather than mis-attributed |
-| 243 | Quran-only source; schema stores Dorar hadith citations — excluded rather than mis-attributed |
-| 245 | Quran-only source; schema stores Dorar hadith citations — excluded rather than mis-attributed |
-| 247 | Quran-only source; schema stores Dorar hadith citations — excluded rather than mis-attributed |
-| 249 | Quran-only source; schema stores Dorar hadith citations — excluded rather than mis-attributed |
+| 207 | Quran-only source; schema stores Dorar hadith citations, excluded rather than mis-attributed |
+| 214 | Quran-only source; schema stores Dorar hadith citations, excluded rather than mis-attributed |
+| 216 | Quran-only source; schema stores Dorar hadith citations, excluded rather than mis-attributed |
+| 218 | Quran-only source; schema stores Dorar hadith citations, excluded rather than mis-attributed |
+| 220 | Quran-only source; schema stores Dorar hadith citations, excluded rather than mis-attributed |
+| 222 | Quran-only source; schema stores Dorar hadith citations, excluded rather than mis-attributed |
+| 224 | Quran-only source; schema stores Dorar hadith citations, excluded rather than mis-attributed |
+| 226 | Quran-only source; schema stores Dorar hadith citations, excluded rather than mis-attributed |
+| 227 | Quran-only source; schema stores Dorar hadith citations, excluded rather than mis-attributed |
+| 229 | Quran-only source; schema stores Dorar hadith citations, excluded rather than mis-attributed |
+| 231 | Quran-only source; schema stores Dorar hadith citations, excluded rather than mis-attributed |
+| 233 | Quran-only source; schema stores Dorar hadith citations, excluded rather than mis-attributed |
+| 235 | Quran-only source; schema stores Dorar hadith citations, excluded rather than mis-attributed |
+| 237 | Quran-only source; schema stores Dorar hadith citations, excluded rather than mis-attributed |
+| 239 | Quran-only source; schema stores Dorar hadith citations, excluded rather than mis-attributed |
+| 241 | Quran-only source; schema stores Dorar hadith citations, excluded rather than mis-attributed |
+| 243 | Quran-only source; schema stores Dorar hadith citations, excluded rather than mis-attributed |
+| 245 | Quran-only source; schema stores Dorar hadith citations, excluded rather than mis-attributed |
+| 247 | Quran-only source; schema stores Dorar hadith citations, excluded rather than mis-attributed |
+| 249 | Quran-only source; schema stores Dorar hadith citations, excluded rather than mis-attributed |

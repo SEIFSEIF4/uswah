@@ -1,7 +1,7 @@
 -- Dorar.net rows for the intentions (Nawiya), one per intention on the site.
 --
 -- Fetched 2026-08-21 from dorar.net's site search, same shape as the situation rows:
--- `results` holds just the cited hadith as dorar's search returned it — every citation
+-- `results` holds just the cited hadith as dorar's search returned it, every citation
 -- sits in Sahih al-Bukhari or Sahih Muslim. [{id, text, rawi, book, ref, grade,
 -- takhrij, categories}]; hadith_id/takhrij/categories mirror the cited row.
 

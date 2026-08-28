@@ -6,8 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 /**
- * Types straight into the URL. The server owns matching — and will own the Arabic-
- * normalising RPC once the database lands — so results follow a keystroke instead of a
+ * Types straight into the URL. The server owns matching, and will own the Arabic-
+ * normalising RPC once the database lands, so results follow a keystroke instead of a
  * submit, without a second copy of the index living in the client.
  *
  * It owns the results area as well as the field, because the field is the only thing that

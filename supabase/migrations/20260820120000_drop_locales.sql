@@ -5,7 +5,7 @@
 -- dropping and re-adding both generated search columns. The DDL happened anyway, and
 -- the table only added a join and a second place for the list to live.
 --
--- The list now lives in lib/i18n.ts, and `dir` with it — a column whose value was one of
+-- The list now lives in lib/i18n.ts, and `dir` with it, a column whose value was one of
 -- three constants the client already knew. What the foreign keys were actually buying is
 -- kept as a check constraint, so a typo in `locale` is still rejected at write time.
 --

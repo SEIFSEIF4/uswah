@@ -9,7 +9,7 @@ import { NextResponse, type NextRequest } from "next/server";
  *   header: x-revalidate-secret: <REVALIDATE_SECRET>
  *   body:   { "tag": "content:sayings" }   // or { "tags": [...] }
  *
- * Flushes the tagged content reads so the next request renders fresh rows —
+ * Flushes the tagged content reads so the next request renders fresh rows,
  * no rebuild, no redeploy.
  */
 

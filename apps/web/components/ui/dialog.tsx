@@ -40,7 +40,7 @@ if (typeof document !== "undefined") {
 }
 
 /**
- * Set on attach, before the first painted frame — a state update would land a
+ * Set on attach, before the first painted frame, a state update would land a
  * frame late and the panel would visibly jump from centre to origin.
  */
 function anchorToLastPoint(node: HTMLDivElement | null) {

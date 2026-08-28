@@ -5,7 +5,7 @@
  * - scripts/data/ai-topic-matches.json (local-index topic matches, score ≥ 3)
  * - scripts/data/dorar-local-index.json (for AI result payloads)
  *
- * Does not call Dorar. Does not write to production — emits SQL only.
+ * Does not call Dorar. Does not write to production, emits SQL only.
  *
  *   pnpm --dir apps/dashboard exec tsx scripts/build-csv-intention-migration.ts
  */
@@ -279,7 +279,7 @@ function main() {
     if (kind === "quran") {
       excluded.push({
         id: row.id,
-        reason: "Quran-only source; schema stores Dorar hadith citations — excluded rather than mis-attributed",
+        reason: "Quran-only source; schema stores Dorar hadith citations, excluded rather than mis-attributed",
       });
       continue;
     }

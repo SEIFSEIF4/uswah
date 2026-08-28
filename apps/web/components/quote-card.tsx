@@ -5,7 +5,7 @@
  *
  * The previous renderer (Satori) shapes Arabic but applies no bidi reordering, no mark
  * attachment and no line breaking. Every card needed hand-packed lines, stripped
- * harakat and invented word gaps, and each fix traded one artefact for another —
+ * harakat and invented word gaps, and each fix traded one artefact for another:
  * letters split inside words, vowels floating beside their letters. The browser has a
  * full text engine and this site already renders the same text correctly on the page,
  * so the card is drawn by the DOM and snapshotted client-side instead.

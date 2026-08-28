@@ -80,7 +80,7 @@ type SituationTr = { locale: string; title: string; summary: string; image_alt: 
 type EntryTr = { locale: string; body: string; takeaway: string };
 
 /**
- * One query for the rows — translations, entry and source nested — and one for
+ * One query for the rows, translations, entry and source nested, and one for
  * the dorar citations, joined here by slug. A situation missing a locale row,
  * its topic or its entry is skipped rather than half-rendered, same rule as
  * the sayings below. The pages render one entry per situation; if one ever
@@ -170,16 +170,6 @@ export async function situationBySlug(slug: string) {
   return (await loadSituations()).find((s) => s.slug === slug);
 }
 
-/** Name and weight per topic, for the header menu. */
-export async function topicMenu(locale: Locale) {
-  const all = await loadSituations();
-  return TOPICS.map((t) => ({
-    slug: t.slug,
-    name: topicName(t.slug, locale),
-    count: all.filter((s) => s.topic === t.slug).length,
-  }));
-}
-
 /** Other situations sharing a topic, then anything else, never the one you are reading. */
 export async function relatedSituations(slug: string, limit = 3): Promise<Situation[]> {
   const all = await loadSituations();
@@ -235,7 +225,7 @@ type SayingTr = {
 
 /**
  * One query for the rows, one for the dorar citations, joined here by slug.
- * A saying missing a locale row is skipped rather than half-rendered — the
+ * A saying missing a locale row is skipped rather than half-rendered, the
  * dashboard's validator writes all three, so a skip means hand-edited data.
  */
 const loadQuotes = unstable_cache(
@@ -435,7 +425,7 @@ export async function intentionsByGroup() {
  * One index over everything a reader can look for.
  *
  * Search used to cover situations only, so two of the three content types could not be
- * found at all — typing "money" matched المال in a situation and missed a saying about
+ * found at all, typing "money" matched المال in a situation and missed a saying about
  * the same idea. It is also the only browsing tool that does not degrade as the content
  * grows, which is the reason to spend the index on all of it rather than paginate later.
  *

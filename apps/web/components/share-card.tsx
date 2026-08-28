@@ -150,7 +150,7 @@ const TEXTS = ["both", "original", "translation"] as const;
 /**
  * The preview IS the card: one DOM node, laid out by the browser's own text engine,
  * scaled down for the dialog and snapshotted at full size for save and share. What you
- * see is what you post — and Arabic gets real shaping, marks and spacing, which the
+ * see is what you post, and Arabic gets real shaping, marks and spacing, which the
  * old server renderer could not do.
  */
 export function ShareCard({
@@ -363,7 +363,7 @@ export function ShareCard({
 
             <div className="sheet-controls">
               {/* First, above the styling: it decides what the card says, not how it
-                  looks. Absent when there is nothing to choose between — the Arabic
+                  looks. Absent when there is nothing to choose between, the Arabic
                   page carries no translation, and some sources have none yet. */}
               {gloss && original && (
                 <div className="sheet-field">

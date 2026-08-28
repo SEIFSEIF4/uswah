@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { isLocale, LOCALES } from "@/lib/i18n";
 import { allSituations } from "@/lib/content";
 import { LoadMore } from "@/components/load-more";
+import { TopicBar } from "@/components/topic-bar";
 
 const copy = {
   en: {
@@ -31,13 +32,18 @@ export default async function Situations({ params }: { params: Promise<{ locale:
 
   return (
     <>
-      <h1 className="page-title">
+      {/* The topic filter, demoted from a masthead item to a filter on this list.
+          Topics is a lens on situations now, not a second way in from the front. */}
+      <TopicBar locale={locale} />
+      <h1 className="page-title" aria-label={`${t.title}, ${all.length}`}>
         {t.title}
-        <span className="count">{all.length}</span>
+        <span className="count" aria-hidden="true">{all.length}</span>
       </h1>
       <p className="lede">{t.lede}</p>
 
-      <LoadMore all={all} locale={locale} />
+      {/* No section heading between this h1 and the list's own headings, so the rows
+          take h2 to avoid skipping a level. */}
+      <LoadMore all={all} locale={locale} heading="h2" />
     </>
   );
 }

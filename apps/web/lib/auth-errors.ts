@@ -1,11 +1,6 @@
 import type { Locale } from "./i18n";
 
 const messages = {
-  over_email_send_rate_limit: {
-    en: "",
-    ar: "",
-    tr: "",
-  },
   over_request_rate_limit: {
     en: "Too many requests. Wait a few minutes and try again.",
     ar: "تكررت الطلبات كثيرًا. انتظر بضع دقائق ثم حاول مرة أخرى.",

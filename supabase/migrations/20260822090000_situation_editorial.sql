@@ -1,6 +1,6 @@
 -- The editorial fields the web client had been keeping in its mock file: the
 -- topic taxonomy, the reading estimate, and which situation fronts the home
--- page. Content itself is not seeded here — it goes through the dashboard's
+-- page. Content itself is not seeded here, it goes through the dashboard's
 -- validate + save path, the same move sayings and intentions made.
 --
 -- Nullable on purpose: a draft can exist before it is classified. What must

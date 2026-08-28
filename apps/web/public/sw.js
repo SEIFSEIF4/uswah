@@ -1,6 +1,6 @@
 /* global self, clients */
 /**
- * Push delivery for the Uswah PWA. No offline cache — installability does not need it;
+ * Push delivery for the Uswah PWA. No offline cache, installability does not need it;
  * this worker only shows notifications and opens the site on click.
  */
 self.addEventListener("push", (event) => {

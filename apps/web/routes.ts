@@ -1,5 +1,5 @@
 /**
- * Route registry. Paths here are LOCALE-LESS — the proxy strips /en or /ar before
+ * Route registry. Paths here are LOCALE-LESS, the proxy strips /en or /ar before
  * matching, so one entry covers both languages.
  */
 
@@ -17,8 +17,8 @@ export const DEFAULT_LOGIN_ROUTE: string = '/login'
 export const DEFAULT_REDIRECT_ROUTE: string = '/saved'
 
 // Authed routes under an auth prefix that must NOT bounce already-authed users
-// (email confirmation callbacks, password reset). Empty today — v1 has no
-// onboarding — but the branch in proxy.ts reads it, so adding one here is the
+// (email confirmation callbacks, password reset). Empty today, v1 has no
+// onboarding, but the branch in proxy.ts reads it, so adding one here is the
 // only change needed.
 export const recoveryRoutes: string[] = []
 

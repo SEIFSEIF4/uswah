@@ -17,7 +17,9 @@ export function TopicBar({ locale }: { locale: Locale }) {
 
   return (
     <nav className="topic-bar" aria-label={{ en: "Topics", ar: "المواضيع", tr: "Konular" }[locale]}>
-      <Link href={`/${locale}`} aria-current={onAll ? "page" : undefined}>
+      {/* Situations, unfiltered, not home. This bar is a filter on the situations
+          list, and "All" has to clear the filter, not leave it. */}
+      <Link href={`/${locale}/situations`} aria-current={onAll ? "page" : undefined}>
         {all}
       </Link>
       {TOPICS.map((t) => {

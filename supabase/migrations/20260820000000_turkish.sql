@@ -1,6 +1,6 @@
 -- Turkish as a third locale.
 --
--- The locales row is the easy half — the schema was built so a language is an INSERT.
+-- The locales row is the easy half, the schema was built so a language is an INSERT.
 -- The other half is tsv(): it hard-codes 'english' for everything that is not Arabic,
 -- so Turkish text would be stemmed by English rules. Postgres ships a 'turkish'
 -- configuration, so this only needs a branch.

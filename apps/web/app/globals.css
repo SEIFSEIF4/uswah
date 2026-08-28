@@ -9,7 +9,7 @@
    next-themes puts `.dark` on <html>, so that is the only dark selector. */
 /* Colour follows shadcn's token structure, so a theme from their generator can be
    pasted in and everything downstream follows. The canonical set below carries shadcn's
-   meanings exactly — note that --muted and --accent are BACKGROUNDS there, with
+   meanings exactly, note that --muted and --accent are BACKGROUNDS there, with
    --muted-foreground and --accent-foreground as the text on them. We got that pair
    backwards before, which is why a focused dropdown item painted itself oxblood.
 
@@ -39,7 +39,9 @@
 
   /* Uswah extensions */
   --brand: #7d2b1d;
-  --faint: #8a919c;
+  /* #8a919c measured 3.0:1 on this background, short of the 4.5:1 small-text floor the
+     dark theme's faint tone already clears; darkened to clear it without changing hue. */
+  --faint: #6b7280;
   --surface: var(--card);
   --rule: var(--border);
 }
@@ -69,7 +71,7 @@
 
   /* Uswah extensions */
   /* Held back from #ec7a5c: chroma 144 -> 89, contrast 6.4 -> 6.9:1. Brand is a text
-     colour in fifteen places here, nearly all of them small labels — a section head, a
+     colour in fifteen places here, nearly all of them small labels, a section head, a
      topic, a byline. At full chroma on a near-black ground those labels outshouted the
      sentences they label, which is not what the same token does in light, where #7d2b1d
      is a dark red that recedes. --ring stays at full strength: a focus indicator is the
@@ -134,7 +136,7 @@ body {
      creating a horizontal scroll container or breaking position: sticky. */
   overflow-x: clip;
   /* A reading site sets its running text in a serif. Inter stays, but only where it is
-     doing labelling work — .meta, licences, grade keys all name it explicitly. */
+     doing labelling work, .meta, licences, grade keys all name it explicitly. */
   font-family: var(--font-display), Georgia, serif;
   font-size: 1.0625rem;
   line-height: 1.7;
@@ -143,7 +145,7 @@ body {
 /* Arabic needs more room than Latin at the same visual weight: larger size and a looser
    line, or diacritics collide with the line above. Applied by direction so it follows the
    locale without a class on every element. */
-/* body carries Tailwind's font-sans, which outranks an inherited rule on <html> —
+/* body carries Tailwind's font-sans, which outranks an inherited rule on <html>,
    so name body here or Arabic copy silently falls back to Inter. */
 [dir="rtl"],
 [dir="rtl"] body {
@@ -259,7 +261,7 @@ h1, h2, h3, .display {
 }
 /* Arabic has no case and its own display cut; uppercasing it would do nothing but
    letter-spacing it would break the joins. */
-/* Arabic needs room above the cap line — the hamza on أ sits there, and line-height: 1
+/* Arabic needs room above the cap line, the hamza on أ sits there, and line-height: 1
    crops it off. */
 /* The drawn wordmark is a letterform, so it is sized by height like one. */
 .wordmark-ar { height: 1.15em; width: auto; }
@@ -273,7 +275,11 @@ h1, h2, h3, .display {
 
 .masthead-bar {
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  /* minmax(0, 1fr), not bare 1fr: the spacer column has no content to size against,
+     but .masthead-tools does, and a bare 1fr track's minimum defaults to its content's
+     width. That let the tools column claim more than its half and pushed the centred
+     nav off true centre. The 0 minimum forces both flanking columns genuinely equal. */
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
   gap: 1rem;
   padding: 1.25rem 0;
@@ -290,7 +296,7 @@ h1, h2, h3, .display {
 [dir="rtl"] .masthead-nav { letter-spacing: 0; text-transform: none; font-size: .95rem; }
 .masthead-nav a { color: var(--muted-foreground); }
 .masthead-nav a:hover { color: var(--foreground); }
-/* Current is marked by weight and a rule, not colour alone — the same convention the
+/* Current is marked by weight and a rule, not colour alone, the same convention the
    topic bar uses, so it survives being read without colour. */
 .masthead-nav a[aria-current="page"] {
   color: var(--foreground);
@@ -304,31 +310,19 @@ h1, h2, h3, .display {
   justify-content: flex-end;
   gap: 1rem;
 }
-/* The three-column grid cannot fit a phone; the bar wraps to two rows instead:
-   topics and tools share the first, the section links take the second, full width
-   and centred, so every tap target keeps its size. */
+/* On a phone the section-links row used to sit beside the hamburger as a second
+   disclosure control, two ways to open a menu on one line. It hides here; the sheet
+   behind the hamburger repeats it as a plain row (see .mobile-tools-nav below), so
+   nothing is lost, just not doubled. */
 @media (max-width: 40rem) {
   .masthead-bar {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    row-gap: .8rem;
+    justify-content: flex-end;
     padding: 1rem 0;
   }
-  .masthead-bar .masthead-nav {
-    order: 3;
-    flex-basis: 100%;
-    flex-wrap: wrap;
-    justify-content: center;
-    row-gap: .5rem;
-    gap: 1.5rem;
+  .masthead-bar > .masthead-nav {
+    display: none;
   }
-  .masthead-tools { gap: .8rem; }
-  /* Against a single hamburger icon rather than four controls, the pill is now the
-     only thing on the row with any real width. Trimmed so it stops setting the row's
-     height and reads as a peer of the icon beside it, not a wider first tier. */
-  .topics-menu-open { padding: .35rem .7rem; font-size: .68rem; gap: .4rem; }
-  [dir="rtl"] .topics-menu-open { font-size: .82rem; }
 }
 
 /* ── mobile tools menu ────────────────────────────────────────────────────── */
@@ -343,11 +337,17 @@ h1, h2, h3, .display {
    which only reads correctly when that icon owns a whole toolbar. Anchored instead to a
    ~150px-wide dropdown it renders most of a phone's width, hanging off the far edge. A
    full-width sheet gives every wrapped control room to become a plain labelled row
-   instead, search included — see the overrides below the sheet itself. */
+   instead, search included, see the overrides below the sheet itself. */
 .mobile-tools { display: contents; }
 .mobile-tools-open { display: none; }
 .mobile-tools-scrim { display: none; }
 .mobile-tools-panel { display: contents; }
+/* Repeats the section links already visible in the masthead; only unwrapped into
+   the sheet's rows below the breakpoint where those are hidden. */
+.mobile-tools-nav { display: none; }
+/* The masthead wordmark, repeated: the sheet covers it, so opening the sheet leaves
+   the brand only visible when this is. */
+.mobile-tools-brand { display: none; }
 
 @media (max-width: 40rem) {
   .mobile-tools { display: block; position: relative; }
@@ -416,6 +416,9 @@ h1, h2, h3, .display {
   }
   .mobile-tools-panel .saved-link:hover,
   .mobile-tools-panel .theme-toggle:hover { background: none; color: var(--brand); }
+  /* Otherwise nothing marks the row as the one that's open, same colour cue the nav
+     above uses for the current page. */
+  .mobile-tools-panel .site-search-open[aria-expanded="true"] { color: var(--brand); }
   .mobile-tools-panel .site-search-open .sr-only,
   .mobile-tools-panel .saved-link .sr-only,
   .mobile-tools-panel .theme-toggle .sr-only {
@@ -427,15 +430,76 @@ h1, h2, h3, .display {
     white-space: nowrap;
   }
   /* No longer a floating popover anchored to the icon: it follows the row in normal
-     flow, full width, so opening it cannot push content off the edge of the sheet. */
+     flow, full width, so opening it cannot push content off the edge of the sheet.
+     Bounded in its own card rather than bare, so the one row that expands into typed
+     input and results reads as a distinct module, not loose pieces between plain
+     links. */
   .mobile-tools-panel .site-search-panel {
     position: static;
     width: 100%;
-    margin-top: .6rem;
-    padding: 0;
-    background: none;
-    border: none;
+    margin-top: .75rem;
+    padding: .75rem;
+    background: var(--background);
+    border: 1px solid var(--rule);
+    border-radius: 10px;
     box-shadow: none;
+  }
+  .mobile-tools-panel .site-search-field input {
+    border: none;
+    border-radius: 0;
+    border-bottom: 1px solid var(--rule);
+    background: none;
+    padding: 0 0 .6rem;
+  }
+  .mobile-tools-panel .site-search-field input:focus { border-bottom-color: var(--foreground); }
+  .mobile-tools-panel .site-search-hits { margin-top: .5rem; }
+  .mobile-tools-panel .site-search-empty { padding: 1.5rem .5rem .5rem; }
+
+  /* Own row at the top of the sheet, above the nav divider: an identity, not another
+     item in either list below it. Smaller than the masthead cut, a drawer header,
+     not a second hero. */
+  .mobile-tools-brand {
+    display: flex;
+    margin-bottom: .5rem;
+    font-family: var(--font-display), Georgia, serif;
+    font-size: 1.6rem;
+    line-height: 1;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--foreground);
+  }
+  [dir="rtl"] .mobile-tools-brand {
+    font-family: var(--font-display-ar), var(--font-arabic), serif;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .mobile-tools-brand .wordmark-ar { height: 1.7rem; width: auto; }
+
+  /* Unwraps so the nav row it wraps becomes its own row in the sheet's own gap
+     rhythm, instead of an extra nesting layer around a single child. */
+  .mobile-tools-nav { display: contents; }
+  /* Matches the full-width row treatment the tools below already use, so this reads
+     as the same kind of list rather than a differently-shaped block dropped on top of
+     it. The rule under it is the one visual break in the sheet: everything above is
+     where to go, everything below is what to do here. */
+  .mobile-tools-panel .masthead-nav {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--rule);
+    font-size: 1.05rem;
+    font-weight: 500;
+    letter-spacing: 0;
+    text-transform: none;
+    white-space: normal;
+  }
+  .mobile-tools-panel .masthead-nav a { padding: .55rem 0; }
+  .mobile-tools-panel .masthead-nav a[aria-current="page"] {
+    border-bottom: none;
+    padding-bottom: .55rem;
+    color: var(--brand);
+    font-weight: 600;
   }
 }
 
@@ -485,85 +549,6 @@ html[data-theme-wipe="active"]::view-transition-new(root) {
   text-decoration: underline;
   text-underline-offset: 4px;
 }
-
-/* ── topics menu ──────────────────────────────────────────────────────────── */
-
-.topics-menu { position: relative; justify-self: start; }
-.topics-menu-open {
-  display: flex;
-  align-items: center;
-  gap: .5rem;
-  border: 1px solid color-mix(in srgb, var(--brand) 35%, transparent);
-  border-radius: 999px;
-  padding: .4rem .9rem;
-  font-size: .75rem;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  color: var(--brand);
-  white-space: nowrap;
-}
-[dir="rtl"] .topics-menu-open { letter-spacing: 0; text-transform: none; font-size: .9rem; }
-.topics-menu-open:hover { border-color: var(--brand); }
-.topics-menu-open[aria-expanded="true"] svg { transform: rotate(180deg); }
-
-.topics-menu-panel {
-  position: absolute;
-  inset-inline-start: 0;
-  top: calc(100% + .5rem);
-  z-index: 20;
-  min-width: 15rem;
-  /* Contents list, not a word grid: one column with the count on the far edge gives the
-     eye a straight rule to run down. Two columns of centred words had neither. */
-  display: flex;
-  flex-direction: column;
-  /* Six topics fit twice over before this needs thinking about again. Past roughly two
-     dozen the answer is not a taller menu, it is search. */
-  max-height: min(60vh, 26rem);
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  padding: .4rem;
-  background: var(--surface);
-  border: 1px solid var(--rule);
-  border-radius: 10px;
-  box-shadow: 0 12px 32px rgb(0 0 0 / .1);
-}
-.topics-menu-panel a {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 2.5rem;
-  padding: .5rem .7rem;
-  border-radius: 6px;
-  /* Reading type, not the metadata caps this used to wear: these are six destinations,
-     and caps at .82rem made every one of them look like a label on something else. */
-  color: var(--foreground);
-  font-size: 1rem;
-  line-height: 1.35;
-  white-space: nowrap;
-}
-.topics-menu-panel a + a { box-shadow: 0 -1px 0 var(--rule); }
-/* The whole row lights, so the target is the row rather than the word inside it. */
-.topics-menu-panel a:hover {
-  background: var(--accent);
-  box-shadow: none;
-}
-.topics-menu-panel a:hover + a { box-shadow: none; }
-.topics-menu-panel .count {
-  font-family: var(--font-latin), system-ui, sans-serif;
-  font-size: .8rem;
-  font-variant-numeric: tabular-nums;
-  color: var(--muted-foreground);
-}
-.topics-menu-panel a:hover .count { color: var(--brand); }
-
-/* Leaves the menu rather than filtering by one of its rows, so it should not look like a
-   seventh topic. */
-.topics-menu-panel .topics-menu-all {
-  color: var(--brand);
-  font-size: .88rem;
-  justify-content: flex-start;
-}
-.topics-menu-panel .topics-menu-all:hover { text-decoration: underline; text-underline-offset: 3px; }
 
 /* Section headings sit centred with air around them, so a scroll reads as a set of
    spreads rather than one continuous column. */
@@ -721,6 +706,17 @@ html[data-theme-wipe="active"]::view-transition-new(root) {
   margin-bottom: 1rem;
   background: var(--surface);
 }
+/* Full width made sense at a third of a three-column row; alone in the single column
+   .three-up collapses to below 52rem (see above), the same square runs the width of
+   whatever screen it's on. Capped and centred so the card still leads with artwork
+   without eating the screen before the title is even visible. Matches .three-up's own
+   breakpoint exactly, a narrower one here left a gap where the column was already
+   single but the image wasn't capped yet. */
+@media (max-width: 52rem) {
+  /* Left-aligned, not centred: the title and summary below run flush to the card's
+     start edge, and a centred image put its edge out of line with them. */
+  .card img { max-width: 16rem; max-height: 16rem; }
+}
 .card h3 {
   font-weight: 600;
   font-size: 1.18rem;
@@ -848,6 +844,19 @@ html[data-theme-wipe="active"]::view-transition-new(root) {
   text-transform: uppercase;
 }
 
+/* Orientation for a reader who lands here straight from a shared link: what kind of
+   thing this is, and a way back to more of it, before the meta row and headline. */
+.situation-kicker {
+  display: inline-block;
+  font-size: .72rem;
+  font-weight: 500;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+.situation-kicker:hover { color: var(--foreground); }
+[dir="rtl"] .situation-kicker { letter-spacing: 0; text-transform: none; font-size: .85rem; }
+
 .situation-head h1 {
   font-size: clamp(2.1rem, 5.2vw, 3.1rem);
   line-height: 1.1;
@@ -864,7 +873,7 @@ html[data-theme-wipe="active"]::view-transition-new(root) {
 }
 
 /* Provenance, directly under the standfirst: who checked this and when. Set in the
-   labelling face rather than the reading one — it is apparatus, not prose. */
+   labelling face rather than the reading one, it is apparatus, not prose. */
 .byline {
   display: flex;
   flex-wrap: wrap;
@@ -988,8 +997,13 @@ html[data-theme-wipe="active"]::view-transition-new(root) {
   border: 0;
   padding: 0;
   cursor: pointer;
+  /* Colour alone marks it as clickable elsewhere in this block; a dotted underline gives
+     it a second, non-colour cue so it doesn't read as a static bolded value. */
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: .2em;
 }
-.book-trigger:hover { text-decoration: underline; }
+.book-trigger:hover { text-decoration-style: solid; }
 /* The source record follows the reader's language, with Arabic typography retained
    for the Arabic page and a readable Latin face for English and Turkish. */
 .book-card { max-height: min(90vh, 42rem); overflow-y: auto; }
@@ -1108,7 +1122,7 @@ html[data-theme-wipe="active"]::view-transition-new(root) {
   box-shadow: -.75rem 0 0 -.3rem var(--faint), .75rem 0 0 -.3rem var(--faint);
 }
 
-/* Latin only. Arabic is cursive — a raised initial would cut a word out of its joins. */
+/* Latin only. Arabic is cursive, a raised initial would cut a word out of its joins. */
 [dir="ltr"] .prose > p:first-of-type::first-letter {
   float: left;
   font-size: 3.4em;
@@ -1190,7 +1204,7 @@ html[data-theme-wipe="active"]::view-transition-new(root) {
 
 .search-form { display: flex; gap: .75rem; align-items: baseline; }
 /* An editorial underline field, not a control. The shadcn Input underneath brings its
-   own rounded border and a focus ring drawn as a box-shadow — unset both, or the ring
+   own rounded border and a focus ring drawn as a box-shadow, unset both, or the ring
    paints a box around the rule and the text sits flush against it, which is what read
    as the field being cut off. */
 .search-form input {
@@ -1224,7 +1238,7 @@ html[data-theme-wipe="active"]::view-transition-new(root) {
 .rows + .muted, .search-form + .muted { margin-top: 2rem; }
 
 /* Results fade in rather than replacing the previous answer in place. Short enough that
-   it never becomes a wait of its own — the point is to stop text being overwritten under
+   it never becomes a wait of its own, the point is to stop text being overwritten under
    the eye, not to perform a transition. */
 .search-fade { animation: search-fade .18s ease-out both; }
 @keyframes search-fade {
@@ -1265,7 +1279,7 @@ html[data-theme-wipe="active"]::view-transition-new(root) {
 }
 
 /* Tailwind's preflight puts a default arrow on buttons, so every button rule here was
-   carrying its own cursor line — and the ones added since forgot to. Stated once. */
+   carrying its own cursor line, and the ones added since forgot to. Stated once. */
 button:not(:disabled), [role="button"]:not([aria-disabled="true"]) { cursor: pointer; }
 
 :where(a):focus-visible, :where(button):focus-visible, :where(input):focus-visible {
@@ -1872,7 +1886,7 @@ button:not(:disabled), [role="button"]:not([aria-disabled="true"]) { cursor: poi
 .tone-ink .shelf-nav button:hover { border-color: #ece8e1; color: #ece8e1; }
 
 /* Dark drops the warm grounds. Near black there is no room to separate four cool tones
-   by lightness and still keep .meta's grey above 4.5:1 on every one of them — the lift
+   by lightness and still keep .meta's grey above 4.5:1 on every one of them, the lift
    that would have made a third band legible puts caption text at 4.3:1. So dark carries
    two grounds off the page instead of three: the surface lift, and the deep slab. warm
    and paper share the lift; the home page never places them next to each other. */
@@ -2047,7 +2061,7 @@ button:not(:disabled), [role="button"]:not([aria-disabled="true"]) { cursor: poi
   align-items: start;
 }
 /* On a phone the dialog becomes a bottom sheet: full width, capped height, its own
-   scroll — centred-and-fixed left half the controls unreachable below the fold. */
+   scroll, centred-and-fixed left half the controls unreachable below the fold. */
 @media (max-width: 46rem) {
   .sheet {
     top: auto;

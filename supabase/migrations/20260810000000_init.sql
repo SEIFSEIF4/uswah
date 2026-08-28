@@ -3,7 +3,7 @@
 -- content; edits go through the service role from the admin screen only.
 --
 -- Applied to project rjkbhobntyhuochdmkkx (eu-central-1). This file is the source of
--- truth — keep it identical to what is deployed.
+-- truth, keep it identical to what is deployed.
 
 -- ── Locales ───────────────────────────────────────────────────────────────────
 -- A table, not a check constraint: adding a language is an INSERT, never DDL.

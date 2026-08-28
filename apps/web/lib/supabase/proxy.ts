@@ -5,7 +5,7 @@ import type { Database } from "./database.types";
 // getClaims() over getUser() at the edge: cryptographically verified, no DB
 // roundtrip. Pages still call getClaims()/getUser() when they need the row.
 //
-// Do not insert any logic between createServerClient and getClaims() —
+// Do not insert any logic between createServerClient and getClaims():
 // tokens that expired mid-handler will desync.
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({ request });

@@ -74,7 +74,7 @@ const formatDate = (iso: string, locale: Locale) =>
  * Who checked this against the collection, and when.
  *
  * The whole product rests on a verified source, and until now the reader was asked to
- * take that on trust. An unreviewed entry says so in the same place, loudly — a byline
+ * take that on trust. An unreviewed entry says so in the same place, loudly, a byline
  * that quietly went missing would read as an oversight rather than as a warning.
  */
 export function Byline({ s, locale }: { s: Situation; locale: Locale }) {
@@ -108,14 +108,29 @@ export function Card({ s, locale }: { s: Situation; locale: Locale }) {
   );
 }
 
-/** Text-only row, for lists where the artwork would just be noise. */
-export function Row({ s, locale }: { s: Situation; locale: Locale }) {
+/**
+ * Text-only row, for lists where the artwork would just be noise.
+ *
+ * `heading` defaults to h3 for the common case (a row nested under a section's own h2).
+ * The situations and per-topic listings have no such h2 between their page h1 and the
+ * first row, so they pass h2 to avoid skipping a level.
+ */
+export function Row({
+  s,
+  locale,
+  heading = "h3",
+}: {
+  s: Situation;
+  locale: Locale;
+  heading?: "h2" | "h3";
+}) {
+  const Heading = heading;
   return (
     <Link href={`/${locale}/${s.slug}`} className="listrow">
       <img src={s.image.url} alt={s[locale].imageAlt} loading="lazy" />
       <div>
         <Meta s={s} locale={locale} />
-        <h3>{s[locale].title}</h3>
+        <Heading>{s[locale].title}</Heading>
         <p>{s[locale].summary}</p>
       </div>
     </Link>

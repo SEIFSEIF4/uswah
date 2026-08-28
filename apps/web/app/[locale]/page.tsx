@@ -7,8 +7,6 @@ import {
   GRADES,
   gradeInLabel,
   quotesSorted,
-  topicName,
-  TOPICS,
 } from "@/lib/content";
 import { Card, Meta, SectionTitle } from "@/components/cards";
 import { Button, ButtonArrow } from "@/components/ui/button";
@@ -19,6 +17,7 @@ const copy = {
     latest: "Latest",
     what: "Practical guidance for real situations, answered from the Quran and Sahih hadith, with the source shown.",
     intentions: "The same day, differently",
+    intentionsDek: "Not new situations. The same everyday acts, seen through the intention behind them.",
     allIntentions: "All intentions",
     more: "More situations",
     sayings: "Sayings you already know",
@@ -29,6 +28,7 @@ const copy = {
     latest: "الأحدث",
     what: "إرشاد عملي لمواقف حقيقية، من القرآن والحديث الصحيح، مع المصدر.",
     intentions: "اليوم نفسه، بنيّة أخرى",
+    intentionsDek: "ليست مواقف جديدة، بل الأفعال اليوميّة نفسها، بنيّة تُغيّر معناها.",
     allIntentions: "كل النيّات",
     more: "مواقف أخرى",
     sayings: "مقولات تعرفها بالفعل",
@@ -39,6 +39,7 @@ const copy = {
     latest: "En yeni",
     what: "Gerçek durumlar için pratik rehberlik: Kur'an ve sahih hadisten, kaynağı görünür.",
     intentions: "Aynı gün, başka türlü",
+    intentionsDek: "Yeni durumlar değil. Aynı günlük eylemler, arkalarındaki niyetle birlikte.",
     allIntentions: "Bütün niyetler",
     more: "Başka durumlar",
     sayings: "Zaten bildiğin sözler",
@@ -85,8 +86,9 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
 
       {/* 4. Intentions. The header links to Nawiya and the home page never mentioned it,
              so the surface existed with no way in from the front. Four acts, the turn, and
-             the intention — enough to show what the section is, not to be it. */}
+             the intention, enough to show what the section is, not to be it. */}
       <SectionTitle>{t.intentions}</SectionTitle>
+      <p className="lede">{t.intentionsDek}</p>
       <ul className="intent-list">
         {(await featuredIntentions()).map((i) => (
           <li key={i.slug}>
@@ -163,70 +165,40 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
         ))}
       </Shelf>
 
-      {/* 8. The closing rail, the Thmanyah shape: six category tiles beside two reads.
-             The tiles are artwork and a label only — a category is a door, and a door
-             does not need a summary. Three reads: four ran the column past the tiles,
-             and the two heights will never match exactly anyway, since a read's height
-             follows how far its summary wraps. It ends the page on navigation
-             rather than on more of the same list, which is what a curated front does.
-
-             It mirrors, like everything else. The categories sit at the reading end and
-             the reads at the reading start, which puts the tiles right in English and
-             left in Arabic. Pinning them to a physical side got English right by
-             accident and Arabic wrong. */}
+      {/* 8. The closing rail. Six category tiles used to sit beside these reads, back
+             when Topics was a second front door; now that it is a filter reached from
+             inside Situations rather than a masthead item, promoting it here again
+             would undo that. Reads only, so the page ends on more of the thing it is
+             about rather than on the taxonomy it stepped back from. */}
       <section className="band-section tone-warm">
         <SectionTitle>{t.browse}</SectionTitle>
-        <div className="grid gap-x-10 gap-y-8 lg:grid-cols-2">
-          <ul className="flex list-none flex-col gap-6 p-0">
-            {rest.slice(-3).map((s) => (
-              <li key={s.slug}>
-                {/* Thumbnail first, so it sits at the reading edge and the copy runs
-                    away from it in both directions. Pinning it right suited Arabic only,
-                    where right is where reading starts; in English the same position is
-                    the end, and the ragged edge left the image stranded. */}
-                <Link href={`/${locale}/${s.slug}`} className="group flex gap-4">
-                  <img
-                    src={s.image.url}
-                    alt={s[locale].imageAlt}
-                    loading="lazy"
-                    className="size-24 shrink-0 rounded-xl object-cover"
-                  />
-                  <div className="min-w-0 flex-1">
-                    <h3 className="text-lg leading-snug group-hover:underline group-hover:underline-offset-4">
-                      {s[locale].title}
-                    </h3>
-                    <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
-                      {s[locale].summary}
-                    </p>
-                    <Meta s={s} locale={locale} />
-                  </div>
-                </Link>
-              </li>
-            ))}
-          </ul>
-
-          <ul className="grid list-none grid-cols-2 gap-4 p-0 sm:grid-cols-3">
-            {TOPICS.map((topic) => {
-              return (
-                <li key={topic.slug}>
-                  <Link href={`/${locale}/topics/${topic.slug}`} className="group block">
-                    {/* Decorative: the label underneath already names the category. */}
-                    <img
-                      src={topic.image}
-                      alt=""
-                      loading="lazy"
-                      className="aspect-[4/3] w-full rounded-xl object-cover"
-                    />
-                    <span className="mt-2 block text-sm text-muted-foreground group-hover:text-foreground">
-                      {topicName(topic.slug, locale)}
-                    </span>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-
-        </div>
+        <ul className="flex list-none flex-col gap-6 p-0">
+          {rest.slice(-3).map((s) => (
+            <li key={s.slug}>
+              {/* Thumbnail first, so it sits at the reading edge and the copy runs
+                  away from it in both directions. Pinning it right suited Arabic only,
+                  where right is where reading starts; in English the same position is
+                  the end, and the ragged edge left the image stranded. */}
+              <Link href={`/${locale}/${s.slug}`} className="group flex gap-4">
+                <img
+                  src={s.image.url}
+                  alt={s[locale].imageAlt}
+                  loading="lazy"
+                  className="size-24 shrink-0 rounded-xl object-cover"
+                />
+                <div className="min-w-0 flex-1">
+                  <h3 className="text-lg leading-snug group-hover:underline group-hover:underline-offset-4">
+                    {s[locale].title}
+                  </h3>
+                  <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
+                    {s[locale].summary}
+                  </p>
+                  <Meta s={s} locale={locale} />
+                </div>
+              </Link>
+            </li>
+          ))}
+        </ul>
       </section>
     </>
   );

@@ -2,7 +2,7 @@
  * Identity geometry, in one place because five surfaces draw it: the favicon, the iOS
  * icon, the social avatar, the link-preview card and the site header.
  *
- * The mark is أ taken apart — its hamza over a bare stem — and the wordmark is أسوة.
+ * The mark is أ taken apart, its hamza over a bare stem, and the wordmark is أسوة.
  * Both are outlines lifted from Thmanyah Serif Display Black, the face the wordmark is
  * set in.
  *

@@ -12,6 +12,7 @@ import { createClient } from "@/lib/supabase/server";
 
 const copy = {
   en: {
+    kicker: "All situations",
     takeaway: "What to do",
     translated: "Translated by",
     save: "Save this",
@@ -20,6 +21,7 @@ const copy = {
     related: "Next",
   },
   ar: {
+    kicker: "كل المواقف",
     takeaway: "ماذا تفعل",
     translated: "ترجمة",
     save: "احفظ",
@@ -28,6 +30,7 @@ const copy = {
     related: "التالي",
   },
   tr: {
+    kicker: "Bütün durumlar",
     takeaway: "Ne yapmalı",
     translated: "Çeviren",
     save: "Bunu kaydet",
@@ -108,7 +111,7 @@ export default async function Situation({
             {s.image.credit}
           </a>
           {/* lang="en": text-transform is language-sensitive, and a Turkish uppercase of
-              "public-domain" dots the i — PUBLİC-DOMAIN. The token is not Turkish. */}
+              "public-domain" dots the i, PUBLİC-DOMAIN. The token is not Turkish. */}
           <span className="licence" lang="en">
             {s.image.license}
           </span>
@@ -119,6 +122,11 @@ export default async function Situation({
       {/* No contents panel: a two-minute read with three sections needs no index.
           The ids on the sections stay, so deep links keep working. */}
       <header className="situation-head">
+        {/* A first-time reader who lands here straight from a shared link has no other
+            cue that this is one of many, or how to see the rest. */}
+        <Link href={`/${locale}/situations`} className="situation-kicker">
+          {t.kicker}
+        </Link>
         <Meta s={s} locale={locale} />
         <h1>{text.title}</h1>
         <p className="standfirst">{text.summary}</p>

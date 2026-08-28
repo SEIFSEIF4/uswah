@@ -4,7 +4,7 @@
 -- painting, historical photography, maps. Figures are allowed. Depictions of the
 -- Prophet ﷺ are not, and neither are depictions of other prophets or the companions.
 --
--- That rule is enforced the same way source verification is — as a constraint, not a
+-- That rule is enforced the same way source verification is, as a constraint, not a
 -- convention. An image cannot be stored without a named person who cleared it.
 
 alter table situations

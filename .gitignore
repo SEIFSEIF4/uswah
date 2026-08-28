@@ -9,7 +9,7 @@ node_modules/
 .vercel/
 .DS_Store
 
-# AI tooling, agent config, internal notes — local only
+# AI tooling, agent config, internal notes, local only
 .claude/
 AGENTS.md
 CLAUDE.md

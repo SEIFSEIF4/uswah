@@ -12,7 +12,7 @@ import { useRef } from "react";
  *
  * scroll-fade-x dissolves the leading and trailing edges so the row reads as continuing
  * past the column rather than being cut off. It is scroll-driven CSS, no listeners, and
- * it follows the reading direction on its own — the crisp edge is wherever the row
+ * it follows the reading direction on its own, the crisp edge is wherever the row
  * starts, which flips in Arabic. no-scrollbar goes with it: the mask is on the scroll
  * container, so a visible scrollbar would fade along with the content.
  */

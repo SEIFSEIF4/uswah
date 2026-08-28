@@ -23,7 +23,7 @@ export default async function Search({
 
   const t = copy[locale];
   // Local match while the data is local. The Arabic-normalising RPC comes back with the
-  // database — see searchAll in lib/content.ts.
+  // database, see searchAll in lib/content.ts.
   const results = q ? await searchAll(q, locale) : [];
 
   return (

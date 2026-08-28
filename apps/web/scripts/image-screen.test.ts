@@ -1,4 +1,4 @@
-// pnpm image:test — the screen is the safety-critical part, so it gets the tests.
+// pnpm image:test, the screen is the safety-critical part, so it gets the tests.
 import assert from "node:assert/strict";
 import { screenTitle, normaliseLicence, looksLikeTextFace } from "./image-screen";
 
@@ -34,7 +34,7 @@ for (const t of mustPass) {
   assert.ok(!screenTitle(t).blocked, `must pass: ${t} (${screenTitle(t).reason})`);
 }
 
-// Case must not matter — archives are inconsistent about it.
+// Case must not matter, archives are inconsistent about it.
 assert.ok(screenTitle("THE PROPHET MUHAMMAD, folio").blocked);
 assert.ok(screenTitle("muhammad ibn something, a portrait".toUpperCase()).blocked);
 

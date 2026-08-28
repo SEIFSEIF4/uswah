@@ -1,4 +1,4 @@
-// pnpm routes:test — the route registry decides who gets in, so it gets a check.
+// pnpm routes:test, the route registry decides who gets in, so it gets a check.
 import assert from "node:assert/strict";
 import {
   isAuthRoute,
