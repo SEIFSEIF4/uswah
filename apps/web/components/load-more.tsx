@@ -25,7 +25,15 @@ type Order = (typeof ORDERS)[number];
  * view. That way keyboard users and anyone with JavaScript disabled still reach the whole
  * list, and there is a genuine end state rather than a feed that swallows the footer.
  */
-export function LoadMore({ all, locale }: { all: Situation[]; locale: Locale }) {
+export function LoadMore({
+  all,
+  locale,
+  heading,
+}: {
+  all: Situation[];
+  locale: Locale;
+  heading?: "h2" | "h3";
+}) {
   const [order, setOrder] = useState<Order>("newest");
   const [shown, setShown] = useState(Math.min(PAGE, all.length));
   const sentinel = useRef<HTMLDivElement>(null);
@@ -66,7 +74,7 @@ export function LoadMore({ all, locale }: { all: Situation[]; locale: Locale }) 
 
       <div className="rows">
         {sorted.slice(0, shown).map((s) => (
-          <Row key={s.slug} s={s} locale={locale} />
+          <Row key={s.slug} s={s} locale={locale} heading={heading} />
         ))}
       </div>
 

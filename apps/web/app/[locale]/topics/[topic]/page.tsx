@@ -28,15 +28,17 @@ export default async function Topic({
   return (
     <>
       <TopicBar locale={locale} />
-      <h1 className="page-title">
+      <h1 className="page-title" aria-label={`${topicName(topic as TopicSlug, locale)}, ${items.length}`}>
         {topicName(topic as TopicSlug, locale)}
         {/* The count is the first thing a filter should answer: how much is behind it. */}
-        <span className="count">{items.length}</span>
+        <span className="count" aria-hidden="true">{items.length}</span>
       </h1>
       {items.length === 0 ? (
         <p className="muted">{copy[locale].empty}</p>
       ) : (
-        <LoadMore all={items} locale={locale} />
+        // No section heading between this h1 and the list's own headings, so the rows
+        // take h2 to avoid skipping a level.
+        <LoadMore all={items} locale={locale} heading="h2" />
       )}
     </>
   );
