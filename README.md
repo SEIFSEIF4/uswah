@@ -9,7 +9,14 @@ Name: أسوة, from Quran 33:21 — *"in the Messenger of Allah you have a beau
 
 ![Uswah landing page](docs/media/landing.gif)
 
-Next.js 16 · React 19 · TypeScript · Tailwind v4 · Supabase (Postgres + RLS) · Turborepo · pnpm · Flutter
+![Next.js](https://img.shields.io/badge/Next.js_16-000000?logo=nextdotjs&logoColor=white)
+![React](https://img.shields.io/badge/React_19-20232A?logo=react&logoColor=61DAFB)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_v4-06B6D4?logo=tailwindcss&logoColor=white)
+![Supabase](https://img.shields.io/badge/Supabase-3FCF8E?logo=supabase&logoColor=white)
+![Turborepo](https://img.shields.io/badge/Turborepo-EF4444?logo=turborepo&logoColor=white)
+![pnpm](https://img.shields.io/badge/pnpm-F69220?logo=pnpm&logoColor=white)
+![Flutter](https://img.shields.io/badge/Flutter-02569B?logo=flutter&logoColor=white)
 
 | Share a saying as an image | Light / dark | English → Arabic (RTL) |
 | --- | --- | --- |
