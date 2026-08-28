@@ -7,7 +7,7 @@ two Sahih collections. A web surface for search and SEO, a Flutter app, one shar
 
 Name: أسوة, from Quran 33:21 — *"in the Messenger of Allah you have a beautiful example."*
 
-![Uswah landing page](docs/media/landing.gif)
+![Uswah landing page](.github/media/landing.gif)
 
 ![Next.js](https://img.shields.io/badge/Next.js_16-000000?logo=nextdotjs&logoColor=white)
 ![React](https://img.shields.io/badge/React_19-20232A?logo=react&logoColor=61DAFB)
@@ -20,7 +20,7 @@ Name: أسوة, from Quran 33:21 — *"in the Messenger of Allah you have a beau
 
 | Share a saying as an image | Light / dark | English → Arabic (RTL) |
 | --- | --- | --- |
-| ![Share a saying](docs/media/share-saying.gif) | ![Light and dark mode](docs/media/theme-toggle.gif) | ![Switching to Arabic flips the whole layout RTL](docs/media/rtl-switch.gif) |
+| ![Share a saying](.github/media/share-saying.gif) | ![Light and dark mode](.github/media/theme-toggle.gif) | ![Switching to Arabic flips the whole layout RTL](.github/media/rtl-switch.gif) |
 
 ## Layout
 
@@ -29,7 +29,6 @@ supabase/          Schema, migrations, tests, seed data   ← the contract. Seif
 apps/web/          Next.js: public site                   ← Seif
 apps/dashboard/    Next.js: content review dashboard      ← Seif
 apps/mobile/       Flutter: iOS + Android                 ← [friend]
-docs/              Plan, design, content guidelines
 ```
 
 Turborepo + pnpm workspace at the root: `pnpm dev` / `pnpm build` fan out to the Next.js
