@@ -1,11 +1,5 @@
-// Find archive artwork for a situation.
-//
 //   pnpm image:find "persian miniature court audience"
 //   pnpm image:find "bukhara 1911" --limit 12
-//
-// Searches Wikimedia Commons and the Met open-access collection, keeps only images whose
-// licence the pipeline accepts, drops anything whose title trips the screen, and prints a
-// YAML block ready to paste into a situation file.
 //
 // cleared_by is deliberately left as TODO. The content pipeline refuses to publish until a
 // person replaces it, which is the whole point: the filter narrows the pile, a human decides.

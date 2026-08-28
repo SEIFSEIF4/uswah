@@ -1,6 +1,5 @@
 #!/bin/sh
-# Regenerate Supabase types into both apps. Run after every migration: pnpm db:types
-# Goes over the session pooler; the CLI account has no platform access (see README).
+# Session pooler: the CLI account has no platform access.
 set -e
 cd "$(dirname "$0")/.."
 

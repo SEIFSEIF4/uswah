@@ -1,9 +1,19 @@
 # Uswah
 
+**[uswah.app](https://uswah.app)**
+
 Practical guidance for real situations, drawn from the original source — Quran and the
 two Sahih collections. A web surface for search and SEO, a Flutter app, one shared database.
 
 Name: أسوة, from Quran 33:21 — *"in the Messenger of Allah you have a beautiful example."*
+
+![Uswah landing page](docs/media/landing.gif)
+
+Next.js 16 · React 19 · TypeScript · Tailwind v4 · Supabase (Postgres + RLS) · Turborepo · pnpm · Flutter
+
+| Share a saying as an image | Light / dark | English → Arabic (RTL) |
+| --- | --- | --- |
+| ![Share a saying](docs/media/share-saying.gif) | ![Light and dark mode](docs/media/theme-toggle.gif) | ![Switching to Arabic flips the whole layout RTL](docs/media/rtl-switch.gif) |
 
 ## Layout
 

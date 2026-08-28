@@ -3,50 +3,23 @@
  * matching, so one entry covers both languages.
  */
 
-/**
- * An array of routes that are public:
- * These routes do not require authentication
- * @type {string[]}
- */
 export const publicRoutes: string[] = ['/', '/search']
 
-/**
- * An array of routes that are used for authentication:
- * The routes will be used to check if the user is authenticated
- * @type {string[]}
- */
 export const authRoutes: string[] = ['/login']
 
-/**
- * An array of routes that are used for protectedRoutes:
- * These routes will be hidden till the user is authenticated.
- * Anything nested under one of these prefixes also matches via
- * isProtectedRoute(). Keep this list in sync with the pages that
- * read a signed-in user, so the proxy can short-circuit unauthed
- * visitors at the edge.
- * @type {string[]}
- */
+// Anything nested under one of these prefixes also matches via
+// isProtectedRoute(). Keep this list in sync with the pages that read a
+// signed-in user, so the proxy can short-circuit unauthed visitors at the edge.
 export const protectedRoutes: string[] = ['/saved']
 
-/**
- * The default login route (locale is prefixed at redirect time)
- * @type {string}
- */
 export const DEFAULT_LOGIN_ROUTE: string = '/login'
 
-/**
- * The default redirect route after a successful login
- * @type {string}
- */
 export const DEFAULT_REDIRECT_ROUTE: string = '/saved'
 
-/**
- * Recovery paths: authed routes that live under an auth prefix but must NOT
- * bounce already-authed users (email confirmation callbacks, password reset).
- * Empty today — v1 has no onboarding — but the branch in proxy.ts reads it, so
- * adding one here is the only change needed.
- * @type {string[]}
- */
+// Authed routes under an auth prefix that must NOT bounce already-authed users
+// (email confirmation callbacks, password reset). Empty today — v1 has no
+// onboarding — but the branch in proxy.ts reads it, so adding one here is the
+// only change needed.
 export const recoveryRoutes: string[] = []
 
 // --------- helpers --------------------------------------------------------

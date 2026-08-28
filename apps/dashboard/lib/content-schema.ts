@@ -1,11 +1,11 @@
-// Validation for authored content. Kept pure and separate so it can be tested and so
-// failures surface locally instead of as a constraint violation after a round trip.
-//
 // These rules mirror the database exactly. If you change one, change the other:
 // supabase/migrations/20260810000000_init.sql
 
 export const LOCALES = ["en", "ar", "tr"] as const;
 export type Locale = (typeof LOCALES)[number];
+
+/** Draft placeholder for an unreviewed entry. Never a value validate() accepts. */
+export const UNVERIFIED_SENTINEL = "UNVERIFIED";
 
 export const COLLECTIONS = ["bukhari", "muslim"] as const;
 export const RESERVED_SLUGS = ["search", "about", "login", "saved", "topics", "quotes", "sayings", "intentions", "new"];
@@ -20,9 +20,8 @@ export type SituationDoc = {
   slug: string;
   published: boolean;
   topic?: Topic;
-  /** Reading estimate shown on every card. */
   minutes?: number;
-  /** Which home-page slot this fronts, if any. One of each, site-wide. */
+  /** One of each feature, site-wide. */
   feature?: (typeof FEATURES)[number];
   image?: {
     url: string;
@@ -62,7 +61,7 @@ const slugProblem = (slug: unknown): string | null => {
 // ── sayings ───────────────────────────────────────────────────────────────────
 export const GRADES = ["quran", "sahih", "hasan", "disputed", "historical"] as const;
 export type Grade = (typeof GRADES)[number];
-/** What may go live without a scholarly reviewer. Mirrors weak_grades_stay_drafts. */
+/** Mirrors weak_grades_stay_drafts. */
 export const PUBLISHABLE_GRADES: readonly Grade[] = ["quran", "sahih"];
 
 export type SayingDoc = {
@@ -179,8 +178,6 @@ export function validate(doc: unknown, file: string): string[] {
     if (!isFilled(i.source_url)) at("image: missing source_url, so nobody can check it");
     if (!IMAGE_LICENCES.includes(i.license))
       at(`image: licence "${i.license ?? "none"}" not in ${IMAGE_LICENCES.join(", ")}`);
-    // The clearance gate. Mirrors reviewed_by on entries, for the same reason: the
-    // rule that must never be broken is the one that cannot be skipped.
     if (!isFilled(i.cleared_by))
       at("image: missing cleared_by - name who confirmed it depicts neither the Prophet ﷺ, another prophet, nor a companion");
     if (!isFilled(i.cleared_at)) at("image: missing cleared_at");
@@ -197,7 +194,10 @@ export function validate(doc: unknown, file: string): string[] {
     const where = `entry ${i + 1}`;
 
     // Reliability is not optional: these three are NOT NULL in the database.
-    if (!isFilled(entry.reviewed_by)) at(`${where}: missing reviewed_by`);
+    // The draft placeholder is deliberately not "filled in" - a literal sentinel
+    // string satisfying a non-empty check is how an unreviewed entry used to publish.
+    if (!isFilled(entry.reviewed_by) || entry.reviewed_by === UNVERIFIED_SENTINEL)
+      at(`${where}: missing reviewed_by`);
     if (!isFilled(entry.reviewed_at)) at(`${where}: missing reviewed_at`);
     else if (Number.isNaN(Date.parse(entry.reviewed_at)))
       at(`${where}: reviewed_at "${entry.reviewed_at}" is not a date`);
@@ -223,7 +223,6 @@ export function validate(doc: unknown, file: string): string[] {
       const t = entry.translations?.[loc];
       if (!isFilled(t?.body)) at(`${where} ${loc}: missing body`);
       if (!isFilled(t?.takeaway)) at(`${where} ${loc}: missing takeaway`);
-      // A translated source quote must name who translated it.
       const st = s.translations?.[loc];
       if (st && !isFilled(st.translator))
         at(`${where} ${loc}: source translation has no translator`);
@@ -232,7 +231,6 @@ export function validate(doc: unknown, file: string): string[] {
     }
   });
 
-  // A half-translated page must never go live.
   if (d.published && declared.length > 0) {
     for (const loc of declared) {
       const missing = (d.entries ?? []).some(

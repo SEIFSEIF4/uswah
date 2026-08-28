@@ -293,7 +293,6 @@ function main() {
     });
   }
 
-  // Stable order by numeric CSV id
   imported.sort((a, b) => Number(a.csvId) - Number(b.csvId));
   excluded.sort((a, b) => Number(a.id) - Number(b.id));
 

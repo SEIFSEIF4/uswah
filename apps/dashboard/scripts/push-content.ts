@@ -1,5 +1,3 @@
-// Reads authored situations from ../content/situations/*.yaml and writes them to Supabase.
-//
 //   pnpm content:push            validate + print what would change, write nothing
 //   pnpm content:push --apply    write it
 //
@@ -14,7 +12,7 @@ import type { Database } from "../lib/supabase/database.types";
 import { validate, type SituationDoc } from "../lib/content-schema";
 import { saveSituation } from "../lib/save-situation";
 
-const DIR = join(import.meta.dirname, "..", "..", "content", "situations");
+const DIR = join(import.meta.dirname, "..", "..", "docs", "content", "situations");
 const apply = process.argv.includes("--apply");
 
 function load(): { file: string; doc: SituationDoc }[] {

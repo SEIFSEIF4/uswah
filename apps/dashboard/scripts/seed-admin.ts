@@ -1,5 +1,3 @@
-// Seeds (or re-passwords) a dashboard account through the service role.
-//
 //   pnpm admin:seed you@example.com
 //
 // Run it yourself and type the password when asked. It is read with terminal

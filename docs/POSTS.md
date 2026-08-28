@@ -90,7 +90,7 @@ page for its language, never from this file.
 
 ## The intro post, slide by slide
 
-Assets: `content/posts/intro/` — eight 1080×1350 crops cut from the art
+Assets: `docs/content/posts/intro/` — eight 1080×1350 crops cut from the art
 series (`cover`, the six topic emblems, `rooftop`).
 
 1. **Hook** (`cover.jpg`) — wordmark أسوة large on the empty wall,
@@ -133,13 +133,13 @@ parts; the assets stay clean and the typography stays ours.
 
 ### Asset prompts
 
-The eight crops in `content/posts/intro/` cover slides 1, 2, and 5. The
+The eight crops in `docs/content/posts/intro/` cover slides 1, 2, and 5. The
 type-only slides (3, 4, and the closing slide) sit on a painted ground
 rather than a flat fill, so one more generated asset:
 
 ```
 SERIES STYLE (from docs/ART.md) applies. 1080x1350 portrait.
-Save to content/posts/intro/paper-v1.jpg.
+Save to docs/content/posts/intro/paper-v1.jpg.
 Subject: an empty painted ground in the series' warm paper cream — flat
 matte gouache laid in soft horizontal strokes, visible paper grain, the
 tone barely deepening toward the edges. No objects, no wall, no floor
@@ -177,11 +177,11 @@ do not restyle — only time has passed.
 ### After-image prompts, first wave
 
 Attach the named reference file. SERIES STYLE from docs/ART.md applies
-to all. Output 1080x1350 portrait, saved under `content/posts/<slug>/`.
+to all. Output 1080x1350 portrait, saved under `docs/content/posts/<slug>/`.
 
 **`i-cannot-stop-being-angry`** — ref `apps/web/public/art/i-cannot-stop-being-angry-v2.jpg`
 ```
-Save to content/posts/i-cannot-stop-being-angry/after-v1.jpg.
+Save to docs/content/posts/i-cannot-stop-being-angry/after-v1.jpg.
 The same rooftop, parapet and city as the reference, minutes later:
 the parapet is empty, the figure has gone back down. Dusk one shade
 deeper, the single amber window still lit. The minute was taken.
@@ -189,7 +189,7 @@ deeper, the single amber window still lit. The minute was taken.
 
 **`asked-for-money-again`** — ref `apps/web/public/art/asked-for-money.jpg`
 ```
-Save to content/posts/asked-for-money-again/after-v1.jpg.
+Save to docs/content/posts/asked-for-money-again/after-v1.jpg.
 The same courtyard corner, wall and doorway as the reference, later:
 the rope and the firewood are gone. Faint dust marks and a few bark
 chips where they lay. The light unchanged. The need ended.
@@ -197,7 +197,7 @@ chips where they lay. The light unchanged. The need ended.
 
 **`a-friend-let-me-down`** — ref `apps/web/public/art/a-friend-let-me-down-v2.jpg`
 ```
-Save to content/posts/a-friend-let-me-down/after-v1.jpg.
+Save to docs/content/posts/a-friend-let-me-down/after-v1.jpg.
 The same wall, hole and curving path as the reference, but the walker
 is far along it now, small near the top of the frame, still walking.
 The hole unchanged, unfeared. Distance kept, journey continued.
@@ -205,7 +205,7 @@ The hole unchanged, unfeared. Distance kept, journey continued.
 
 **`i-am-in-debt`** — ref `apps/web/public/art/i-am-in-debt-v1.jpg`
 ```
-Save to content/posts/i-am-in-debt/after-v1.jpg.
+Save to docs/content/posts/i-am-in-debt/after-v1.jpg.
 The same desk and window as the reference in full morning: the lamp
 out and cold, the coins and envelope gone, sunlight across the empty
 wood. The city awake beyond the window. It was delivered.
@@ -213,7 +213,7 @@ wood. The city awake beyond the window. It was delivered.
 
 **`my-parents-ask-too-much`** — ref `apps/web/public/art/my-parents-ask-too-much-v1.jpg`
 ```
-Save to content/posts/my-parents-ask-too-much/after-v1.jpg.
+Save to docs/content/posts/my-parents-ask-too-much/after-v1.jpg.
 The same bench, table and tray as the reference, after the visit:
 both glasses empty, one cushion straightened, the other still dented,
 the afternoon light a little longer. The visit happened.
@@ -221,7 +221,7 @@ the afternoon light a little longer. The visit happened.
 
 **`i-said-something-i-regret`** — ref `apps/web/public/art/i-said-something-i-regret-v1.jpg`
 ```
-Save to content/posts/i-said-something-i-regret/after-v1.jpg.
+Save to docs/content/posts/i-said-something-i-regret/after-v1.jpg.
 The same courtyard corner and cracked earth as the reference: the jug
 now stands upright again, whole, but the dark stain remains in the
 earth beside it. You can right the jug; the stain stays.
@@ -229,7 +229,7 @@ earth beside it. You can right the jug; the stain stays.
 
 **`i-am-waiting-and-nothing-changes`** — ref `apps/web/public/art/i-am-waiting-and-nothing-changes-v1.jpg`
 ```
-Save to content/posts/i-am-waiting-and-nothing-changes/after-v1.jpg.
+Save to docs/content/posts/i-am-waiting-and-nothing-changes/after-v1.jpg.
 The same table, bowl and oven as the reference: the cloth folded
 beside the bowl, the dough risen high above the rim, the embers still
 patient. The wait was working the whole time.
@@ -247,7 +247,7 @@ original on request.
 
 **`my-boss-wronged-me`** — ref `my-boss-wronged-me-v1.jpg`; detail: the knotted curtain cord
 ```
-Save to content/posts/my-boss-wronged-me/after-v1.jpg.
+Save to docs/content/posts/my-boss-wronged-me/after-v1.jpg.
 The same window, curtain and sill as the reference at full morning:
 the sky beyond bright and blue, the room no longer dark, the curtain
 still knotted back. The dawn the window waited for arrived.
@@ -255,7 +255,7 @@ still knotted back. The dawn the window waited for arrived.
 
 **`i-was-passed-over`** — ref `i-was-passed-over-v1.jpg`; detail: the smaller lamp's steady flame
 ```
-Save to content/posts/i-was-passed-over/after-v1.jpg.
+Save to docs/content/posts/i-was-passed-over/after-v1.jpg.
 The same niche and two lamps hours deeper into night: both flames
 exactly as steady, the oil visibly lower in both, the shared glow
 unchanged. Neither light cost the other anything, and both lasted.
@@ -263,7 +263,7 @@ unchanged. Neither light cost the other anything, and both lasted.
 
 **`i-keep-putting-it-off`** — ref `i-keep-putting-it-off-v1.jpg`; detail: the water rings
 ```
-Save to content/posts/i-keep-putting-it-off/after-v1.jpg.
+Save to docs/content/posts/i-keep-putting-it-off/after-v1.jpg.
 The same ledge, pot and watering can weeks later: the plant taller by
 a few leaves, one more fresh dark ring on the stone among the faded
 ones. The habit kept, the growth quiet.
@@ -271,7 +271,7 @@ ones. The habit kept, the growth quiet.
 
 **`someone-spoke-badly-of-me`** — ref `someone-spoke-badly-of-me-v1.jpg`; detail: the lit slats
 ```
-Save to content/posts/someone-spoke-badly-of-me/after-v1.jpg.
+Save to docs/content/posts/someone-spoke-badly-of-me/after-v1.jpg.
 The same wall and window the next morning: shutters open, sill in
 plain warm daylight, the room quiet beyond. The night passed, nothing
 was said, and the house opens as it always does.
@@ -279,7 +279,7 @@ was said, and the house opens as it always does.
 
 **`i-lost-someone`** — ref `i-lost-someone-v1.jpg`; detail: the folded shawl
 ```
-Save to content/posts/i-lost-someone/after-v1.jpg.
+Save to docs/content/posts/i-lost-someone/after-v1.jpg.
 The same chair, shawl and window after the rain: drops still on the
 glass but the sky lightening, a first patch of sun on the sill. The
 shawl stays folded where it is. Grief remains; the sky clears anyway.
@@ -287,7 +287,7 @@ shawl stays folded where it is. Grief remains; the sky clears anyway.
 
 **`i-cannot-forgive-myself`** — ref `i-cannot-forgive-myself-v1.jpg`; detail: the open latch in the door gap
 ```
-Save to content/posts/i-cannot-forgive-myself/after-v1.jpg.
+Save to docs/content/posts/i-cannot-forgive-myself/after-v1.jpg.
 The same room with the door now fully open: morning filling the whole
 floor, no dark corners left, the doorway plain and unguarded. The way
 back was walked.
@@ -295,7 +295,7 @@ back was walked.
 
 **`i-am-far-from-home`** — ref `i-am-far-from-home-v1.jpg`; detail: the bag and staff at the threshold
 ```
-Save to content/posts/i-am-far-from-home/after-v1.jpg.
+Save to docs/content/posts/i-am-far-from-home/after-v1.jpg.
 The same doorway and road, the bag and staff gone: the swept room
 empty, the road bright in morning haze. The traveler traveled.
 ```
@@ -304,7 +304,7 @@ empty, the road bright in morning haze. The traveler traveled.
 
 **`i-cannot-afford-to-be-generous`** — ref `i-cannot-afford-to-be-generous-v1.jpg`; detail: the cup on the lid
 ```
-Save to content/posts/i-cannot-afford-to-be-generous/after-v1.jpg.
+Save to docs/content/posts/i-cannot-afford-to-be-generous/after-v1.jpg.
 The same jar and stand: the cup now resting beside the lid, wet, a few
 small splashes of water drying on the swept stone. Someone drank. The
 gift with no money in it was received.
@@ -312,7 +312,7 @@ gift with no money in it was received.
 
 **`my-work-feels-pointless`** — ref `my-work-feels-pointless-v1.jpg`; detail: the tool row in the lamp pool
 ```
-Save to content/posts/my-work-feels-pointless/after-v1.jpg.
+Save to docs/content/posts/my-work-feels-pointless/after-v1.jpg.
 The same bench at morning: the lamp out, daylight from beyond the
 frame, the cloth folded and the tools gone to their work, fresh
 shavings just beginning to gather. The care resumed.
@@ -320,7 +320,7 @@ shavings just beginning to gather. The care resumed.
 
 **`i-avoid-someone-i-wronged`** — ref `i-avoid-someone-i-wronged-v1.jpg`; detail: the gate ajar with warm light
 ```
-Save to content/posts/i-avoid-someone-i-wronged/after-v1.jpg.
+Save to docs/content/posts/i-avoid-someone-i-wronged/after-v1.jpg.
 The same lane, empty now, the gate standing wide open with warm light
 spilling into the lane. He went in. The walk was shorter than the
 avoiding was.
@@ -328,7 +328,7 @@ avoiding was.
 
 **`i-am-carrying-my-family-alone`** — ref `i-am-carrying-my-family-alone-v1.jpg`; detail: the two baskets in his hands
 ```
-Save to content/posts/i-am-carrying-my-family-alone/after-v1.jpg.
+Save to docs/content/posts/i-am-carrying-my-family-alone/after-v1.jpg.
 The same climbing street, empty: the two covered baskets set down side
 by side on the doorstep, the door open. Delivered home, again, like
 every dawn.

@@ -1,7 +1,6 @@
-// Writes one validated SituationDoc to Supabase. Shared by the YAML pipeline
-// (scripts/push-content.ts) and the admin dashboard's server actions, so both
-// converge on identical rows. Callers validate first (lib/content-schema.ts)
-// and pass a service-role client - RLS blocks content writes for everyone else.
+// Shared by scripts/push-content.ts and the admin dashboard's server actions, so both
+// converge on identical rows. Callers pass a service-role client - RLS blocks content
+// writes for everyone else.
 
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "./supabase/database.types";
@@ -16,7 +15,6 @@ export async function saveSituation(db: Db, doc: SituationDoc) {
   const locales = Object.keys(doc.translations) as Locale[];
   const inLocales = `(${locales.join(",")})`;
 
-  // Re-saving a live situation must not bump its publish date.
   const { data: existing } = await db
     .from("situations")
     .select("published_at")
@@ -58,7 +56,6 @@ export async function saveSituation(db: Db, doc: SituationDoc) {
     ),
     doc.slug,
   );
-  // A locale removed from the doc comes off the row too, or it lingers half-stale.
   await must(
     db
       .from("situation_translations")
@@ -133,8 +130,7 @@ export async function saveSituation(db: Db, doc: SituationDoc) {
     );
   }
 
-  // Entries deleted from the doc disappear from the site too; cascade takes their
-  // translations. Orphaned sources stay - they are a library, not per-situation rows.
+  // Orphaned sources stay - they are a library, not per-situation rows.
   await must(
     db
       .from("entries")

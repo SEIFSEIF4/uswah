@@ -1,11 +1,7 @@
-// Screening for archive images. Pure, so it can be tested — this is the code standing
-// between the project and the one mistake it cannot take back.
-//
 // This is a FIRST FILTER, not a clearance. Plenty of miniatures depict a veiled or
 // flame-haloed figure without saying so in the title. A human still signs every image
 // off; the filter only means they are not sifting the obvious cases by hand.
 
-/** Terms that make an image unusable, or unusable until a person looks properly. */
 const BLOCK = [
   // The Prophet ﷺ, in the spellings archives actually use
   "muhammad", "mohammed", "mohammad", "muhammed", "mahomet", "mahomed",
@@ -36,7 +32,6 @@ export function screenTitle(title: string): Screen {
   return hit ? { blocked: true, reason: `title mentions "${hit[0]}"` } : { blocked: false };
 }
 
-/** Maps an archive's licence string onto the pipeline's vocabulary, or null if unusable. */
 export function normaliseLicence(raw: string): string | null {
   if (!OK_LICENCE.test(raw.trim())) return null;
   const l = raw.trim().toLowerCase();

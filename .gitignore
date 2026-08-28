@@ -6,9 +6,18 @@ node_modules/
 .turbo/
 .worktrees/
 *.tsbuildinfo
-**/.impeccable/hook.cache.json
 .vercel/
 .DS_Store
+
+# AI tooling, agent config, agent-generated planning docs — local only
+.claude/
+AGENTS.md
+CLAUDE.md
+docs/superpowers/
+.impeccable/critique/
+.impeccable/mocks/
+.impeccable/questions/
+apps/*/.impeccable/
 
 # Flutter
 apps/mobile/build/
@@ -20,13 +29,5 @@ apps/mobile/**/GeneratedPluginRegistrant.*
 # Supabase CLI local stack
 supabase/.branches/
 supabase/.temp/
-
-# impeccable live runtime
-.impeccable/live/sessions/
-.impeccable/live/previews/
-.impeccable/live/artifacts/
-.impeccable/live/server.json
-.impeccable/live/roots.json
-.impeccable/live/inject-journal.json
 .vercel
 .env*
